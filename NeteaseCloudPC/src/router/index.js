@@ -11,7 +11,7 @@ const Personal = AsyncComponent(() => import('@/views/Personal/Personal'));
 const routes = () => (
     <Router>
         <Switch>
-            <Route path="/" exact component={Home}  />
+            <Route path="/" exact render={() => <Home name="Home" />}  />
             <Route path="/personal" exact component={Personal} />
         </Switch>
     </Router>

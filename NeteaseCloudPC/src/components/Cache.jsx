@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
     return {
-        keep: state.user.keep
+        keep: state.globalData.keep
     }
 }
 

@@ -20,7 +20,7 @@ class Http {
         })
         this.instance.interceptors.response.use(function (res) {
             // do something
-            return res;
+            return res.data;
         }, function (error) {
             return Promise.reject(error)
         })
