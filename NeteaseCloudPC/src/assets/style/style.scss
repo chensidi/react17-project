@@ -359,3 +359,163 @@ a {
 .s-bg-6 {
     background-position: 0 -240px;
 }
+
+.n-rcmd {
+    .m-cvrlst {
+        margin: 20px 0 0 -41px;
+        li {
+            width: 140px;
+            height: 204px;
+            padding-left: 42px;
+            .dec {
+                margin: 8px 0 3px;
+                font-size: 14px;
+            }
+            .tit {
+                display: inline-block;
+                max-width: 100%;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+
+
+.u-cover .bottom, .u-cover .msk, .n-musicsd .lst .avatar .msk {
+    background: url(https://s2.music.126.net/style/web2/img/coverall.png?6290fef8168a60ebbf09caa2bf10dfb3) no-repeat;
+}
+
+.u-cover .ply, .u-cover .icon-headset, .u-cover .icon-play, .u-face .msk, .n-note .head .msk, .icn-vip, .icn-daren, .u-checkbox {
+    background: url(https://s2.music.126.net/style/web2/img/iconall.png?29990c9e12608f19ccdbb29d45cbf748) no-repeat;
+}
+
+
+
+.m-cvrlst  {
+    li {
+        float: left;
+        display: inline-block;
+        width: 140px;
+        height: 188px;
+        overflow: hidden;
+        padding: 0 0 30px 50px;
+        line-height: 1.4;
+        box-sizing: content-box;
+    }
+}
+
+.u-cover-1 {
+    width: 140px;
+    height: 140px;
+    .msk {
+        background-position: 0 0;
+    }
+}
+
+
+.u-cover {
+    position: relative;
+    display: block;
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    .msk {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 27px;
+        background-position: 0 -537px;
+        color: #ccc;
+    }
+    .icon-play {
+        position: absolute;
+        right: 10px;
+        bottom: 5px;
+        width: 16px;
+        height: 17px;
+        background-position: 0 0;
+        display: inline-block;
+        &:hover {
+            background-position: 0 -60px;
+        }
+    }
+    .icon-headset {
+        display: inline-block;
+        float: left;
+        width: 14px;
+        height: 11px;
+        background-position: 0 -24px;
+        margin: 9px 5px 9px 10px;
+    }
+    .nb {
+        float: left;
+        margin: 7px 0 0 0;
+    }
+}
+
+.s-fc0, a.s-fc0:hover {
+    color: #000;
+}
+
+.f-fr {
+    float: right;
+}
+
+.new-swiper{
+    img {
+        display: inline-block !important;
+    }
+}
+
+.s-bg, .n-disk li {
+    background: url(https://s2.music.126.net/style/web2/img/index/index.png?32d1c09e2186eb9e738170bac2302c79) no-repeat 0 9999px;
+}
+
+
+.n-disk {
+    margin: 28px 0 0 0;
+    padding-left: 16px;
+    li {
+        float: left;
+        display: inline;
+        width: 118px;
+        height: 150px;
+        margin-left: 11px;
+        background-position: -260px 100px;
+        .u-cover {
+            margin-bottom: 7px;
+        }
+    }
+}
+
+.u-cover-alb1 {
+    width: 100px;
+    height: 100px;
+    .msk {
+        width: 118px;
+        height: 100px;
+        background-position: 0 -570px;
+    }
+}
+
+.n-disk p {
+    width: 90%;
+    line-height: 18px;
+}
+.f-thide {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+}
