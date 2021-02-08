@@ -1,7 +1,7 @@
 export const navs = [
     {
         title: '发现音乐',
-        path: '/'
+        path: '/home'
     },
     {
         title: '我的音乐',

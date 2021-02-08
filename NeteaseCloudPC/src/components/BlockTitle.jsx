@@ -21,7 +21,7 @@ const BlockTitle = (props) => {
                 }
             </div>
             <span className="more">
-                <a className="s-fc3">更多</a>
+                <a href="/#" className="s-fc3">更多</a>
                 <i className="cor s-bg s-bg-6">&nbsp;</i>
             </span>
         </div>

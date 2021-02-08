@@ -9,6 +9,13 @@ body, html, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, header, menu, sectio
     margin: 0;
 }
 
+body, textarea, select, input, button {
+    font-size: 12px;
+    color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-text-size-adjust: none;
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -356,9 +363,6 @@ a {
     vertical-align: middle;
 }
 
-.s-bg-6 {
-    background-position: 0 -240px;
-}
 
 .n-rcmd {
     .m-cvrlst {
@@ -473,8 +477,24 @@ a {
 }
 
 .new-swiper{
+    position: relative;
+    background: #f5f5f5;
+    border: 1px solid #d3d3d3;
     img {
         display: inline-block !important;
+    }
+    .pre, .nxt{
+        position: absolute;
+        top: 71px;
+        width: 17px;
+        height: 17px;
+        z-index: 10;
+    }
+    .pre {
+        left: 4px;
+    }
+    .nxt {
+        right: 4px;
     }
 }
 
@@ -486,6 +506,7 @@ a {
 .n-disk {
     margin: 28px 0 0 0;
     padding-left: 16px;
+    font-size: 12px;
     li {
         float: left;
         display: inline;
@@ -496,6 +517,25 @@ a {
         .u-cover {
             margin-bottom: 7px;
         }
+    }
+}
+
+.s-bg-6 {
+    background-position: 0 -240px;
+}
+
+.s-bg-7 {
+    background-position: -260px -75px;
+}
+
+.s-bg-8 {
+    background-position: -300px -75px;
+}
+
+.f-tdn {
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
     }
 }
 
@@ -518,4 +558,13 @@ a {
     text-overflow: ellipsis;
     white-space: nowrap;
     word-wrap: normal;
+}
+
+.u-cover-alb1, .u-cover-alb2, .u-cover-alb3 {
+    .icon-play {
+        display: none;
+    }
+    &:hover .icon-play {
+        display: block;
+    }
 }

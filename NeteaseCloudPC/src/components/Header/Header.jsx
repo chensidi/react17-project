@@ -46,7 +46,7 @@ const Header = () => {
                         }
                     </ul>
                     <div className="m-tophead f-pr j-tflag">
-                        <a className="link s-fc3">登录</a>
+                        <a href="/#" className="link s-fc3">登录</a>
                     </div>
                     <a href="https://music.163.com/login?targetUrl=%2Fcreatorcenter" target="_blank" className="m-topvd f-pr m-creator-center">创作者中心</a>
                     <div className="m-srch f-pr j-suggest">
@@ -65,7 +65,7 @@ const Header = () => {
                             subNav.map((item,i) => {
                                 return (
                                     <li key={`sub-${i}`}>
-                                        <a className={i===0 ? 'z-slt' : ''}>
+                                        <a href="/#" className={i===0 ? 'z-slt' : ''}>
                                             <em className={i===2 ? 'f-pr' :''}>
                                                 {item}
                                                 {

@@ -6,7 +6,7 @@ import sessionStore from '@utils/sessionStore';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
 import homeConfig from './config';
-import { Carousel } from 'antd';
+import NewDiskSwiper from './Swiper';
 
 const Banner = AsyncComponent(() => import('@/components/Banner/Banner'))
 const Main = AsyncComponent(() => import('@/components/Main'));
@@ -32,10 +32,12 @@ class Home extends Component {
     state = {
         banners: [],
         recommends: [],
+        newDisk: [],
     };
     componentDidMount() {
         this._loadBanners();
         this._getRecommend();
+        this._getNewDisk();
     }
     _loadBanners = async () => { //轮播图
         let res = await homeApis.getBanners();
@@ -50,6 +52,12 @@ class Home extends Component {
             recommends: res
         })
     }
+    _getNewDisk = async () => {
+        let res = await homeApis.getNewDisk({limit: 10});
+        this.setState({
+            newDisk: [[...res.slice(0,5)], [...res.slice(5,)]]
+        })
+    }
     change = () => {
         this.props.setCurSong({
             song: 'aaa',
@@ -57,8 +65,11 @@ class Home extends Component {
             singer: 'jacky'
         })
     }
+    changeSwiper = (flag) => {
+        flag ? this.swp.next() : this.swp.prev()
+    }
     render() {
-        const { banners, recommends, } = this.state;
+        const { banners, recommends, newDisk, } = this.state;
         const { hotNav } = homeConfig;
         return (
             <div>
@@ -81,134 +92,7 @@ class Home extends Component {
                                 </div>
                                 <div className="n-new">
                                     <BlockTitle title={{path: '', txt: '新碟上架'}} />
-                                    <div className="new-swiper">
-                                    <Carousel>
-                                        <ul className="n-disk">
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                        </ul>
-                                        <ul className="n-disk">
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <div className="u-cover u-cover-alb1">
-                                                    <img src="http://p4.music.126.net/n4RF-YN_cfRP-IMhYQ3cjQ==/109951165639721150.jpg?param=100y100" alt=""/>
-                                                    <a href="" className="msk"></a>
-                                                </div>
-                                                <p className="f-thide">
-                                                    <a href="" className="s-fc0 tit">Epik High Is Here 上</a>
-                                                </p>
-                                                <p className="tit f-thide">
-                                                    <a href="" className="s-fc3">Epik High</a>
-                                                </p>
-                                            </li>
-                                        </ul>
-                                    </Carousel>
-                                    </div>
+                                    <NewDiskSwiper newDisk={newDisk} />
                                 </div>
                             </div>
                         </div>
