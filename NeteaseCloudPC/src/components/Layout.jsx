@@ -1,5 +1,6 @@
 import Header from '@/components/Header/Header';
-import { HashRouter as Router } from 'react-router-dom'
+import { HashRouter as Router } from 'react-router-dom';
+import Footer from '@/components/Footer/Footer';
 
 const Layout = (props) => {
     return (
@@ -8,6 +9,7 @@ const Layout = (props) => {
                 <Header />
             </Router>
             {props.children}
+            <Footer />
         </>
     )
 }

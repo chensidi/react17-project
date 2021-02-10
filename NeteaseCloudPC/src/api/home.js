@@ -36,7 +36,25 @@ export const homeApis = {
                 area,
             })
             return res.albums;
-        } catch(err) {
+        } catch (err) {
+            return err;
+        }
+    },
+
+    async getTopList() { //所有榜单
+        try {
+            const res = await http.get(`/toplist`)
+            return res.list;
+        } catch (err) {
+            return err;
+        }
+    },
+
+    async getRank(id) { //榜单
+        try {
+            const res = await http.get(`/playlist/detail`, {id})
+            return res.playlist;
+        } catch (err) {
             return err;
         }
     }

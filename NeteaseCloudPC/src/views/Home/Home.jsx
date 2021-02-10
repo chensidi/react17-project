@@ -7,11 +7,14 @@ import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
 import homeConfig from './config';
 import NewDiskSwiper from './Swiper';
+// import './index.scss';
+// import { Link } from 'react-router-dom';
 
 const Banner = AsyncComponent(() => import('@/components/Banner/Banner'))
 const Main = AsyncComponent(() => import('@/components/Main'));
 const BlockTitle = AsyncComponent(() => import('@/components/BlockTitle'));
 const CoverItem = AsyncComponent(() => import('@/components/Covers/CoverItem'));
+const RankModule = AsyncComponent(() => import('./Rank'));
 
 const mapStateToProps = (state) => {
     console.log(state.globalData.curSong);
@@ -33,11 +36,14 @@ class Home extends Component {
         banners: [],
         recommends: [],
         newDisk: [],
+        ranks: [],
     };
     componentDidMount() {
         this._loadBanners();
         this._getRecommend();
         this._getNewDisk();
+        // this._getRank();
+        this._getTopList();
     }
     _loadBanners = async () => { //轮播图
         let res = await homeApis.getBanners();
@@ -58,6 +64,37 @@ class Home extends Component {
             newDisk: [[...res.slice(0,5)], [...res.slice(5,)]]
         })
     }
+    _getRank = async (id) => {
+        let res = await homeApis.getRank(id);
+        // this.setState({
+        //     ranks: res.tracks.slice(0, 10)
+        // })
+        return res.tracks;
+    }
+    _getTopList = async () => {
+        let res = await homeApis.getTopList();
+        res = res.slice(0, 3); //取出前三个
+        let arr = [];
+        // res.map(async item => {
+        //     let res1 = await this._getRank(item.id);
+        //     arr.push({
+        //         self: item,
+        //         subs: res1.slice(0, 10)
+        //     })
+        // })
+        for(let i = 0; i < res.length; i ++) {
+            const item = res[i];
+            let res1 = await this._getRank(item.id);
+            arr.push({
+                self: item,
+                subs: res1.slice(0, 10)
+            })
+        }
+        console.log(arr);
+        this.setState({
+            ranks: arr
+        })
+    }
     change = () => {
         this.props.setCurSong({
             song: 'aaa',
@@ -69,7 +106,7 @@ class Home extends Component {
         flag ? this.swp.next() : this.swp.prev()
     }
     render() {
-        const { banners, recommends, newDisk, } = this.state;
+        const { banners, recommends, newDisk, ranks, } = this.state;
         const { hotNav } = homeConfig;
         return (
             <div>
@@ -93,6 +130,10 @@ class Home extends Component {
                                 <div className="n-new">
                                     <BlockTitle title={{path: '', txt: '新碟上架'}} />
                                     <NewDiskSwiper newDisk={newDisk} />
+                                </div>
+                                <div className="n-bill">
+                                    <BlockTitle title={{path: '', txt: '榜单'}} />
+                                    <RankModule ranks={ranks} />
                                 </div>
                             </div>
                         </div>

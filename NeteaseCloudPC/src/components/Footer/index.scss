@@ -1,0 +1,102 @@
+.g-ft {
+    position: relative;
+    height: 172px;
+    overflow: hidden;
+    border-top: 1px solid #d3d3d3;
+    background: #f2f2f2;
+    .copy {
+        float: left;
+        width: 520px;
+        padding-top: 15px;
+        line-height: 24px;
+        .line {
+            margin: 0 8px 0 10px;
+            color: #c2c2c2;
+        }
+        .police-logo {
+            width: 14px;
+            height: 14px;
+            background: url(https://s2.music.126.net/style/web2/img/3rd/police.png?5b7d7a95c38c2c96979fe26536c2e31f) no-repeat;
+            background-size: cover;
+            display: inline-block;
+            margin-right: 2px;
+            vertical-align: -2px;
+        }
+        .police-text {
+            font-size: 12px;
+        }
+    }
+}
+
+.m-ft {
+    width: 980px;
+    margin: 0 auto;
+    .enter {
+        width: 420px;
+        margin-top: 33px;
+        .unit {
+            float: left;
+            width: 60px;
+            height: 70px;
+            margin-left: 30px;
+            text-align: center;
+            color: #666;
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+        .tt {
+            display: inline-block;
+            margin: 5px 5px 0;
+            width: 52px;
+            height: 14px;
+        }
+        .tt-amped {
+            background-position: 0 -108px !important;
+            margin-left: -6px;
+            width: 72px;
+        }
+        .tt-auth {
+            background-position: -1px -91px !important;
+        }
+        .tt-musician {
+            background-position: 0 0 !important;
+        }
+        .tt-reward {
+            background-position: 0 -54px !important;
+        }
+        .tt-cash {
+            background-position: -1px -72px !important;
+        }
+    }
+    .logonew {
+        display: block;
+        float: none;
+        width: 50px;
+        height: 45px;
+        margin: 0 auto;
+        &+ .tt {
+            background: url(https://s2.music.126.net/style/web2/img/foot_enter_tt.png?7c878947e6917400f79b0559edccb43e) no-repeat;
+            background-size: 180px 139px;
+        }
+    }
+    .logo.logonew {
+        background: url(https://s2.music.126.net/style/web2/img/foot_enter_new.png?c9f97f7ec7246d8055a94bc6dc229483) no-repeat;
+        background-size: 110px 552px;
+    }
+    .logonew.logo-amped {
+        background-position: -63px -456.5px;
+    }
+    .logonew.logo-auth {
+        background-position: -63px -101px;
+    }
+    .logonew.logo-musician {
+        background-position: 0 0;
+    }
+    .logonew.logo-reward {
+        background-position: -60px -50px;
+    }
+    .logonew.logo-cash {
+        background-position: 0 -101px;
+    }
+}

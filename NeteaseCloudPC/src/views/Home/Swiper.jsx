@@ -1,5 +1,6 @@
 import { createRef, } from 'react';
 import { Carousel } from 'antd';
+import './index.scss';
 
 const NewDiskSwiper = (props) => {
     const { newDisk } = props;
@@ -9,11 +10,10 @@ const NewDiskSwiper = (props) => {
     }
     return (
         <div className="new-swiper">
-            <a
+            <span
                 onClick={() => changeSwiper(false)}
-                href="/#"
                 className="click-flag pre s-bg s-bg-7 f-tdn"
-            ></a>
+            ></span>
             <Carousel ref={swp} dots={false}>
                 {newDisk.map((item, i) => {
                     return (
@@ -43,11 +43,10 @@ const NewDiskSwiper = (props) => {
                     );
                 })}
             </Carousel>
-            <a
+            <span
                 onClick={() => changeSwiper(true)}
-                href="/#"
                 className="click-flag nxt s-bg s-bg-8 f-tdn"
-            ></a>
+            ></span>
         </div>
     );
 };

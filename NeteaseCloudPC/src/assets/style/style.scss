@@ -568,3 +568,39 @@ a {
         display: block;
     }
 }
+
+.f-fs1 {
+    font-size: 14px;
+}
+
+.s-bg-9 {
+    background-position: -267px -205px;
+    &:hover {
+        background-position: -267px -235px;
+    }
+}
+
+.s-bg-10 {
+    background-position: -300px -205px;
+    &:hover {
+        background-position: -300px -235px;
+    }
+}
+
+.s-bg-11 {
+    background-position: -267px -268px;
+    &:hover {
+        background-position: -267px -288px;
+    }
+}
+
+.s-bg-12 {
+    background-position: -297px -268px;
+    &:hover {
+        background-position: -297px -288px;
+    }
+}
+
+.s-fc4, a.s-fc4:hover {
+    color: #999;
+}

@@ -12,14 +12,6 @@ const routes = [
         path: '/home',
         component: Home,
         name: 'Home',
-        children: [
-            {
-                path: 'abc',
-                component: Personal,
-                name: 'ABC',
-                redirect: 'bcd'
-            }
-        ]
     },
     {
         path: '/personal',
