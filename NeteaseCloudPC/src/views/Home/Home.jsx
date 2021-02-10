@@ -114,6 +114,9 @@ class Home extends Component {
                 <p>
                     <Button onClick={this.change}>change song</Button>
                 </p>
+                {
+                    this.props.children
+                }
             </div>
         )
     }
