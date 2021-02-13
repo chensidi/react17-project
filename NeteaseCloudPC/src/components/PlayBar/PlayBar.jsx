@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useState, createRef, } from 'react';
 import { connect } from 'react-redux';
 import { mediaTimeFormat } from '@/utils/utils';
+import commonRequest from '@/api/common';
+import { setCurSong } from '@/store/action';
 
 const mapStateToProps = (state) => {
     return {
@@ -11,26 +13,43 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToprops = (dispatch) => {
+    return {
+        setCurSong: (song) => dispatch(setCurSong(song))
+    }
+}
+
 const PlayBar = (props) => {
-    const [progress, changeProgress] = useState(0); //播放进度，0-100
     const [downUpKey, changeDownUp] = useState(false); //控制能否拖动的开关
     const barRef = createRef(null); //进度条ref
     const mp3 = createRef(null); //音频ref
     const [mp3Info, changeMp3Info] = useState({
-        url: "http://m7.music.126.net/20210212222708/2af1a77067324cefe8fa2b0b294d079e/ymusic/obj/w5zDlMODwrDDiGjCn8Ky/3036222985/f34b/cf39/4009/f9f78b87e872c3105830ca640a32cb25.mp3",
-        name: '咖啡',
-        singer: '张学友',
         isPlay: false, //播放状态play/pause
         duration: 0,
+        currentTime: 0,
         loadPC: 0, //加载进度
+        progress: 0, //播放进度，0-100
     }); // 音频信息
+    const [lock, changeLock] = useState(false); //playbar是否锁定，默认不锁定
+    const [isEnter, changeEnter] = useState(false); //是否鼠标亦如playbar
+    let timer = null;
+    // 没有歌曲的话，默认设置为张学友 - 咖啡
+    if (props.curSong == null) {
+        commonRequest.getSongUrl(188261).then(res => {
+            props.setCurSong({
+                url: res,
+                name: '咖啡',
+                singer: '张学友'
+            })
+        })
+    }
 
     function barOnMouseDown(e) { //进度条按钮按下 
         changeDownUp(true);
     }
     function barOnMouseUp(e) { //进度条按钮松开
         changeDownUp(false);
-        mp3.current.currentTime = progress / 100 * mp3Info.duration;
+        mp3.current.currentTime = mp3Info.progress / 100 * mp3Info.duration;
         mp3.current.play();
         changeMp3Info({
             ...mp3Info,
@@ -50,7 +69,11 @@ const PlayBar = (props) => {
         if (curProgress >= 100) {
             curProgress = 100;
         }
-        changeProgress(curProgress);
+        // changeProgress(curProgress);
+        changeMp3Info({
+            ...mp3Info,
+            progress: curProgress
+        })
         if (!needKey) {
             mp3.current.currentTime = curProgress / 100 * mp3Info.duration;
             mp3.current.play();
@@ -76,8 +99,13 @@ const PlayBar = (props) => {
         const curTime = mp3.current.currentTime,
               duration = mp3Info.duration;
         const curProgress = (curTime / duration) * 100;
-        changeProgress(curProgress);
-        // onLoadSrc();
+        // changeProgress(curProgress);
+        onLoadSrc();
+        changeMp3Info({
+            ...mp3Info,
+            currentTime: curTime,
+            progress: curProgress,
+        })
     }
     function onMp3Load() { //加载完头信息
         changeMp3Info({
@@ -88,7 +116,6 @@ const PlayBar = (props) => {
     function onLoadSrc() { //音频加载资源时
         const timeRanges = mp3.current.buffered;
         const loadProgress = timeRanges.end(timeRanges.length - 1);
-        console.log(loadProgress);
         let loadPC = loadProgress / mp3Info.duration * 100;
         if (loadPC <= 0) {loadPC = 0};
         if (loadPC >= 100) {loadPC = 100};
@@ -97,17 +124,45 @@ const PlayBar = (props) => {
             loadPC,
         })
     }
+    function onEnd() { //播放结束
+        changeMp3Info({
+            ...mp3Info,
+            isPlay: false,
+            currentTime: 0,
+            progress: 0
+        })
+    }
+    function lockBar() { //锁定playbar
+        changeLock(!lock);
+    }
+    function mouseOutBar() { //鼠标离开playbar
+        if (lock) return;
+        timer = setTimeout(() => changeEnter(false), 500);
+    }
+    function mouseEnterBar() { //鼠标进入playbar
+        clearTimeout(timer);
+        timer = null;
+        if (lock) return;
+        changeEnter(true);
+    }
     return (
-        <div className="g-btmbar">
-            <div className="m-playbar m-playbar-lock">
+        <div className="g-btmbar" 
+        >
+            <div 
+                className={['m-playbar', lock ? 'm-playbar-lock' : 'm-playbar-unlock'].join(' ')} 
+                style={{top: lock ? '-53px' : (isEnter ? '-53px' : '-7px')}}
+                onMouseEnter={mouseEnterBar}
+                onMouseLeave={mouseOutBar}
+            >
                 <div className="updn">
                     <div className="left f-fl">
-                        <span className="btn"></span>
+                        <span className="btn" onClick={lockBar}></span>
                     </div>
                     <div className="right f-fl"></div>
                 </div>
                 <div className="bg"></div>
-                <div className="hand" title="展开播放条"></div>
+                <div className="hand" title="展开播放条" 
+                ></div>
                 <div className="wrap">
                     <div className="btns">
                         <span className="prv" title="上一首(ctrl+←)"></span>
@@ -119,13 +174,13 @@ const PlayBar = (props) => {
                     </div>
                     <div className="play">
                         <div className="j-flag words">
-                            <span className="f-thide name fc1 f-fl" title="咖啡">
-                            咖啡
+                            <span className="f-thide name fc1 f-fl" title={props?.curSong?.name}>
+                            {props?.curSong?.name}
                             </span>
                             <em className="mv f-fl"></em>
                             <span className="by f-thide f-fl">
-                                <span className="张学友">
-                                    <Link to="">张学友</Link>
+                                <span className={props?.curSong?.singer}>
+                                    <Link to="">{props?.curSong?.singer}</Link>
                                 </span>
                             </span>
                         </div>
@@ -136,7 +191,7 @@ const PlayBar = (props) => {
                                 ref={barRef}
                             >
                                 <div className="rdy" style={{width: `${mp3Info.loadPC}%`}}></div>
-                                <div className="cur" style={{width: `${progress}%`}}>
+                                <div className="cur" style={{width: `${mp3Info.progress}%`}}>
                                     <span className="btn f-tdn f-alpha" 
                                         onMouseDown={barOnMouseDown}
                                         onMouseUp={barOnMouseUp}
@@ -146,7 +201,7 @@ const PlayBar = (props) => {
                                 </div>
                             </div>
                             <div className="j-flag time">
-                                <time>{mediaTimeFormat(mp3?.current?.currentTime || 0)}</time>
+                                <time>{mediaTimeFormat(mp3Info.currentTime)}</time>
                                 /
                                 <time>{mediaTimeFormat(mp3Info.duration)}</time>
                             </div>
@@ -158,13 +213,14 @@ const PlayBar = (props) => {
                 ref={mp3} 
                 preload="true" 
                 onLoadedMetadata={onMp3Load} 
-                src={mp3Info.url} 
+                src={props?.curSong?.url} 
                 onTimeUpdate={onPlaying}
                 onProgress={onLoadSrc}
+                onEnded={onEnd}
             >
             </audio>
         </div>
     )
 }
 
-export default connect(mapStateToProps)(PlayBar);
+export default connect(mapStateToProps, mapDispatchToprops)(PlayBar);
