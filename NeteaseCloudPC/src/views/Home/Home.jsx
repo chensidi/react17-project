@@ -53,7 +53,7 @@ class Home extends Component {
     }
     _getRecommend = async () => {
         let res = await homeApis.getRecommend({limit: 8, order: 'hot'});
-        console.log(res);
+        // console.log(res);
         this.setState({
             recommends: res
         })
@@ -90,7 +90,7 @@ class Home extends Component {
                 subs: res1.slice(0, 10)
             })
         }
-        console.log(arr);
+        // console.log(arr);
         this.setState({
             ranks: arr
         })

@@ -13,6 +13,10 @@
     z-index: 1002;
 }
 
+
+.m-playbar .list .close, .m-playbar .playicn, .m-playbar .ico {
+    background: url(https://s2.music.126.net/style/web2/img/frame/playlist.png?b1f0cdf2e94b42dc29304c0ba00585fc) no-repeat 0 9999px;
+}
 .m-playbar {
     position: absolute;
     zoom: 1;
@@ -161,6 +165,208 @@
             }
         }
     }
+    .ctrl {
+        position: relative;
+        z-index: 10;
+        width: 113px;
+        padding-left: 13px;
+        background-position: -147px -238px;
+    }
+    .add {
+        float: left;
+        width: 59px;
+        height: 36px;
+    }
+    .icn {
+        float: left;
+        width: 25px;
+        height: 25px;
+        margin: 11px 2px 0 0;
+        text-indent: -9999px;
+    }
+    .icn-list {
+        display: block;
+        float: none;
+        width: 38px;
+        padding-left: 21px;
+        background-position: -42px -68px;
+        line-height: 27px;
+        text-align: center;
+        color: #666;
+        text-shadow: 0 1px 0 #080707;
+        text-indent: 0;
+        text-decoration: none;
+        box-sizing: content-box;
+        &:hover {
+            background-position: -42px -98px;
+        }
+    }
+    .list {
+        position: absolute;
+        left: 50%;
+        bottom: 47px;
+        width: 986px;
+        height: 301px;
+        margin-left: -493px;
+    }
+    .listhd {
+        background-position: 0 0;
+        height: 41px;
+    }
+    .listhd, .listbd {
+        padding: 0 5px;
+        background: url(https://s2.music.126.net/style/web2/img/frame/playlist_bg.png?aaa884bd370654052ec8e2e7a34cc551);
+    }
+    .listhdc {
+        position: relative;
+        height: 40px;
+        color: #CCC;
+        h4 {
+            position: absolute;
+            left: 25px;
+            top: 0;
+            height: 39px;
+            line-height: 39px;
+            font-size: 14px;
+            color: #e2e2e2;
+        }
+        .clear, .addall {
+            position: absolute;
+            left: 490px;
+            top: 12px;
+            height: 15px;
+            line-height: 15px;
+            cursor: pointer;
+        }
+        .addall {
+            left: 398px;
+        }
+        .ico {
+            float: left;
+            margin: 1px 6px 0 0;
+            *margin-top: 0;
+        }
+        .line {
+            position: absolute;
+            top: 13px;
+            left: 477px;
+            height: 15px;
+            border-left: 1px solid #000;
+            border-right: 1px solid #2c2c2c;
+        }
+        .lytit {
+            position: absolute;
+            left: 595px;
+            top: 0;
+            width: 346px;
+            text-align: center;
+            height: 39px;
+            line-height: 39px;
+            color: #fff;
+            font-size: 14px;
+        }
+        .close {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 30px;
+            height: 30px;
+            overflow: hidden;
+            text-indent: -999px;
+            cursor: pointer;
+            background-position: -195px 9px;
+        }
+    }
+    .ico-add {
+        width: 16px;
+        background-position: -24px 0;
+        display: inline-block;
+    }
+    .icn-del {
+        width: 13px;
+        background-position: -51px 0;
+    }
+    .ico {
+        height: 16px;
+    }
+    .listbd {
+        position: absolute;
+        left: 0;
+        top: 41px;
+        width: 976px;
+        _width: 972px;
+        height: 260px;
+        overflow: hidden;
+        background-position: -1014px 0;
+        _background-position: -1018px 0;
+        background-repeat: repeat-y;
+        box-sizing: content-box;
+    }
+    .msk2 {
+        position: absolute;
+        left: 560px;
+        _left: 560px;
+        top: 0;
+        z-index: 3;
+        width: 420px;
+        height: 250px;
+        background: #121212;
+        opacity: .01;
+        filter: Alpha(opacity=1);
+    }
+    .listlyric {
+        position: absolute;
+        right: 40px;
+        top: 0;
+        z-index: 4;
+        margin: 21px 0 20px 0;
+        height: 219px;
+        width: 354px;
+        overflow: auto;
+        p {
+            color: #989898;
+            word-wrap: break-word;
+            text-align: center;
+            line-height: 32px;
+            height: auto !important;
+            height: 32px;
+            min-height: 32px;
+            -webkit-transition: color 0.7s linear;
+            -moz-transition: color 0.7s linear;
+            -o-transition: color 0.7s linear;
+            transition: color 0.7s linear;
+            &.z-sel {
+                color: #fff;
+                font-size: 14px;
+                -webkit-transition: color 0.7s linear;
+                -moz-transition: color 0.7s linear;
+                -o-transition: color 0.7s linear;
+                transition: color 0.7s linear;
+            }
+        }
+        &::-webkit-scrollbar
+        {
+            width: 8px;
+            height: 8px;
+            background-color: #000;
+        }
+        
+        /*定义滚动条轨道 内阴影+圆角*/
+        &::-webkit-scrollbar-track
+        {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            background-color: #000;
+        }
+        
+        /*定义滑块 内阴影+圆角*/
+        &::-webkit-scrollbar-thumb
+        {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #555;
+        }
+    }
 }
 
 
@@ -193,6 +399,8 @@
 .m-pbar .btn, .m-vol .btn {
     background: url(https://s2.music.126.net/style/web2/img/iconall.png?d74278c76b9aea3520bf4f9e521a1171) no-repeat;
 }
+
+
 .m-pbar {
     .barbg {
         width: 493px;
@@ -250,5 +458,10 @@
 
 .m-pbar, .m-pbar .barbg {
     width: 493px;
+}
+
+.f-pr {
+    position: relative;
+    zoom: 1;
 }
 

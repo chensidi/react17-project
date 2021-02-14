@@ -10,5 +10,15 @@ export default {
         } catch (err) {
             return err;
         }
+    },
+    async getLyric(id) { //获取歌词
+        try {
+            const res = await http.get(`/lyric`, {
+                id
+            })
+            return res.lrc.lyric
+        } catch (err) {
+            return err;
+        }
     }
 }

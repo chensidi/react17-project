@@ -2,14 +2,15 @@ import './index.scss';
 import { Link } from 'react-router-dom';
 import { useState, createRef, } from 'react';
 import { connect } from 'react-redux';
-import { mediaTimeFormat } from '@/utils/utils';
+import { mediaTimeFormat, formatLrc, } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong } from '@/store/action';
+import sessionStore from '@/utils/sessionStore';
 
 const mapStateToProps = (state) => {
     return {
         userInfo: state.user.userInfo,
-        curSong: state.globalData.curSong
+        curSong: state.globalData?.curSong || sessionStore.get('globalData').curSong
     }
 }
 
@@ -29,17 +30,23 @@ const PlayBar = (props) => {
         currentTime: 0,
         loadPC: 0, //加载进度
         progress: 0, //播放进度，0-100
+        lyric: [], //歌词数组
+        curIdx: 0, //当前歌词下标
     }); // 音频信息
     const [lock, changeLock] = useState(false); //playbar是否锁定，默认不锁定
     const [isEnter, changeEnter] = useState(false); //是否鼠标亦如playbar
+    const [curIdx, changeCurIdx] = useState(0);
     let timer = null;
     // 没有歌曲的话，默认设置为张学友 - 咖啡
     if (props.curSong == null) {
-        commonRequest.getSongUrl(188261).then(res => {
-            props.setCurSong({
-                url: res,
-                name: '咖啡',
-                singer: '张学友'
+        commonRequest.getSongUrl(188261).then(url => {
+            commonRequest.getLyric(188261).then(res => {
+                props.setCurSong({
+                    url,
+                    name: '咖啡',
+                    singer: '张学友',
+                    lyc: res
+                })
             })
         })
     }
@@ -95,17 +102,33 @@ const PlayBar = (props) => {
         })
     }
     function onPlaying() { //播放中
+        onLoadSrc();
+        lrcWithPlay();
         if (downUpKey) return;
         const curTime = mp3.current.currentTime,
               duration = mp3Info.duration;
         const curProgress = (curTime / duration) * 100;
         // changeProgress(curProgress);
-        onLoadSrc();
         changeMp3Info({
             ...mp3Info,
             currentTime: curTime,
             progress: curProgress,
         })
+    }
+    function lrcWithPlay() { //歌词同步
+        if (!props.curSong?.lyc) return;
+        const lrc = formatLrc(props.curSong?.lyc || '');
+        for(let i = 0; i < lrc.length - 1; i ++) {
+            const curTime = mp3.current.currentTime,
+                  item = lrc[i],
+                  nextItem = lrc[i + 1];
+            if (curTime >= item.time && curTime < nextItem.time) {
+                changeCurIdx(i);
+                const curP = document.querySelectorAll('p.j-flag')[i];
+                curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
+                break;
+            }
+        }
     }
     function onMp3Load() { //加载完头信息
         changeMp3Info({
@@ -207,13 +230,48 @@ const PlayBar = (props) => {
                             </div>
                         </div>
                     </div>
+                    <div className="ctrl f-fl f-pr j-flag">
+                        <span className="add f-pr">
+                            <em className="icn icn-list s-fc3" title="播放列表">1</em>
+                        </span>
+                    </div>
+                </div>
+                <div className="list">
+                    <div className="listhd">
+                        <div className="listhdc">
+                            <h4>播放列表(<span className="j-flag">1</span>)</h4>
+                            <span className="addall">
+                                <i className="ico ico-add"></i>
+                                收藏全部
+                            </span>
+                            <span className="line"></span>
+                            <span className="clear">
+                                <i className='ico icn-del'></i>
+                                清除
+                            </span>
+                            <div className="lytit f-ff0 f-thide j-flag">咖啡</div>
+                            <span className="close">关闭</span>
+                        </div>
+                    </div>
+                    <div className="listbd">
+                        <div className="msk2"></div>
+                        <div className="listlyric j-flag">
+                            {
+                                formatLrc(props.curSong?.lyc||'').map((item, i) => {
+                                    return (
+                                        <p className={['j-flag', i == curIdx ? 'z-sel' :''].join(' ')} key={item.time}>{ item.txt }</p>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
             <audio 
                 ref={mp3} 
                 preload="true" 
                 onLoadedMetadata={onMp3Load} 
-                src={props?.curSong?.url} 
+                src={props.curSong?.url} 
                 onTimeUpdate={onPlaying}
                 onProgress={onLoadSrc}
                 onEnded={onEnd}
