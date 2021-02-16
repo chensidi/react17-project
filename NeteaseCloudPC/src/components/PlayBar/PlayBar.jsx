@@ -1,6 +1,6 @@
 import './index.scss';
 import { Link } from 'react-router-dom';
-import { useState, createRef, } from 'react';
+import { useState, createRef, memo, } from 'react';
 import { connect } from 'react-redux';
 import { mediaTimeFormat, formatLrc, } from '@/utils/utils';
 import commonRequest from '@/api/common';
@@ -20,6 +20,13 @@ const mapDispatchToprops = (dispatch) => {
     }
 }
 
+function compare() {
+    return true;
+}
+
+let timer = null, //playbar锁定计时器
+    scrollTimer = null; //歌词滚动锁定计时器
+
 const PlayBar = (props) => {
     const [downUpKey, changeDownUp] = useState(false); //控制能否拖动的开关
     const barRef = createRef(null); //进度条ref
@@ -36,7 +43,9 @@ const PlayBar = (props) => {
     const [lock, changeLock] = useState(false); //playbar是否锁定，默认不锁定
     const [isEnter, changeEnter] = useState(false); //是否鼠标亦如playbar
     const [curIdx, changeCurIdx] = useState(0);
-    let timer = null;
+    const [canScrollLrc, changeCanScroll] = useState(true);
+    const [showPanel, changeShow] = useState(false); //是否展示歌词面板
+
     // 没有歌曲的话，默认设置为张学友 - 咖啡
     if (props.curSong == null) {
         commonRequest.getSongUrl(188261).then(url => {
@@ -124,8 +133,10 @@ const PlayBar = (props) => {
                   nextItem = lrc[i + 1];
             if (curTime >= item.time && curTime < nextItem.time) {
                 changeCurIdx(i);
-                const curP = document.querySelectorAll('p.j-flag')[i];
-                curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
+                if (canScrollLrc && !scrollTimer) {
+                    const curP = document.querySelectorAll('p.j-flag')[i];
+                    curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
+                }
                 break;
             }
         }
@@ -168,12 +179,20 @@ const PlayBar = (props) => {
         if (lock) return;
         changeEnter(true);
     }
+    function scrollHandler() { //手动滚动歌词
+        scrollTimer && clearTimeout(scrollTimer);
+        changeCanScroll(false);
+        scrollTimer = setTimeout(() => {
+            changeCanScroll(true);
+            scrollTimer = null;
+        }, 1500);
+    }
     return (
         <div className="g-btmbar" 
         >
             <div 
                 className={['m-playbar', lock ? 'm-playbar-lock' : 'm-playbar-unlock'].join(' ')} 
-                style={{top: lock ? '-53px' : (isEnter ? '-53px' : '-7px')}}
+                style={{top: lock ? '-53px' : (isEnter || showPanel ? '-53px' : '-7px')}}
                 onMouseEnter={mouseEnterBar}
                 onMouseLeave={mouseOutBar}
             >
@@ -231,12 +250,12 @@ const PlayBar = (props) => {
                         </div>
                     </div>
                     <div className="ctrl f-fl f-pr j-flag">
-                        <span className="add f-pr">
+                        <span className="add f-pr" onClick={() => changeShow(!showPanel)}>
                             <em className="icn icn-list s-fc3" title="播放列表">1</em>
                         </span>
                     </div>
                 </div>
-                <div className="list">
+                <div className="list" style={{display: showPanel?'':'none'}}>
                     <div className="listhd">
                         <div className="listhdc">
                             <h4>播放列表(<span className="j-flag">1</span>)</h4>
@@ -255,7 +274,7 @@ const PlayBar = (props) => {
                     </div>
                     <div className="listbd">
                         <div className="msk2"></div>
-                        <div className="listlyric j-flag">
+                        <div className="listlyric j-flag" onWheel={scrollHandler}>
                             {
                                 formatLrc(props.curSong?.lyc||'').map((item, i) => {
                                     return (
