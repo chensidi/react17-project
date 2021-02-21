@@ -4,25 +4,52 @@ import { useState, createRef, memo, } from 'react';
 import { connect } from 'react-redux';
 import { mediaTimeFormat, formatLrc, } from '@/utils/utils';
 import commonRequest from '@/api/common';
-import { setCurSong } from '@/store/action';
+import { setCurSong, setHistory, } from '@/store/action';
 import sessionStore from '@/utils/sessionStore';
 
 const mapStateToProps = (state) => {
     return {
         userInfo: state.user.userInfo,
-        curSong: state.globalData?.curSong || sessionStore.get('globalData').curSong
+        curSong: state.globalData?.curSong || sessionStore.get('globalData').curSong,
+        historyPlay: state.globalData?.historyPlay || sessionStore.get('globalData').historyPlay
     }
 }
 
 const mapDispatchToprops = (dispatch) => {
     return {
-        setCurSong: (song) => dispatch(setCurSong(song))
+        setCurSong: (song) => dispatch(setCurSong(song)),
+        setHistory: (history) => dispatch(setHistory(history))
     }
 }
 
 function compare() {
     return true;
 }
+
+const HistoryItem = (props) => {
+    return (
+        <li>
+            <div className="col col-1"></div>
+            <div className="col col-2">{ props.name }</div>
+            <div className="col col-3">
+                <div className="icns">
+                    <i className="ico icn-del" title="删除"></i>
+                    <i className="ico ico-dl" title="下载"></i>
+                    <i className="ico ico-share" title="分享"></i>
+                    <i className="j-t ico ico-add" title="收藏"></i>
+                </div>
+            </div>
+            <div className="col col-4">
+                <span title={props.singer}>{ props.singer }</span>
+            </div>
+            <div className="col col-5">{ props.duration }</div>
+            <div className="col col-6">
+                <i className="ico ico-src"></i>
+            </div>
+        </li>
+    )
+}
+
 
 let timer = null, //playbar锁定计时器
     scrollTimer = null; //歌词滚动锁定计时器
@@ -54,8 +81,20 @@ const PlayBar = (props) => {
                     url,
                     name: '咖啡',
                     singer: '张学友',
-                    lyc: res
+                    lyc: res,
+                    id: 188261,
                 })
+                if (!props.historyPlay || props.historyPlay.length === 0) {
+                    props.setHistory([
+                        {
+                            url,
+                            name: '咖啡',
+                            singer: '张学友',
+                            id: 188261,
+                            duration: '04:08'
+                        }
+                    ])
+                }
             })
         })
     }
@@ -131,13 +170,22 @@ const PlayBar = (props) => {
             const curTime = mp3.current.currentTime,
                   item = lrc[i],
                   nextItem = lrc[i + 1];
-            if (curTime >= item.time && curTime < nextItem.time) {
-                changeCurIdx(i);
-                if (canScrollLrc && !scrollTimer) {
-                    const curP = document.querySelectorAll('p.j-flag')[i];
-                    curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
+            if (curTime >= item.time) {
+                if (curTime < nextItem.time) {
+                    changeCurIdx(i);
+                    if (canScrollLrc && !scrollTimer) {
+                        const curP = document.querySelectorAll('p.j-flag')[i];
+                        curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
+                    }
+                    break;
+                } else if (curTime >= nextItem.time && i === lrc.length - 2) {
+                    changeCurIdx(i + 1);
+                    if (canScrollLrc && !scrollTimer) {
+                        const curP = document.querySelectorAll('p.j-flag')[i + 1];
+                        curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
+                    }
+                    break;
                 }
-                break;
             }
         }
     }
@@ -269,10 +317,21 @@ const PlayBar = (props) => {
                                 清除
                             </span>
                             <div className="lytit f-ff0 f-thide j-flag">咖啡</div>
-                            <span className="close">关闭</span>
+                            <span className="close" onClick={() => changeShow(false)}>关闭</span>
                         </div>
                     </div>
                     <div className="listbd">
+                        <div className="listbdc j-flag">
+                            <ul className="f-cb">
+                                {
+                                    props.historyPlay.map((item) => {
+                                        return (
+                                            <HistoryItem key={item.id} {...item} />
+                                        )
+                                    })
+                                }
+                            </ul>
+                        </div>
                         <div className="msk2"></div>
                         <div className="listlyric j-flag" onWheel={scrollHandler}>
                             {

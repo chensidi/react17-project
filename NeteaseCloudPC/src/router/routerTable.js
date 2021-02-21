@@ -1,6 +1,7 @@
 import AsyncComponent from '@/components/AsyncComponent';
 const Home = AsyncComponent(() => import('@/views/Home/Home'));
 const Personal = AsyncComponent(() => import('@/views/Personal/Personal'));
+const Search = AsyncComponent(() => import('@/views/Search/Search'));
 
 const routes = [
     {
@@ -17,6 +18,11 @@ const routes = [
         path: '/personal',
         component: Personal,
         name: 'Personal'
+    },
+    {
+        path: '/search',
+        component: Search,
+        name: 'Search'
     }
 ]
 

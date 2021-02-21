@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom';
+import { useState, useEffect, createRef, } from 'react'
+import { Link, NavLink, useHistory, } from 'react-router-dom';
 import { navs } from './nav';
 
 function formatClass(i, len) {
@@ -22,6 +22,25 @@ const Header = () => {
         '歌手',
         '新碟上架'
     ])
+    const history = useHistory();
+    const searchRef = createRef();
+    const [showSub, changeShowSub] = useState(true); //是否显示二级分类菜单
+    function searchHaandler(e) {
+        console.log(e);
+        const val = e.target.value,
+              keyCode = e.code;
+        if (val.trim() != '' && keyCode === 'Enter') {
+            history.push({pathname: '/search', search: `?kw=${val}`})
+        }
+    }
+    useEffect(() => {
+        searchRef.current.value = history.location.search.match(/kw=(.+)/)?.[1] || '';
+        if (history.location.pathname === '/search') {
+            changeShowSub(false);
+        } else {
+            changeShowSub(true);
+        }
+    })
     return (
         <div className="g-topbar">
             <div className="m-top">
@@ -52,13 +71,13 @@ const Header = () => {
                     <div className="m-srch f-pr j-suggest">
                         <div className="srchbg">
                             <span className="parent">
-                            <input type="text" className="txt j-flag" />
+                            <input type="text" ref={searchRef} className="txt j-flag" onKeyPress={searchHaandler} />
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="m-subnav j-tflag">
+            <div className={['m-subnav j-tflag', showSub?'':'m-subnav-up'].join(' ')}>
                 <div className="wrap f-pr">
                     <ul className="nav">
                         {

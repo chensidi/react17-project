@@ -213,8 +213,8 @@ body, textarea, select, input, button {
             margin: 0;
             padding: 0;
             background: transparent;
-            color: #fff;
             width: 95%;
+            outline: none;
         }
     }
 }
@@ -249,6 +249,11 @@ img, .txt {
             }
         }
     }
+}
+
+.m-subnav-up {
+    height: 5px;
+    overflow: hidden;
 }
 
 .m-subnav .nav li, .m-subnav .nav a {
@@ -607,4 +612,41 @@ a {
 
 .f-fl {
     float: left;
+}
+
+.g-wrap {
+    padding: 40px;
+}
+
+.n-srch .pgsrch, .n-srch .pgsrch .btn {
+    background: url(https://s2.music.126.net/style/web2/img/sprite.png?2ae8f4935caebcc9591599ae30175386) no-repeat 0 9999px;
+}
+
+.n-srch .pgsrch {
+    width: 420px;
+    height: 40px;
+    margin: 0 auto;
+    background-position: 0 0;
+    z-index: 10;
+    .srch {
+        float: left;
+        width: 320px;
+        height: 17px;
+        margin: 12px 0 0 20px;
+        padding: 0;
+        background: #fff;
+        border: none;
+        outline: none;
+    }
+    .btn {
+        float: right;
+        width: 50px;
+        height: 40px;
+        text-indent: -9999px;
+        cursor: pointer;
+        &:hover {
+            background-position: -430px 0;
+            text-decoration: none;
+        }
+    }
 }
