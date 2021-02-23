@@ -1,4 +1,4 @@
-import { useState, useEffect, createRef, } from 'react'
+import { useState, useEffect, useRef, } from 'react'
 import { Link, NavLink, useHistory, } from 'react-router-dom';
 import { navs } from './nav';
 
@@ -23,7 +23,7 @@ const Header = () => {
         '新碟上架'
     ])
     const history = useHistory();
-    const searchRef = createRef();
+    const searchRef = useRef(null);
     const [showSub, changeShowSub] = useState(true); //是否显示二级分类菜单
     function searchHaandler(e) {
         console.log(e);
@@ -34,7 +34,7 @@ const Header = () => {
         }
     }
     useEffect(() => {
-        searchRef.current.value = history.location.search.match(/kw=(.+)/)?.[1] || '';
+        searchRef.current.value = decodeURIComponent(history.location.search.match(/kw=(.+)/)?.[1] || '');
         if (history.location.pathname === '/search') {
             changeShowSub(false);
         } else {

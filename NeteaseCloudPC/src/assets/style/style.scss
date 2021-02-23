@@ -782,3 +782,67 @@ a {
     vertical-align: middle;
 }
 
+.m-cvrlst {
+    margin: 0 0 0 -24px;
+    li {
+        float: left;
+        display: inline-block;
+        width: 140px;
+        height: 188px;
+        overflow: hidden;
+        padding: 0 0 30px 50px;
+        line-height: 1.4;
+        p {
+            margin-top: 8px;
+        }
+        .nm {
+            display: inline-block;
+            max-width: 85%;
+            vertical-align: middle;
+        }
+        .u-icn-5 {
+            position: relative;
+            float: right;
+        }
+    }
+}
+
+.m-cvrlst-5 li {
+    width: 130px;
+    height: 154px;
+}
+
+.m-sgerlist-1 .m-cvrlst li {
+    padding-left: 23px;
+}
+
+.u-cover-5 {
+    width: 130px;
+    height: 130px;
+    .msk {
+        background-position: 0 -680px;
+    }
+}
+.u-cover {
+    position: relative;
+    display: block;
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    .msk {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.u-icn-5 {
+    width: 17px;
+    height: 18px;
+    background-position: 0 -740px;
+}
+

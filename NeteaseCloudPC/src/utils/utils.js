@@ -23,3 +23,11 @@ export function formatLrc(lrc) { //歌词转数组
     })
     return split2;
 }
+
+export function artistsFormat(ar) { //多位艺人合并
+    let artistsArr = [];
+    ar.map(item => {
+        artistsArr.push(item.name);
+    })
+    return artistsArr.join('/');
+}
