@@ -804,6 +804,16 @@ a {
             position: relative;
             float: right;
         }
+        .dec {
+            margin: 8px 0 3px;
+            font-size: 14px;
+        }
+        .tit {
+            display: inline-block;
+            max-width: 100%;
+            _width: 100%;
+            vertical-align: middle;
+        }
     }
 }
 
@@ -846,3 +856,24 @@ a {
     background-position: 0 -740px;
 }
 
+.m-cvrlst-alb3 {
+    margin-left: -33px;
+    li {
+        padding-left: 33px;
+    }
+}
+
+.m-cvrlst-alb2 li, .m-cvrlst-alb3 li {
+    width: 153px;
+    height: 178px;
+}
+
+.u-cover-alb2 {
+    width: 130px;
+    height: 130px;
+    .msk {
+        width: 153px;
+        height: 130px;
+        background-position: 0 -845px;
+    }
+}
