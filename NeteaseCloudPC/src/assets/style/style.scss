@@ -877,3 +877,124 @@ a {
         background-position: 0 -845px;
     }
 }
+
+.m-mvlist {
+    margin-left: -27px;
+    li {
+        float: left;
+        width: 159px;
+        padding: 0 0 40px 26px;
+        line-height: 1.5;
+        overflow: hidden;
+        box-sizing: content-box;
+        img {
+            width: 100%;
+            height: 90px;
+        }
+    }
+    .cover {
+        width: 159px;
+        height: 90px;
+        .link {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9;
+            background: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==);
+        }
+        &::after {
+            box-sizing: border-box;
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(0,0,0,0.1);
+            z-index: 8;
+        }
+    }
+    .title {
+        width: 100%;
+        height: auto;
+        margin: 7px 0 1px;
+        border: none;
+        font-size: 14px;
+        font-weight: normal;
+        .tag {
+            margin: -2px 4px auto auto;
+        }
+    }
+    .name {
+        width: 100%;
+        font-weight: normal;
+    }
+    .tr {
+        font-size: 12px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding-right: 5px;
+        height: 20px;
+        line-height: 20px;
+        color: #fff;
+        box-sizing: border-box;
+        text-align: right;
+        text-shadow: -2px 1px rgba(0,0,0,0.4);
+    }
+    .u-icn2-mv {
+        margin: -2px 2px 0 0;
+    }
+    .bl {
+        font-size: 12px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding-left: 5px;
+        height: 20px;
+        line-height: 20px;
+        color: #fff;
+        text-shadow: -2px 1px rgba(0,0,0,.4);
+    }
+}
+
+.u-msk-1 {
+    width: 90px;
+    height: 20px;
+    background-position: 0 0;
+}
+
+.u-msk {
+    display: inline-block;
+    background: url(https://s2.music.126.net/style/web2/img/mask.png?57e1f0b92f8e161e42ff9215d34496da) no-repeat 0 9999px;
+}
+
+.u-msk-1 {
+    width: 90px;
+    height: 20px;
+    background-position: 0 0;
+}
+
+.u-icn2 {
+    background: url(https://s2.music.126.net/style/web2/img/icon2.png?154f4e9425bd70d85e172834d31a8f8b) no-repeat 0 9999px;
+}
+
+.u-icn2-mv {
+    width: 15px;
+    height: 10px;
+    background-position: -60px -310px;
+}
+
+.u-icn, .u-icn2, .u-icn3 {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.u-icn2-smvtag {
+    width: 26px;
+    height: 16px;
+    background-position: -270px -480px;
+}

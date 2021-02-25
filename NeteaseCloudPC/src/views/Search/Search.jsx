@@ -1,8 +1,8 @@
-import { Component, createRef, } from 'react';
+import { Component } from 'react';
 import AsyncComponent from '@/components/AsyncComponent';
 import { Tabs, Spin, } from 'antd';
 import { searchApi } from '@/api/search';
-import { SongItem, SingerItem, AlbumItem } from './components';
+import { SongItem, SingerItem, AlbumItem, VideoItem } from './components';
 
 const { TabPane } = Tabs;
 const Main = AsyncComponent(() => import('@/components/Main'));
@@ -25,6 +25,7 @@ class SearchPage extends Component {
         songList: [],
         artists: [],
         albums: [],
+        videos: [],
         loading: false,
     }
     componentDidMount() {
@@ -66,6 +67,12 @@ class SearchPage extends Component {
                         data = res.artists;
                     }
                     break;
+                case '1014':
+                    if (res.videos) {
+                        target = 'videos';
+                        data = res.videos;
+                    }
+                    break;
             }
             if (data) {
                 setTimeout(() => {
@@ -97,6 +104,7 @@ class SearchPage extends Component {
             loading,
             curNum, 
             albums,
+            videos,
             kw,
         } = this.state;
         return (
@@ -157,6 +165,21 @@ class SearchPage extends Component {
                                             albums.map(album => {
                                                 return (
                                                     <AlbumItem key={album.id} {...album} />
+                                                )
+                                            })
+                                        }
+                                    </ul>
+                                </div>
+                                </Spin>
+                            </TabPane>
+                            <TabPane tab='视频' key='1014'>
+                                <Spin tip="Loading..." spinning={loading}>
+                                <div className="n-srchrst ztag">
+                                    <ul className="m-mvlist f-cb">
+                                        {
+                                            videos.map(video => {
+                                                return (
+                                                    <VideoItem key={video.vid} {...video} />
                                                 )
                                             })
                                         }

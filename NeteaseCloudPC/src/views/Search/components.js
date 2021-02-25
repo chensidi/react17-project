@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { mediaTimeFormat, artistsFormat, } from '@/utils/utils';
+import { mediaTimeFormat, artistsFormat, playTimesFormat } from '@/utils/utils';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const SongItem = (props) => {
     const { i, name, mv, ar, al, dt, } = props;
@@ -47,7 +48,8 @@ export const SingerItem = (props) => {
         <li>
             <div className="u-cover u-cover-5">
                 <Link to="">
-                    <img src={img1v1Url} alt=""/>
+                    <LazyLoadImage width={130} height={130} src={img1v1Url}>
+                    </LazyLoadImage>
                     <span className="msk"></span>
                 </Link>
             </div>
@@ -69,7 +71,8 @@ export const AlbumItem = (props) => {
         <li>
             <div className="u-cover u-cover-alb2">
                 <Link to="">
-                    <img src={picUrl} alt=""/>
+                    <LazyLoadImage width={130} height={130} src={picUrl}>
+                    </LazyLoadImage>
                     <span className="msk"></span>
                 </Link>
                 <Link to="" className="icon-play f-alpha f-fr">
@@ -87,6 +90,33 @@ export const AlbumItem = (props) => {
                     </Link>
                 </span>
             </p>
+        </li>
+    )
+}
+
+export const VideoItem = (props) => {
+    const { coverUrl, playTime, title, creator, durationms, markTypes } = props;
+    return (
+        <li>
+            <div className="cover f-pr">
+                <LazyLoadImage width={159} height={90} src={coverUrl}>
+                </LazyLoadImage>
+                <span className="msk"></span>
+                <p className="tr u-msk u-msk-1">
+                    <span className="u-icn2 u-icn2-mv">
+                    </span>
+                    { playTimesFormat(playTime) }
+                </p>
+                <p className="bl u-msk u-msk-2">{ mediaTimeFormat(durationms/1000) }</p>
+                <Link to="" className="link"></Link>
+            </div>
+            <h4 className="title f-thide">
+                { markTypes == null ? (<i className="tag u-icn2 u-icn2-smvtag"></i>) : null }
+                <Link to="" className="s-fc0">{ title }</Link>
+            </h4>
+            <h5 className="name f-thide">
+                { markTypes != null ? 'by' : null} <Link to="" className="s-fc3">{ artistsFormat(creator, 'userName') }</Link>
+            </h5>
         </li>
     )
 }

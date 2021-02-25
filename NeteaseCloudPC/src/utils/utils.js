@@ -24,10 +24,14 @@ export function formatLrc(lrc) { //歌词转数组
     return split2;
 }
 
-export function artistsFormat(ar) { //多位艺人合并
+export function artistsFormat(ar, attr='name') { //多位艺人合并
     let artistsArr = [];
     ar.map(item => {
-        artistsArr.push(item.name);
+        artistsArr.push(item[attr]);
     })
     return artistsArr.join('/');
+}
+
+export function playTimesFormat(num, unit = 10000, unitName = '万') { //数量级转换
+    return num >= unit ? (num / unit).toFixed(1) + unitName : num;
 }
