@@ -1,8 +1,9 @@
-import { Component } from 'react';
+import { Component, Fragment, } from 'react';
 import AsyncComponent from '@/components/AsyncComponent';
 import { Tabs, Spin, } from 'antd';
 import { searchApi } from '@/api/search';
-import { SongItem, SingerItem, AlbumItem, VideoItem } from './components';
+import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem } from './components';
+import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 const Main = AsyncComponent(() => import('@/components/Main'));
@@ -26,22 +27,31 @@ class SearchPage extends Component {
         artists: [],
         albums: [],
         videos: [],
+        lyrics: [],
+        opens: [],
         loading: false,
     }
     componentDidMount() {
         let kw = this.props.location.search.match(/kw=(.+)/)[1];
         kw = decodeURIComponent(kw);
-        this.setState({kw});
         setTimeout(() => {this.searchInput.value = kw;}, 100)
         this.search(kw, '1');
+        this.setState({kw});
     }
     callback = (key) => {
-        console.log(key);
         this.searchInput.value = this.state.kw;
         this.setState({
             curType: key
         })
         this.search(this.state.kw, key);
+    }
+
+    open = (idx) => {
+        let opens = this.state.opens;
+        opens[idx] = !opens[idx];
+        this.setState({
+            opens: opens
+        })
     }
 
     search = (kw, type) => { //搜索
@@ -71,6 +81,13 @@ class SearchPage extends Component {
                     if (res.videos) {
                         target = 'videos';
                         data = res.videos;
+                    }
+                    break;
+                case '1006':
+                    if (res.songs) {
+                        target = 'lyrics';
+                        data = res.songs;
+                        // this.setState({opens: new Array(data.length).fill(false)});
                     }
                     break;
             }
@@ -105,6 +122,8 @@ class SearchPage extends Component {
             curNum, 
             albums,
             videos,
+            lyrics,
+            opens,
             kw,
         } = this.state;
         return (
@@ -184,6 +203,24 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </ul>
+                                </div>
+                                </Spin>
+                            </TabPane>
+                            <TabPane tab='歌词' key='1006'>
+                                <Spin tip="Loading..." spinning={loading}>
+                                <div className="n-srchrst">
+                                    <div className="srchsongst">
+                                        {
+                                            lyrics.map((lyric, i) => {
+                                                return (
+                                                    <Fragment key={lyric.id}>
+                                                        <SongItem {...lyric} i={i} />
+                                                        <LrcItem {...lyric} />
+                                                    </Fragment>
+                                                )
+                                            })
+                                        }
+                                    </div>
                                 </div>
                                 </Spin>
                             </TabPane>

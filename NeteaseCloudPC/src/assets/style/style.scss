@@ -29,6 +29,7 @@ body {
     *zoom: 1;
     min-width: 982px;
     background: #f5f5f5;
+    min-height: 100%;
 }
 
 em, i {
@@ -757,6 +758,34 @@ a {
             margin-right: 12px;
             min-height: 16px;
         }
+        .lyric {
+            margin: 10px 0 18px 52px;
+            color: #666;
+            line-height: 23px;
+            word-wrap: break-word;
+            word-break: break-all;
+            font-size: 12px;
+            .lrc_all {
+                height: 6em;
+                overflow: hidden;
+            }
+            p {
+                font-size: inherit;
+                line-height: 1.5;
+                b {
+                    color: #0c73c2;
+                }
+            }
+            .crl {
+                margin-top: 5px;
+                em {
+                    cursor: pointer;
+                }
+            }
+            .u-icn {
+                margin-left: 5px;
+            }
+        }
     }
     
 }
@@ -997,4 +1026,14 @@ a {
     width: 26px;
     height: 16px;
     background-position: -270px -480px;
+}
+
+.u-icn-69, .u-icn-70 {
+    width: 11px;
+    height: 8px;
+    background-position: -65px -520px;
+}
+
+.u-icn-70 {
+    background-position: -45px -520px;
 }

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { mediaTimeFormat, artistsFormat, playTimesFormat } from '@/utils/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useState } from 'react';
 
 export const SongItem = (props) => {
     const { i, name, mv, ar, al, dt, } = props;
@@ -48,7 +49,12 @@ export const SingerItem = (props) => {
         <li>
             <div className="u-cover u-cover-5">
                 <Link to="">
-                    <LazyLoadImage width={130} height={130} src={img1v1Url}>
+                    <LazyLoadImage 
+                    width={130} 
+                    height={130} 
+                    src={img1v1Url}
+                    placeholderSrc="http://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=130y130"
+                    >
                     </LazyLoadImage>
                     <span className="msk"></span>
                 </Link>
@@ -118,5 +124,32 @@ export const VideoItem = (props) => {
                 { markTypes != null ? 'by' : null} <Link to="" className="s-fc3">{ artistsFormat(creator, 'userName') }</Link>
             </h5>
         </li>
+    )
+}
+
+export const LrcItem = (props) => {
+    const { lyrics } = props;
+    const [open, changeOpen] = useState(false);
+    function changeOpens() {
+        changeOpen(prev => !prev);
+    }
+    return (
+        <div className="lyric">
+            <div className={!open ? 'lrc_all' : ''}>
+                {
+                    lyrics.map(item => {
+                        return (
+                            <p key={item + Math.random()} dangerouslySetInnerHTML={{ __html: item }}></p>
+                        )
+                    })
+                }
+            </div>
+            <div className="crl">
+                <em className="s-fc3" onClick={changeOpens}>
+                    展开
+                    <i className={["u-icn", !open ? 'u-icn-69' : 'u-icn-70'].join(' ')}></i>
+                </em>
+            </div>
+        </div>
     )
 }
