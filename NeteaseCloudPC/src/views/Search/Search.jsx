@@ -2,7 +2,7 @@ import { Component, Fragment, } from 'react';
 import AsyncComponent from '@/components/AsyncComponent';
 import { Tabs, Spin, } from 'antd';
 import { searchApi } from '@/api/search';
-import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem } from './components';
+import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, } from './components';
 import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
@@ -28,7 +28,7 @@ class SearchPage extends Component {
         albums: [],
         videos: [],
         lyrics: [],
-        opens: [],
+        playLists: [],
         loading: false,
     }
     componentDidMount() {
@@ -44,14 +44,6 @@ class SearchPage extends Component {
             curType: key
         })
         this.search(this.state.kw, key);
-    }
-
-    open = (idx) => {
-        let opens = this.state.opens;
-        opens[idx] = !opens[idx];
-        this.setState({
-            opens: opens
-        })
     }
 
     search = (kw, type) => { //搜索
@@ -87,7 +79,12 @@ class SearchPage extends Component {
                     if (res.songs) {
                         target = 'lyrics';
                         data = res.songs;
-                        // this.setState({opens: new Array(data.length).fill(false)});
+                    }
+                    break;
+                case '1000':
+                    if (res.playlists) {
+                        target = 'playLists';
+                        data = res.playlists;
                     }
                     break;
             }
@@ -101,7 +98,7 @@ class SearchPage extends Component {
     }
 
     searchHandler = (e) => {
-        if (e.code === 'Enter' && e.target.value != '') {
+        if (e.code === 'Enter' && e.target.value !== '') {
             this.search(e.target.value, this.state.curType);
         }
     }
@@ -123,7 +120,7 @@ class SearchPage extends Component {
             albums,
             videos,
             lyrics,
-            opens,
+            playLists,
             kw,
         } = this.state;
         return (
@@ -221,6 +218,13 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </div>
+                                </div>
+                                </Spin>
+                            </TabPane>
+                            <TabPane tab='歌单' key='1000'>
+                                <Spin tip="Loading..." spinning={loading}>
+                                <div className="n-srchrst">
+                                    <PlayLists list={playLists}  />
                                 </div>
                                 </Spin>
                             </TabPane>

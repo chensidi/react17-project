@@ -1037,3 +1037,171 @@ a {
 .u-icn-70 {
     background-position: -45px -520px;
 }
+
+.m-table th, .m-table th .wp, .m-table td, .m-table .ply, .m-table .mv, .m-table .icn, .m-info .edit {
+    background: url(https://s2.music.126.net/style/web2/img/table.png?988812be0039aafcd81941c321c24390) no-repeat 0 9999px;
+}
+
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+.m-table-2 tr:hover td, .m-table-2 tr.z-hover td {
+    border-width: 1px 0;
+    border-color: #e1e1e1;
+    background: #f2f2f2;
+}
+
+.m-table {
+    font-size: 1px;
+    * {
+        box-sizing: content-box;
+    }
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    .w0 {
+        width: 25px;
+    }
+    td {
+        padding: 6px 10px;
+        line-height: 18px;
+        text-align: left;
+    }
+    .hd {
+        height: 18px;
+        .ply {
+            float: right;
+        }
+    }
+    .ply {
+        float: left;
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+        background-position: 0 -103px;
+    }
+    .w7 {
+        width: 50px;
+    }
+    .u-icn-81 {
+        float: left;
+        margin-top: 2px;
+    }
+    .icn-fav {
+        background-position: 0 -174px;
+    }
+    .mv, .icn {
+        float: left;
+        width: 18px;
+        height: 16px;
+        margin: 2px 0 0 4px;
+        overflow: hidden;
+        text-indent: -999px;
+        cursor: pointer;
+    }
+    .icn-share {
+        background-position: 0 -195px;
+    }
+    .tt {
+        float: left;
+        width: 100%;
+    }
+    .ttc {
+        height: 18px;
+        margin-right: 20px;
+    }
+    .txt {
+        position: relative;
+        display: inline-block;
+        *display: inline;
+        *zoom: 1;
+        padding-right: 25px;
+        margin-right: -25px;
+        max-width: 99%;
+        height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .w11 {
+        width: 35px;
+        padding-right: 0;
+        padding-left: 25px;
+    }
+    .w4 {
+        width: 20%;
+    }
+    .text {
+        width: 100%;
+        position: relative;
+        zoom: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        a {
+            white-space: nowrap;
+        }
+    }
+    .w6 {
+        width: 90px;
+        font-size: 12px;
+    }
+    .even td {
+        background-color: #f7f7f7;
+    }
+}
+
+.m-table-2 {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 0;
+    tr {
+        td {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            border: 1px solid #fff;
+            border-width: 1px 0;
+        }
+        td.first {
+            border-left: 1px solid #fff;
+        }
+        td.last {
+            border-right: 1px solid #fff;
+        }
+        &:hover {
+            .opt {
+                display: block;
+            }
+        }
+    }
+    .hd {
+        padding-left: 5px;
+    }
+    .tt {
+        margin-right: -100px;
+    }
+    .opt {
+        float: right;
+        display: none;
+    }
+}
+
+.m-table-2-cover tr td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.u-icn-81 {
+    width: 13px;
+    height: 13px;
+    background-position: 0 -700px !important;
+}
+
+.u-icn-84 {
+    width: 12px;
+    height: 13px;
+    background-position: -65px -840px !important;
+}

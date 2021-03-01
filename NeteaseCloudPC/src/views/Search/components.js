@@ -153,3 +153,84 @@ export const LrcItem = (props) => {
         </div>
     )
 }
+
+const PlayTr = (props) => {
+    const { 
+        i,
+        coverImgUrl, 
+        name, 
+        trackCount, 
+        creator, 
+        bookCount, 
+        playCount } = props;
+    return (
+        <tr className={["h-flag", i % 2 ? 'even' : ''].join(' ')}>
+            <td className="first w0">
+                <div className="hd">
+                    <span className="ply"></span>
+                </div>
+            </td>
+            <td className="w7">
+                <div className="u-cover u-cover-3">
+                    <Link to="" className="">
+                        <img src={coverImgUrl} alt=""/>
+                        <span className="msk"></span>
+                    </Link>
+                </div>
+            </td>
+            <td>
+                <div className="f-cb">
+                    <div className="opt hshow">
+                        <span className="u-icn u-icn-81"></span>
+                        <span className="icn icn-fav"></span>
+                        <span className="icn icn-share"></span>
+                    </div>
+                    <div className="tt">
+                        <div className="ttc">
+                            <span className="txt">
+                                <Link to="">
+                                    <span className="s-fc7">{ name }</span>
+                                </Link>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td className="w11 s-fc4">
+            { trackCount }首
+            </td>
+            <td className="w4">
+                <div className="text">
+                    <span className="s-fc3">
+                        by
+                    </span>
+                    { creator.nickname } 
+                    <sup className="u-icn u-icn-84"></sup>
+                </div>
+            </td>
+            <td className="w6 s-fc4">
+            收藏：<span>{ playTimesFormat(bookCount) }</span>
+            </td>
+            <td className="last w6 s-fc4">
+            收听：<span>{ playTimesFormat(playCount) }</span>
+            </td>
+        </tr>
+    )
+}
+
+export const PlayLists = (props) => {
+    const {list = []} = props;
+    return (
+        <table className="m-table m-table-2 m-table-2-cover">
+            <tbody>
+                {
+                    list.map((tr, i) => {
+                        return (
+                            <PlayTr key={tr.id} {...tr} i={i} /> 
+                        )
+                    })
+                }
+            </tbody>
+        </table>
+    )
+}
