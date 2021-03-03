@@ -25,7 +25,7 @@ const Header = () => {
     const history = useHistory();
     const searchRef = useRef(null);
     const [showSub, changeShowSub] = useState(true); //是否显示二级分类菜单
-    function searchHaandler(e) {
+    function searchHandler(e) {
         console.log(e);
         const val = e.target.value,
               keyCode = e.code;
@@ -71,7 +71,7 @@ const Header = () => {
                     <div className="m-srch f-pr j-suggest">
                         <div className="srchbg">
                             <span className="parent">
-                            <input type="text" ref={searchRef} className="txt j-flag" onKeyPress={searchHaandler} />
+                            <input type="text" ref={searchRef} className="txt j-flag" onKeyPress={searchHandler} />
                             </span>
                         </div>
                     </div>

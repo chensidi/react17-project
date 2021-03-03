@@ -173,7 +173,8 @@ const PlayTr = (props) => {
             <td className="w7">
                 <div className="u-cover u-cover-3">
                     <Link to="" className="">
-                        <img src={coverImgUrl} alt=""/>
+                        <LazyLoadImage width={50} height={50} src={coverImgUrl}>
+                        </LazyLoadImage>
                         <span className="msk"></span>
                     </Link>
                 </div>
@@ -232,5 +233,27 @@ export const PlayLists = (props) => {
                 }
             </tbody>
         </table>
+    )
+}
+
+export const DJItem = (props) => {
+    const { picUrl, name, dj } = props;
+    return (
+        <li>
+            <Link to="" className="u-cover u-cover-rdi2">
+                <LazyLoadImage width={150} height={150} src={picUrl}>
+                </LazyLoadImage>
+            </Link>
+            <h3 className="f-fs2 f-thide">
+                <Link to="" className="s-fc1">
+                    { name }
+                </Link>
+            </h3>
+            <p className="f-thide s-fc4">
+                by <Link to="">{ dj.nickname }</Link>&nbsp;
+                <sup className="u-icn2 u-icn2-music2"></sup>
+                <i className={`icnfix u-icn u-icn-s-0${dj.gender} f-sep`}></i>
+            </p>
+        </li>
     )
 }

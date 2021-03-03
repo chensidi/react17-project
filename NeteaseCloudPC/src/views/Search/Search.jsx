@@ -2,7 +2,7 @@ import { Component, Fragment, } from 'react';
 import AsyncComponent from '@/components/AsyncComponent';
 import { Tabs, Spin, } from 'antd';
 import { searchApi } from '@/api/search';
-import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, } from './components';
+import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, } from './components';
 import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
@@ -20,7 +20,7 @@ class SearchPage extends Component {
             '1000': '歌单',
             '1002': '用户',
             '1006': '歌词',
-            '1009': '电台',
+            '1009': '声音主播',
             '1014': '视频',
         },
         songList: [],
@@ -29,6 +29,7 @@ class SearchPage extends Component {
         videos: [],
         lyrics: [],
         playLists: [],
+        djRadios: [],
         loading: false,
     }
     componentDidMount() {
@@ -87,6 +88,12 @@ class SearchPage extends Component {
                         data = res.playlists;
                     }
                     break;
+                case '1009':
+                    if (res.djRadios) {
+                        target = 'djRadios';
+                        data = res.djRadios;
+                    }
+                    break;
             }
             if (data) {
                 setTimeout(() => {
@@ -121,6 +128,7 @@ class SearchPage extends Component {
             videos,
             lyrics,
             playLists,
+            djRadios,
             kw,
         } = this.state;
         return (
@@ -225,6 +233,21 @@ class SearchPage extends Component {
                                 <Spin tip="Loading..." spinning={loading}>
                                 <div className="n-srchrst">
                                     <PlayLists list={playLists}  />
+                                </div>
+                                </Spin>
+                            </TabPane>
+                            <TabPane tab='声音主播' key='1009'>
+                                <Spin tip="Loading..." spinning={loading}>
+                                <div className="ztag j-flag">
+                                    <ul className="m-rdilist f-cb">
+                                        {
+                                            djRadios.map(dj => {
+                                                return (
+                                                    <DJItem key={dj.id} {...dj} />
+                                                )
+                                            })
+                                        }
+                                    </ul>
                                 </div>
                                 </Spin>
                             </TabPane>

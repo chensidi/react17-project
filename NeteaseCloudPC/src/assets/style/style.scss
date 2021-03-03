@@ -655,6 +655,13 @@ a {
     .snote {
         margin: 28px 0 17px;
     }
+    .head2 {
+        margin-top: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #dadada;
+        line-height: 17px;
+        font-weight: bold;
+    }
 }
 
 .s-fc6, a.s-fc6:hover {
@@ -1204,4 +1211,52 @@ table {
     width: 12px;
     height: 13px;
     background-position: -65px -840px !important;
+}
+
+.m-rdilist {
+    margin: 16px 0 0 -37px;
+    li {
+        margin: 0 0 40px 37px;
+        float: left;
+        width: 150px;
+    }
+    h3 {
+        margin: 13px 0 6px;
+        line-height: 16px;
+        font-size: 14px;
+        font-weight: normal;
+    }
+    p {
+        line-height: 18px;
+        font-size: 12px;
+    }
+}
+
+.u-cover-rdi2 {
+    width: 150px;
+    height: 150px;
+}
+
+.u-icn2-music2 {
+    top: 0;
+    width: 12px;
+    height: 13px;
+    background-position: -110px -190px;
+}
+
+.u-icn-s-01 {
+    width: 14px;
+    height: 15px;
+    background-position: -70px -20px !important;
+}
+
+.f-sep {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.u-icn-s-02 {
+    width: 14px;
+    height: 15px;
+    background-position: -70px 0;
 }
