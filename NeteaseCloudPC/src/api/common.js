@@ -20,5 +20,15 @@ export default {
         } catch (err) {
             return err;
         }
-    }
+    },
+    async getSongDetails(ids) { //获取歌曲详情
+        try {
+            const res = await http.get(`/song/detail`, {
+                ids
+            })
+            return res.songs[0]
+        } catch (err) {
+            return err;
+        }
+    },
 }

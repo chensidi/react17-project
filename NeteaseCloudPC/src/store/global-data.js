@@ -1,4 +1,4 @@
-import { SET_CURSONG, SET_HISTORY, } from "./action-type";
+import { SET_CURSONG, SET_HISTORY, GET_SONGINFO, } from "./action-type";
 import sessionStore from '@/utils/sessionStore';
 
 const initialData = {
@@ -38,6 +38,8 @@ const globalReducer = (state = initialData, action) => {
                 ...state,
                 historyPlay: action.history
             }
+        case GET_SONGINFO:
+            return state;
         default:
             return state;
     }

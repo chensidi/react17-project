@@ -1,8 +1,8 @@
 import './index.scss';
 import { Link } from 'react-router-dom';
-import { useState, createRef, memo, } from 'react';
+import { useState, createRef, memo, useEffect, } from 'react';
 import { connect } from 'react-redux';
-import { mediaTimeFormat, formatLrc, } from '@/utils/utils';
+import { mediaTimeFormat, formatLrc, artistsFormat, } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, } from '@/store/action';
 import sessionStore from '@/utils/sessionStore';
@@ -53,6 +53,7 @@ const HistoryItem = (props) => {
 
 let timer = null, //playbar锁定计时器
     scrollTimer = null; //歌词滚动锁定计时器
+let count = 0;
 
 const PlayBar = (props) => {
     const [downUpKey, changeDownUp] = useState(false); //控制能否拖动的开关
@@ -75,7 +76,22 @@ const PlayBar = (props) => {
 
     // 没有歌曲的话，默认设置为张学友 - 咖啡
     if (props.curSong == null) {
-        commonRequest.getSongUrl(188261).then(url => {
+        getSongById(188261).then((res) => {
+            if (!props.historyPlay || props.historyPlay.length === 0) {
+                const { id, details } = res;
+                props.setHistory([
+                    {
+                        name: details.name,
+                        singer: artistsFormat(details.ar),
+                        id,
+                        alblum: details.al,
+                        duration: mediaTimeFormat(details.dt)
+                    }
+                ])
+            }
+        })
+        
+        /* commonRequest.getSongUrl(188261).then(url => {
             commonRequest.getLyric(188261).then(res => {
                 props.setCurSong({
                     url,
@@ -83,6 +99,7 @@ const PlayBar = (props) => {
                     singer: '张学友',
                     lyc: res,
                     id: 188261,
+                    duration
                 })
                 if (!props.historyPlay || props.historyPlay.length === 0) {
                     props.setHistory([
@@ -96,7 +113,24 @@ const PlayBar = (props) => {
                     ])
                 }
             })
+        }) */
+    }
+
+    async function getSongById(defaultId) { //根据id获取歌曲信息
+        const id = props.curSong?.id ?? defaultId;
+        const url = await commonRequest.getSongUrl(id);
+        const res = await commonRequest.getLyric(id);
+        const details = await commonRequest.getSongDetails(id);
+        props.setCurSong({
+            url,
+            name: details.name,
+            singer: artistsFormat(details.ar),
+            lyc: res,
+            id,
+            alblum: details.al,
+            duration: mediaTimeFormat(details.dt)
         })
+        return {id, details}
     }
 
     function barOnMouseDown(e) { //进度条按钮按下 
@@ -196,15 +230,19 @@ const PlayBar = (props) => {
         })
     }
     function onLoadSrc() { //音频加载资源时
-        const timeRanges = mp3.current.buffered;
-        const loadProgress = timeRanges.end(timeRanges.length - 1);
-        let loadPC = loadProgress / mp3Info.duration * 100;
-        if (loadPC <= 0) {loadPC = 0};
-        if (loadPC >= 100) {loadPC = 100};
-        changeMp3Info({
-            ...mp3Info,
-            loadPC,
-        })
+        try {
+            const timeRanges = mp3.current.buffered;
+            const loadProgress = timeRanges.end(timeRanges.length - 1);
+            let loadPC = loadProgress / mp3Info.duration * 100;
+            if (loadPC <= 0) {loadPC = 0};
+            if (loadPC >= 100) {loadPC = 100};
+            changeMp3Info({
+                ...mp3Info,
+                loadPC,
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
     function onEnd() { //播放结束
         changeMp3Info({
@@ -235,6 +273,22 @@ const PlayBar = (props) => {
             scrollTimer = null;
         }, 1500);
     }
+    function onError(e) { //音频资源出错
+        console.log(e);
+        getSongById();
+    }
+
+    useEffect(() => {
+        if (count === 0) return;
+        onEnd();
+        mp3.current.play();
+        changeMp3Info({
+            ...mp3Info,
+            isPlay: true
+        })
+        count ++;
+    }, [props.curSong?.id])
+
     return (
         <div className="g-btmbar" 
         >
@@ -260,7 +314,7 @@ const PlayBar = (props) => {
                         <span className="nxt" title="下一首(ctrl+→)"></span>
                     </div>
                     <div className="head j-flag">
-                        <img src="https://p1.music.126.net/lFSv32MTTbVa8r6D3zuYrw==/64871186055033.jpg?param=34y34" alt=""/>
+                        <img src={props?.curSong?.alblum?.picUrl} alt=""/>
                     </div>
                     <div className="play">
                         <div className="j-flag words">
@@ -337,7 +391,7 @@ const PlayBar = (props) => {
                             {
                                 formatLrc(props.curSong?.lyc||'').map((item, i) => {
                                     return (
-                                        <p className={['j-flag', i == curIdx ? 'z-sel' :''].join(' ')} key={item.time}>{ item.txt }</p>
+                                        <p className={['j-flag', i == curIdx ? 'z-sel' :''].join(' ')} key={item.time + Math.random()}>{ item.txt }</p>
                                     )
                                 })
                             }
@@ -353,6 +407,7 @@ const PlayBar = (props) => {
                 onTimeUpdate={onPlaying}
                 onProgress={onLoadSrc}
                 onEnded={onEnd}
+                onError={onError}
             >
             </audio>
         </div>

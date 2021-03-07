@@ -2,7 +2,7 @@ import { Component, Fragment, } from 'react';
 import AsyncComponent from '@/components/AsyncComponent';
 import { Tabs, Spin, } from 'antd';
 import { searchApi } from '@/api/search';
-import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, } from './components';
+import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, UserPanel } from './components';
 import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
@@ -30,7 +30,9 @@ class SearchPage extends Component {
         lyrics: [],
         playLists: [],
         djRadios: [],
+        userprofiles: [],
         loading: false,
+        unit: '首'
     }
     componentDidMount() {
         let kw = this.props.location.search.match(/kw=(.+)/)[1];
@@ -50,48 +52,62 @@ class SearchPage extends Component {
     search = (kw, type) => { //搜索
         this.setState({loading: true});
         searchApi.searchByKw(kw, type).then(res => {
-            let target, data;
+            let target, data, unit;
             switch (type) {
                 case '1': 
                     if (res.songs) {
                         target = 'songList';
                         data = res.songs;
+                        unit = '首';
                     }
                     break;
                 case '10':
                     if (res.albums) {
                         target = 'albums';
                         data = res.albums;
+                        unit = '张';
                     }
                     break;
                 case '100':
                     if (res.artists) {
                         target = 'artists';
                         data = res.artists;
+                        unit = '位';
                     }
                     break;
                 case '1014':
                     if (res.videos) {
                         target = 'videos';
                         data = res.videos;
+                        unit = '个';
                     }
                     break;
                 case '1006':
                     if (res.songs) {
                         target = 'lyrics';
                         data = res.songs;
+                        unit = '个';
                     }
                     break;
                 case '1000':
                     if (res.playlists) {
                         target = 'playLists';
                         data = res.playlists;
+                        unit = '个';
                     }
                     break;
                 case '1009':
                     if (res.djRadios) {
                         target = 'djRadios';
                         data = res.djRadios;
+                        unit = '位';
+                    }
+                    break;
+                case '1002':
+                    if (res.userprofiles) {
+                        target = 'userprofiles';
+                        data = res.userprofiles;
+                        unit = '位';
                     }
                     break;
             }
@@ -99,7 +115,7 @@ class SearchPage extends Component {
                 setTimeout(() => {
                     this.setState({loading: false})
                 }, 500)
-                this.setState({[target]: data, curNum: data.length})
+                this.setState({[target]: data, curNum: data.length, unit})
             }
         })
     }
@@ -129,7 +145,9 @@ class SearchPage extends Component {
             lyrics,
             playLists,
             djRadios,
+            userprofiles,
             kw,
+            unit,
         } = this.state;
         return (
             <Main className="g-bd">
@@ -146,7 +164,7 @@ class SearchPage extends Component {
                     </div>
                     <section>
                         <div className="snote s-fc4 ztag">
-                        搜索“咖啡”，找到 <em className="s-fc6">{ curNum }</em> 首{ tabs[curType] }
+                        搜索“{kw}”，找到 <em className="s-fc6">{ curNum }</em> { unit }{ tabs[curType] }
                         </div>
                         <Tabs onChange={this.callback} type="card">
                             <TabPane tab='单曲' key='1'>
@@ -248,6 +266,13 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </ul>
+                                </div>
+                                </Spin>
+                            </TabPane>
+                            <TabPane tab='用户' key='1002'>
+                                <Spin tip="Loading..." spinning={loading}>
+                                <div className="n-srchrst ztag">
+                                    <UserPanel list={userprofiles} />
                                 </div>
                                 </Spin>
                             </TabPane>

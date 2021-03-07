@@ -2,14 +2,22 @@ import { Link } from 'react-router-dom';
 import { mediaTimeFormat, artistsFormat, playTimesFormat } from '@/utils/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useState } from 'react';
+import store from '@/store';
+import { getSongInfo } from '@/store/action';
+
+function playItem(id) {
+    console.log(id);
+    store.dispatch(getSongInfo(id));
+}
+
 
 export const SongItem = (props) => {
-    const { i, name, mv, ar, al, dt, } = props;
+    const { i, name, mv, ar, al, dt, id } = props;
     return (
         <div className={['item f-cb h-flag', i%2?'':'even'].join(' ')}>
             <div className="td">
                 <div className="hd">
-                    <i className="ply"></i>
+                    <i className="ply" onClick={() => playItem(id)}></i>
                 </div>
             </div>
             <div className="td w0">
@@ -255,5 +263,58 @@ export const DJItem = (props) => {
                 <i className={`icnfix u-icn u-icn-s-0${dj.gender} f-sep`}></i>
             </p>
         </li>
+    )
+}
+
+export const UserPanel = (props) => {
+    const { list } = props;
+    return (
+        <table className="m-table m-table-2 m-table-2-cover">
+            <tbody>
+                {
+                    list.map((item, i) => {
+                        return (
+                            <tr className={`h-flag ${i%2?'even':''}`} key={item.userId}>
+                            <td className="first w7">
+                                <div className="u-cover u-cover-3">
+                                    <Link to="">
+                                        <LazyLoadImage 
+                                        width={50} 
+                                        height={50} 
+                                        src={item.avatarUrl}
+                                        placeholderSrc="http://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=130y130"
+                                        >
+                                        </LazyLoadImage>
+                                        <span className="msk" title={item.nickname}></span>
+                                    </Link>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="ttc">
+                                    <Link to="" className="txt f-fs1" title="牛奶咖啡组合">
+                                        { item.nickname }&nbsp;
+                                        <sup className="u-icn2 u-icn2-music2"></sup>
+                                        <i className={`icnfix u-icn u-icn-s-0${item.gender}`}></i>
+                                    </Link>
+                                </div>
+                                <div className="dec s-fc4 f-thide"></div>
+                            </td>
+                            <td className="w9">
+                                <span className="u-btn u-btn-3 f-tdn">
+                                    <i>关注</i>
+                                </span>
+                            </td>
+                            <td className="w9 s-fc4">
+                            歌单：{ item.playlistCount }
+                            </td>
+                            <td className="last w9 s-fc4">
+                            粉丝：<span>{ item.followeds }</span>
+                            </td>
+                        </tr>
+                        )
+                    })
+                }
+            </tbody>
+        </table>
     )
 }

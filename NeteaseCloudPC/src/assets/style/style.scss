@@ -707,6 +707,9 @@ a {
                 margin-right: 15px;
                 cursor: pointer;
                 background-position: 0 -103px;
+                &:hover {
+                    background-position: 0 -128px;
+                }
             }
         }
         .w0 {
@@ -1159,6 +1162,19 @@ table {
     .even td {
         background-color: #f7f7f7;
     }
+    .w7 {
+        width: 50px;
+    }
+    .w9 {
+        width: 96px;
+    }
+    .icnfix {
+        top: 2px;
+        _top: 0;
+        right: auto;
+        margin-left: 5px;
+        z-index: 10;
+    }
 }
 
 .m-table-2 {
@@ -1258,5 +1274,31 @@ table {
 .u-icn-s-02 {
     width: 14px;
     height: 15px;
-    background-position: -70px 0;
+    background-position: -70px 0 !important;
+}
+
+.u-btn, div.u-page a, div.u-page a.js-selected, div.u-page a.znxt.js-disabled, div.u-page a.zprv.js-disabled {
+    background: url(https://s2.music.126.net/style/web2/img/button.png?4aa23dbd34d12a1c7bfd0e2c3f5afd03) no-repeat 0 9999px;
+}
+.u-btn {
+    display: inline-block;
+}
+
+.u-btn-3 {
+    width: 64px;
+    height: 27px;
+    background-position: 0 -990px;
+    line-height: 27px;
+    cursor: pointer;
+    i {
+        display: inline-block;
+        height: 25px;
+        line-height: 25px;
+        padding-left: 26px;
+        color: #5d5d5d;
+        cursor: pointer;
+    }
+    &:hover {
+        background-position: 0 -1020px;
+    }
 }
