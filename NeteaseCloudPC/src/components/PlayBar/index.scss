@@ -292,6 +292,17 @@
     .ico {
         height: 16px;
     }
+    .imgbg {
+        position: absolute;
+        left: 2px;
+        _left: 0;
+        top: -1px;
+        z-index: 1;
+        width: 980px;
+        height: auto;
+        opacity: .2;
+        filter: Alpha(opacity=20);
+    }
     .listbd {
         position: absolute;
         left: 0;

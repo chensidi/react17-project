@@ -4,21 +4,23 @@ import { useState, createRef, memo, useEffect, } from 'react';
 import { connect } from 'react-redux';
 import { mediaTimeFormat, formatLrc, artistsFormat, } from '@/utils/utils';
 import commonRequest from '@/api/common';
-import { setCurSong, setHistory, } from '@/store/action';
+import { setCurSong, setHistory, setLock, } from '@/store/action';
 import sessionStore from '@/utils/sessionStore';
 
 const mapStateToProps = (state) => {
     return {
         userInfo: state.user.userInfo,
         curSong: state.globalData?.curSong || sessionStore.get('globalData').curSong,
-        historyPlay: state.globalData?.historyPlay || sessionStore.get('globalData').historyPlay
+        historyPlay: state.globalData?.historyPlay || sessionStore.get('globalData').historyPlay,
+        lock: state.globalData?.lock || sessionStore.get('globalData').lock,
     }
 }
 
 const mapDispatchToprops = (dispatch) => {
     return {
         setCurSong: (song) => dispatch(setCurSong(song)),
-        setHistory: (history) => dispatch(setHistory(history))
+        setHistory: (history) => dispatch(setHistory(history)),
+        changeLock: (lock) => dispatch(setLock(lock)),
     }
 }
 
@@ -68,7 +70,8 @@ const PlayBar = (props) => {
         lyric: [], //歌词数组
         curIdx: 0, //当前歌词下标
     }); // 音频信息
-    const [lock, changeLock] = useState(false); //playbar是否锁定，默认不锁定
+    // const [lock, changeLock] = useState(false); //playbar是否锁定，默认不锁定
+    const {lock, changeLock} = props;
     const [isEnter, changeEnter] = useState(false); //是否鼠标亦如playbar
     const [curIdx, changeCurIdx] = useState(0);
     const [canScrollLrc, changeCanScroll] = useState(true);
@@ -279,14 +282,16 @@ const PlayBar = (props) => {
     }
 
     useEffect(() => {
-        if (count === 0) return;
+        count ++;
+        if (count === 1) {
+            return;
+        }
         onEnd();
         mp3.current.play();
         changeMp3Info({
             ...mp3Info,
             isPlay: true
         })
-        count ++;
     }, [props.curSong?.id])
 
     return (
@@ -375,6 +380,7 @@ const PlayBar = (props) => {
                         </div>
                     </div>
                     <div className="listbd">
+                        <img src={`${props.curSong?.alblum?.picUrl}?imageView&blur=10x10`} className="imgbg j-flag" alt=""/>
                         <div className="listbdc j-flag">
                             <ul className="f-cb">
                                 {

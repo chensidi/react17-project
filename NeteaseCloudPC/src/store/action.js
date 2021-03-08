@@ -1,6 +1,7 @@
-import { SET_CURSONG, SET_USERINFO, SET_HISTORY, GET_SONGINFO, } from "./action-type";
+import { SET_CURSONG, SET_USERINFO, SET_HISTORY, GET_SONGINFO, SET_LOCK } from "./action-type";
 import commonRequest from '@/api/common';
 import { mediaTimeFormat, artistsFormat } from '@/utils/utils';
+import { message } from 'antd';
 
 async function getSongById(defaultId) { //根据id获取歌曲信息
     const id = defaultId;
@@ -40,12 +41,19 @@ export const setUserInfo = (userInfo) => {
     }
 }
 
-
-
 export const getSongInfo = (id) => {
     return (dispatch) => {
+        message.loading({ 
+            content: '歌曲加载中...', 
+            key: 'loading', 
+            duration: 0 ,
+            style: {
+                marginTop: '40vh',
+            },
+        });
         return getSongById(id).then(res => {
             const { lyc, url, details } = res;
+            message.destroy('loading');
             return dispatch(setCurSong({
                 url,
                 name: details.name,
@@ -56,5 +64,12 @@ export const getSongInfo = (id) => {
                 duration: mediaTimeFormat(details.dt)
             }))
         })
+    }
+}
+
+export const setLock = (lock) => {
+    return {
+        type: SET_LOCK,
+        lock
     }
 }

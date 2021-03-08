@@ -3,7 +3,6 @@ import AsyncComponent from '@/components/AsyncComponent';
 import { Tabs, Spin, } from 'antd';
 import { searchApi } from '@/api/search';
 import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, UserPanel } from './components';
-import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 const Main = AsyncComponent(() => import('@/components/Main'));
