@@ -5,14 +5,13 @@ import { connect } from 'react-redux';
 import { mediaTimeFormat, formatLrc, artistsFormat, } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
-import sessionStore from '@/utils/sessionStore';
 
 const mapStateToProps = (state) => {
     return {
         userInfo: state.user.userInfo,
-        curSong: state.globalData?.curSong || sessionStore.get('globalData').curSong,
-        historyPlay: state.globalData?.historyPlay || sessionStore.get('globalData').historyPlay,
-        lock: state.globalData?.lock || sessionStore.get('globalData').lock,
+        curSong: state.globalData?.curSong,
+        historyPlay: state.globalData?.historyPlay,
+        lock: state.globalData?.lock,
     }
 }
 
@@ -117,7 +116,7 @@ const PlayBar = (props) => {
                 }
             })
         }) */
-    }
+    } 
 
     async function getSongById(defaultId) { //根据id获取歌曲信息
         const id = props.curSong?.id ?? defaultId;
@@ -282,6 +281,7 @@ const PlayBar = (props) => {
     }
 
     useEffect(() => {
+        if (props.curSong?.id == null) return;
         count ++;
         if (count === 1) {
             return;

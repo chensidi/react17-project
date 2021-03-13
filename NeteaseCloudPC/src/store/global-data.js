@@ -1,11 +1,11 @@
 import { SET_CURSONG, SET_HISTORY, GET_SONGINFO, SET_LOCK, } from "./action-type";
 import sessionStore from '@/utils/sessionStore';
 
-const initialData = {
-    curSong: null,
+let initialData = {
+    curSong: sessionStore.get('globalData').curSong || null,
     keep: ['Home'],
-    historyPlay: [],
-    lock: false,
+    historyPlay: sessionStore.get('globalData').historyPlay || [],
+    lock: sessionStore.get('globalData').lock || false,
 }
 
 const globalReducer = (state = initialData, action) => {

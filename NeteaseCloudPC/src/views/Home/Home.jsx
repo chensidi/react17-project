@@ -17,7 +17,7 @@ const CoverItem = AsyncComponent(() => import('@/components/Covers/CoverItem'));
 const RankModule = AsyncComponent(() => import('./Rank'));
 
 const mapStateToProps = (state) => {
-    console.log(state.globalData.curSong);
+    // console.log(state.globalData.curSong);
     return {
         curSong: state.globalData.curSong ? 
         state.globalData.curSong : sessionStore.get('globalData').curSong,
