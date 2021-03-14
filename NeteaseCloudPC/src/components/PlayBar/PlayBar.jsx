@@ -1,6 +1,6 @@
 import './index.scss';
 import { Link } from 'react-router-dom';
-import { useState, createRef, memo, useEffect, } from 'react';
+import { useState, createRef, memo, useEffect, useRef, forwardRef, } from 'react';
 import { connect } from 'react-redux';
 import { mediaTimeFormat, formatLrc, artistsFormat, } from '@/utils/utils';
 import commonRequest from '@/api/common';
@@ -27,10 +27,21 @@ function compare() {
     return true;
 }
 
-const HistoryItem = (props) => {
+const HistoryItem = forwardRef((props, ref) => {
+    function playItem() {
+        console.log(ref);
+        props.getSongById(props.id).then(() => {
+            ref.current.currentTime = 0;
+            props.initMp3();
+        })
+    }
     return (
-        <li>
-            <div className="col col-1"></div>
+        <li onClick={playItem}>
+            <div className="col col-1">
+                {
+                    props.id === props.curSong.id && <div className="playicn"></div>
+                }
+            </div>
             <div className="col col-2">{ props.name }</div>
             <div className="col col-3">
                 <div className="icns">
@@ -49,8 +60,7 @@ const HistoryItem = (props) => {
             </div>
         </li>
     )
-}
-
+})
 
 let timer = null, //playbar锁定计时器
     scrollTimer = null; //歌词滚动锁定计时器
@@ -58,8 +68,9 @@ let count = 0;
 
 const PlayBar = (props) => {
     const [downUpKey, changeDownUp] = useState(false); //控制能否拖动的开关
-    const barRef = createRef(null); //进度条ref
-    const mp3 = createRef(null); //音频ref
+    const barRef = useRef(null); //进度条ref
+    const mp3 = useRef(null); //音频ref
+    const playBtn = useRef(null); //播放按钮
     const [mp3Info, changeMp3Info] = useState({
         isPlay: false, //播放状态play/pause
         duration: 0,
@@ -80,46 +91,23 @@ const PlayBar = (props) => {
     if (props.curSong == null) {
         getSongById(188261).then((res) => {
             if (!props.historyPlay || props.historyPlay.length === 0) {
-                const { id, details } = res;
+                const { id, details, url } = res;
                 props.setHistory([
                     {
+                        url,
                         name: details.name,
                         singer: artistsFormat(details.ar),
                         id,
                         alblum: details.al,
-                        duration: mediaTimeFormat(details.dt)
+                        duration: mediaTimeFormat(details.dt / 1000)
                     }
                 ])
             }
         })
-        
-        /* commonRequest.getSongUrl(188261).then(url => {
-            commonRequest.getLyric(188261).then(res => {
-                props.setCurSong({
-                    url,
-                    name: '咖啡',
-                    singer: '张学友',
-                    lyc: res,
-                    id: 188261,
-                    duration
-                })
-                if (!props.historyPlay || props.historyPlay.length === 0) {
-                    props.setHistory([
-                        {
-                            url,
-                            name: '咖啡',
-                            singer: '张学友',
-                            id: 188261,
-                            duration: '04:08'
-                        }
-                    ])
-                }
-            })
-        }) */
     } 
 
     async function getSongById(defaultId) { //根据id获取歌曲信息
-        const id = props.curSong?.id ?? defaultId;
+        const id = defaultId ?? props.curSong?.id;
         const url = await commonRequest.getSongUrl(id);
         const res = await commonRequest.getLyric(id);
         const details = await commonRequest.getSongDetails(id);
@@ -132,7 +120,7 @@ const PlayBar = (props) => {
             alblum: details.al,
             duration: mediaTimeFormat(details.dt)
         })
-        return {id, details}
+        return {id, details, url}
     }
 
     function barOnMouseDown(e) { //进度条按钮按下 
@@ -210,14 +198,14 @@ const PlayBar = (props) => {
                 if (curTime < nextItem.time) {
                     changeCurIdx(i);
                     if (canScrollLrc && !scrollTimer) {
-                        const curP = document.querySelectorAll('p.j-flag')[i];
+                        const curP = document.querySelectorAll('p.lrc-p')[i];
                         curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
                     }
                     break;
                 } else if (curTime >= nextItem.time && i === lrc.length - 2) {
                     changeCurIdx(i + 1);
                     if (canScrollLrc && !scrollTimer) {
-                        const curP = document.querySelectorAll('p.j-flag')[i + 1];
+                        const curP = document.querySelectorAll('p.lrc-p')[i + 1];
                         curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
                     }
                     break;
@@ -243,8 +231,29 @@ const PlayBar = (props) => {
                 loadPC,
             })
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
+    }
+    function onEndPlay() {
+        onEnd();
+        playNext();
+    }
+    async function playNext() { //播放下一首
+        let idx;
+        for(let i = 0; i < props.historyPlay.length; i ++) {
+            const song = props.historyPlay[i];
+            if (song.id === props.curSong.id) {
+                idx = i;
+                break;
+            }
+        }
+        idx ++;
+        if (idx >= props.historyPlay.length) {
+            idx = 0;
+        }
+        const res = await commonRequest.getLyric(props.historyPlay[idx].id);
+        props.setCurSong({...props.historyPlay[idx], lyc: res});
+        document.querySelector('.listlyric').scrollTop = 0;
     }
     function onEnd() { //播放结束
         changeMp3Info({
@@ -280,19 +289,34 @@ const PlayBar = (props) => {
         getSongById();
     }
 
-    useEffect(() => {
-        if (props.curSong?.id == null) return;
-        count ++;
-        if (count === 1) {
-            return;
-        }
+    function initMp3() {
         onEnd();
         mp3.current.play();
         changeMp3Info({
             ...mp3Info,
             isPlay: true
         })
+    }
+
+    useEffect(() => {
+        if (props.curSong?.id == null) return;
+        count ++;
+        if (count === 1) {
+            return;
+        }
+        initMp3();
     }, [props.curSong?.id])
+
+    useEffect(() => { //注册键盘快捷键
+        document.addEventListener('keypress', (e) => {
+            switch (e.key) {
+                case 'p':
+                    return playBtn.current.click()
+                default:
+                    return;
+            }
+        })
+    }, [])
 
     return (
         <div className="g-btmbar" 
@@ -315,7 +339,7 @@ const PlayBar = (props) => {
                 <div className="wrap">
                     <div className="btns">
                         <span className="prv" title="上一首(ctrl+←)"></span>
-                        <span className={['j-flag', mp3Info.isPlay?'pas':'ply'].join(' ')} title="播放/暂停(p)" onClick={playPause}></span>
+                        <span ref={playBtn} className={['j-flag', mp3Info.isPlay?'pas':'ply'].join(' ')} title="播放/暂停(p)" onClick={playPause}></span>
                         <span className="nxt" title="下一首(ctrl+→)"></span>
                     </div>
                     <div className="head j-flag">
@@ -358,11 +382,12 @@ const PlayBar = (props) => {
                     </div>
                     <div className="ctrl f-fl f-pr j-flag">
                         <span className="add f-pr" onClick={() => changeShow(!showPanel)}>
-                            <em className="icn icn-list s-fc3" title="播放列表">1</em>
+                            <em className="icn icn-list s-fc3" title="播放列表">{ props.historyPlay.length }</em>
                         </span>
                     </div>
                 </div>
                 <div className="list" style={{display: showPanel?'':'none'}}>
+                    <img src={`${props.curSong?.alblum?.picUrl}?imageView&blur=3x3`} className="imgbg j-flag" alt=""/>
                     <div className="listhd">
                         <div className="listhdc">
                             <h4>播放列表(<span className="j-flag">1</span>)</h4>
@@ -375,29 +400,35 @@ const PlayBar = (props) => {
                                 <i className='ico icn-del'></i>
                                 清除
                             </span>
-                            <div className="lytit f-ff0 f-thide j-flag">咖啡</div>
+                            <div className="lytit f-ff0 f-thide j-flag">{ props.curSong.name }</div>
                             <span className="close" onClick={() => changeShow(false)}>关闭</span>
                         </div>
                     </div>
                     <div className="listbd">
-                        <img src={`${props.curSong?.alblum?.picUrl}?imageView&blur=10x10`} className="imgbg j-flag" alt=""/>
-                        <div className="listbdc j-flag">
-                            <ul className="f-cb">
-                                {
-                                    props.historyPlay.map((item) => {
-                                        return (
-                                            <HistoryItem key={item.id} {...item} />
-                                        )
-                                    })
-                                }
-                            </ul>
-                        </div>
+                    <div className="listbdc j-flag">
+                        <ul className="f-cb">
+                            {
+                                props.historyPlay.map((item) => {
+                                    return (
+                                        <HistoryItem 
+                                            key={item.id} 
+                                            {...item} 
+                                            getSongById={getSongById}  
+                                            initMp3={initMp3}
+                                            ref={mp3}
+                                            {...props}
+                                        />
+                                    )
+                                })
+                            }
+                        </ul>
+                    </div>
                         <div className="msk2"></div>
                         <div className="listlyric j-flag" onWheel={scrollHandler}>
                             {
                                 formatLrc(props.curSong?.lyc||'').map((item, i) => {
                                     return (
-                                        <p className={['j-flag', i == curIdx ? 'z-sel' :''].join(' ')} key={item.time + Math.random()}>{ item.txt }</p>
+                                        <p className={`j-flag lrc-p ${i === curIdx&&'z-sel'}`} key={item.time + Math.random()}>{ item.txt }</p>
                                     )
                                 })
                             }
@@ -412,7 +443,7 @@ const PlayBar = (props) => {
                 src={props.curSong?.url} 
                 onTimeUpdate={onPlaying}
                 onProgress={onLoadSrc}
-                onEnded={onEnd}
+                onEnded={onEndPlay}
                 onError={onError}
             >
             </audio>

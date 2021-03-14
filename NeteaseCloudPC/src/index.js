@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from "./store";
 import 'antd/dist/antd.css';
 import '@assets/style/style.scss';
+import { message } from 'antd';
 
 ReactDOM.render(
   <React.StrictMode>

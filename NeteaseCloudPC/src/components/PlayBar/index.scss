@@ -119,6 +119,12 @@
             cursor: pointer;
         }
     }
+    .playicn {
+        margin-top: 8px;
+        width: 10px;
+        height: 13px;
+        background-position: -182px 0;
+    }
     .head {
         position: relative;
         *zoom: 1;
@@ -176,6 +182,7 @@
         float: left;
         width: 59px;
         height: 36px;
+        cursor: pointer;
     }
     .icn {
         float: left;
@@ -278,6 +285,7 @@
             &:hover {
                 background-position: -195px -21px;
             }
+            z-index: 10;
         }
     }
     .ico-add {
@@ -358,6 +366,19 @@
                 transition: color 0.7s linear;
             }
         }
+        
+    }
+    .listbdc {
+        position: absolute;
+        left: 2px;
+        top: 0;
+        z-index: 4;
+        height: 260px;
+        width: 553px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .listlyric, .listbdc {
         &::-webkit-scrollbar
         {
             width: 8px;
@@ -380,16 +401,6 @@
             -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
             background-color: #555;
         }
-    }
-    .listbdc {
-        position: absolute;
-        left: 2px;
-        top: 0;
-        z-index: 4;
-        height: 260px;
-        width: 553px;
-        overflow-x: hidden;
-        overflow-y: auto;
     }
     .list {
         ul {

@@ -3,11 +3,24 @@ import { mediaTimeFormat, artistsFormat, playTimesFormat } from '@/utils/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useState } from 'react';
 import store from '@/store';
-import { getSongInfo } from '@/store/action';
+import { getSongInfo, setHistory, } from '@/store/action';
 
 function playItem(id) {
-    console.log(id);
-    store.dispatch(getSongInfo(id));
+    store.dispatch(getSongInfo(id)).then((res) => {
+        // console.log(res);
+        const song = res.song;
+        const nowItem = {
+            url: song.url,
+            name: song.name,
+            singer: song.singer,
+            id: song.id,
+            alblum: song.alblum,
+            duration: song.duration
+        }
+        const historyPlay = store.getState().globalData.historyPlay;
+        historyPlay.unshift(nowItem);
+        store.dispatch(setHistory(historyPlay));
+    })
 }
 
 

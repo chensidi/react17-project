@@ -61,7 +61,7 @@ export const getSongInfo = (id) => {
                 lyc: lyc,
                 id,
                 alblum: details.al,
-                duration: mediaTimeFormat(details.dt)
+                duration: mediaTimeFormat(details.dt / 1000)
             }))
         })
     }
