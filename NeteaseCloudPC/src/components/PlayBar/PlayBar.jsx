@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { mediaTimeFormat, formatLrc, artistsFormat, } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
-
+import { message } from 'antd';
+ 
 const mapStateToProps = (state) => {
     return {
         userInfo: state.user.userInfo,
@@ -64,7 +65,10 @@ const HistoryItem = forwardRef((props, ref) => {
 
 let timer = null, //playbar锁定计时器
     scrollTimer = null; //歌词滚动锁定计时器
-let count = 0;
+let count = 0,
+    ctrl = false,
+    left = false,
+    right = false;
 
 const PlayBar = (props) => {
     const [downUpKey, changeDownUp] = useState(false); //控制能否拖动的开关
@@ -80,7 +84,6 @@ const PlayBar = (props) => {
         lyric: [], //歌词数组
         curIdx: 0, //当前歌词下标
     }); // 音频信息
-    // const [lock, changeLock] = useState(false); //playbar是否锁定，默认不锁定
     const {lock, changeLock} = props;
     const [isEnter, changeEnter] = useState(false); //是否鼠标亦如playbar
     const [curIdx, changeCurIdx] = useState(0);
@@ -236,9 +239,9 @@ const PlayBar = (props) => {
     }
     function onEndPlay() {
         onEnd();
-        playNext();
+        cutSong();
     }
-    async function playNext() { //播放下一首
+    async function cutSong(flag = true) { //播放上/下一首
         let idx;
         for(let i = 0; i < props.historyPlay.length; i ++) {
             const song = props.historyPlay[i];
@@ -247,11 +250,16 @@ const PlayBar = (props) => {
                 break;
             }
         }
-        idx ++;
+        flag ? ++idx : --idx;
+        //针对首尾情况
         if (idx >= props.historyPlay.length) {
             idx = 0;
         }
+        if (idx < 0) {
+            idx = props.historyPlay.length - 1;
+        }
         const res = await commonRequest.getLyric(props.historyPlay[idx].id);
+        console.log(idx)
         props.setCurSong({...props.historyPlay[idx], lyc: res});
         document.querySelector('.listlyric').scrollTop = 0;
     }
@@ -286,7 +294,14 @@ const PlayBar = (props) => {
     }
     function onError(e) { //音频资源出错
         console.log(e);
-        getSongById();
+        message.error('资源出错请重新点击播放');
+        getSongById().then(() => {
+            mp3.current.pause();
+            changeMp3Info({
+                ...mp3Info,
+                isPlay: false
+            }) 
+        })
     }
 
     function initMp3() {
@@ -308,12 +323,32 @@ const PlayBar = (props) => {
     }, [props.curSong?.id])
 
     useEffect(() => { //注册键盘快捷键
-        document.addEventListener('keypress', (e) => {
-            switch (e.key) {
+        document.addEventListener('keydown', (e) => {
+            const k = e.key;
+            if (ctrl && !['ArrowLeft', 'ArrowRight'].includes(k)) return;
+            console.log(e);
+            switch (k) {
                 case 'p':
-                    return playBtn.current.click()
+                    return playBtn.current.click();
+                case 'Control':
+                    ctrl = true;
+                    break;
+                case 'ArrowLeft':
+                    return ctrl && cutSong(false);
+                case 'ArrowRight':
+                    return ctrl && cutSong(true);
                 default:
                     return;
+            }
+        })
+        document.addEventListener('keyup', (e) => {
+            switch (e.key) {
+                case 'Control':
+                    return ctrl = false;
+                case 'ArrowLeft':
+                    return left = false;
+                case 'ArrowRight':
+                    return right = false;
             }
         })
     }, [])
@@ -338,9 +373,9 @@ const PlayBar = (props) => {
                 ></div>
                 <div className="wrap">
                     <div className="btns">
-                        <span className="prv" title="上一首(ctrl+←)"></span>
+                        <span className="prv" title="上一首(ctrl+←)" onClick={() => cutSong(false)}></span>
                         <span ref={playBtn} className={['j-flag', mp3Info.isPlay?'pas':'ply'].join(' ')} title="播放/暂停(p)" onClick={playPause}></span>
-                        <span className="nxt" title="下一首(ctrl+→)"></span>
+                        <span className="nxt" title="下一首(ctrl+→)" onClick={() => cutSong(true)}></span>
                     </div>
                     <div className="head j-flag">
                         <img src={props?.curSong?.alblum?.picUrl} alt=""/>
@@ -400,7 +435,7 @@ const PlayBar = (props) => {
                                 <i className='ico icn-del'></i>
                                 清除
                             </span>
-                            <div className="lytit f-ff0 f-thide j-flag">{ props.curSong.name }</div>
+                            <div className="lytit f-ff0 f-thide j-flag">{ props.curSong?.name }</div>
                             <span className="close" onClick={() => changeShow(false)}>关闭</span>
                         </div>
                     </div>

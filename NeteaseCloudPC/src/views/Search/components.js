@@ -18,6 +18,14 @@ function playItem(id) {
             duration: song.duration
         }
         const historyPlay = store.getState().globalData.historyPlay;
+        let exist = false;
+        for(let i = 0; i < historyPlay.length; i ++) {
+            if (historyPlay[i].id === nowItem.id) {
+                exist = true;
+                break;
+            }
+        }
+        if (exist) return;
         historyPlay.unshift(nowItem);
         store.dispatch(setHistory(historyPlay));
     })
