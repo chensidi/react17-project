@@ -35,6 +35,7 @@ const Header = () => {
     }
     useEffect(() => {
         searchRef.current.value = decodeURIComponent(history.location.search.match(/kw=(.+)/)?.[1] || '');
+        console.log(history.location.pathname)
         if (history.location.pathname === '/search') {
             changeShowSub(false);
         } else {

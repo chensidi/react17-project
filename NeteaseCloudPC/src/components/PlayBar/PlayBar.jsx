@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         curSong: state.globalData?.curSong,
         historyPlay: state.globalData?.historyPlay,
         lock: state.globalData?.lock,
+        songLoading: state.globalData.loading,
     }
 }
 
@@ -65,16 +66,15 @@ const HistoryItem = forwardRef((props, ref) => {
 
 let timer = null, //playbar锁定计时器
     scrollTimer = null; //歌词滚动锁定计时器
-let count = 0,
-    ctrl = false,
-    left = false,
-    right = false;
+let count = 0;
 
 const PlayBar = (props) => {
     const [downUpKey, changeDownUp] = useState(false); //控制能否拖动的开关
     const barRef = useRef(null); //进度条ref
     const mp3 = useRef(null); //音频ref
     const playBtn = useRef(null); //播放按钮
+    const prevBtn = useRef(null);
+    const nextBtn = useRef(null);
     const [mp3Info, changeMp3Info] = useState({
         isPlay: false, //播放状态play/pause
         duration: 0,
@@ -294,12 +294,12 @@ const PlayBar = (props) => {
     }
     function onError(e) { //音频资源出错
         console.log(e);
-        message.error('资源出错请重新点击播放');
+        // message.error('资源出错请重新点击播放');
         getSongById().then(() => {
-            mp3.current.pause();
+            mp3.current.play();
             changeMp3Info({
                 ...mp3Info,
-                isPlay: false
+                isPlay: true
             }) 
         })
     }
@@ -325,30 +325,15 @@ const PlayBar = (props) => {
     useEffect(() => { //注册键盘快捷键
         document.addEventListener('keydown', (e) => {
             const k = e.key;
-            if (ctrl && !['ArrowLeft', 'ArrowRight'].includes(k)) return;
-            console.log(e);
             switch (k) {
                 case 'p':
                     return playBtn.current.click();
-                case 'Control':
-                    ctrl = true;
-                    break;
                 case 'ArrowLeft':
-                    return ctrl && cutSong(false);
+                    return e.ctrlKey && prevBtn.current.click();
                 case 'ArrowRight':
-                    return ctrl && cutSong(true);
+                    return e.ctrlKey && nextBtn.current.click()
                 default:
                     return;
-            }
-        })
-        document.addEventListener('keyup', (e) => {
-            switch (e.key) {
-                case 'Control':
-                    return ctrl = false;
-                case 'ArrowLeft':
-                    return left = false;
-                case 'ArrowRight':
-                    return right = false;
             }
         })
     }, [])
@@ -373,9 +358,9 @@ const PlayBar = (props) => {
                 ></div>
                 <div className="wrap">
                     <div className="btns">
-                        <span className="prv" title="上一首(ctrl+←)" onClick={() => cutSong(false)}></span>
+                        <span ref={prevBtn} className="prv" title="上一首(ctrl+←)" onClick={() => cutSong(false)}></span>
                         <span ref={playBtn} className={['j-flag', mp3Info.isPlay?'pas':'ply'].join(' ')} title="播放/暂停(p)" onClick={playPause}></span>
-                        <span className="nxt" title="下一首(ctrl+→)" onClick={() => cutSong(true)}></span>
+                        <span ref={nextBtn} className="nxt" title="下一首(ctrl+→)" onClick={() => cutSong(true)}></span>
                     </div>
                     <div className="head j-flag">
                         <img src={props?.curSong?.alblum?.picUrl} alt=""/>
@@ -400,7 +385,7 @@ const PlayBar = (props) => {
                             >
                                 <div className="rdy" style={{width: `${mp3Info.loadPC}%`}}></div>
                                 <div className="cur" style={{width: `${mp3Info.progress}%`}}>
-                                    <span className="btn f-tdn f-alpha" 
+                                    <span className={`btn f-tdn f-alpha ${props.songLoading&&'z-load'}`} 
                                         onMouseDown={barOnMouseDown}
                                         onMouseUp={barOnMouseUp}
                                     >

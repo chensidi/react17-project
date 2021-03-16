@@ -6,6 +6,15 @@ import store from '@/store';
 import { getSongInfo, setHistory, } from '@/store/action';
 
 function playItem(id) {
+    const historyPlay = store.getState().globalData.historyPlay;
+    let exist = false;
+    for(let i = 0; i < historyPlay.length; i ++) {
+        if (historyPlay[i].id === id) {
+            exist = true;
+            break;
+        }
+    }
+    if (exist) return;
     store.dispatch(getSongInfo(id)).then((res) => {
         // console.log(res);
         const song = res.song;
@@ -17,15 +26,6 @@ function playItem(id) {
             alblum: song.alblum,
             duration: song.duration
         }
-        const historyPlay = store.getState().globalData.historyPlay;
-        let exist = false;
-        for(let i = 0; i < historyPlay.length; i ++) {
-            if (historyPlay[i].id === nowItem.id) {
-                exist = true;
-                break;
-            }
-        }
-        if (exist) return;
         historyPlay.unshift(nowItem);
         store.dispatch(setHistory(historyPlay));
     })

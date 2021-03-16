@@ -564,6 +564,10 @@
             background-position: 0 -280px;
         }
     }
+    .z-load i {
+        visibility: visible;
+        cursor: default;
+    }
     .time {
         position: absolute;
         top: -3px;

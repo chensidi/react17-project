@@ -1,4 +1,4 @@
-import { SET_CURSONG, SET_HISTORY, GET_SONGINFO, SET_LOCK, } from "./action-type";
+import { SET_CURSONG, SET_HISTORY, GET_SONGINFO, SET_LOCK, SET_Loading, } from "./action-type";
 import sessionStore from '@/utils/sessionStore';
 
 let initialData = {
@@ -6,6 +6,7 @@ let initialData = {
     keep: ['Home'],
     historyPlay: sessionStore.get('globalData').historyPlay || [],
     lock: sessionStore.get('globalData').lock || false,
+    loading: false,
 }
 
 const globalReducer = (state = initialData, action) => {
@@ -47,6 +48,11 @@ const globalReducer = (state = initialData, action) => {
             return {
                 ...state,
                 lock: action.lock
+            }
+        case SET_Loading:
+            return {
+                ...state,
+                loading: action.loading
             }
         default:
             return state;

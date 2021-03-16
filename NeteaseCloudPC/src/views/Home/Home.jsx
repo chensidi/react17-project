@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { setCurSong } from '@store/action';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import sessionStore from '@utils/sessionStore';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
@@ -37,13 +37,16 @@ class Home extends Component {
         recommends: [],
         newDisk: [],
         ranks: [],
+        loading: false
     };
-    componentDidMount() {
-        this._loadBanners();
-        this._getRecommend();
-        this._getNewDisk();
+    async componentDidMount() {
+        this.setState({loading: true})
+        await this._loadBanners();
+        await this._getRecommend();
+        await this._getNewDisk();
         // this._getRank();
-        this._getTopList();
+        await this._getTopList();
+        setTimeout(() => this.setState({loading: false}), 500)
     }
     _loadBanners = async () => { //轮播图
         let res = await homeApis.getBanners();
@@ -75,13 +78,6 @@ class Home extends Component {
         let res = await homeApis.getTopList();
         res = res.slice(0, 3); //取出前三个
         let arr = [];
-        // res.map(async item => {
-        //     let res1 = await this._getRank(item.id);
-        //     arr.push({
-        //         self: item,
-        //         subs: res1.slice(0, 10)
-        //     })
-        // })
         for(let i = 0; i < res.length; i ++) {
             const item = res[i];
             let res1 = await this._getRank(item.id);
@@ -106,10 +102,11 @@ class Home extends Component {
         flag ? this.swp.next() : this.swp.prev()
     }
     render() {
-        const { banners, recommends, newDisk, ranks, } = this.state;
+        const { banners, recommends, newDisk, ranks, loading} = this.state;
         const { hotNav } = homeConfig;
         return (
             <div>
+                <Spin tip="Loading..." spinning={loading}>
                 <Banner banners={banners} />
                 <Main className="g-bd1">
                     <div className="g-mn1">
@@ -158,6 +155,7 @@ class Home extends Component {
                 {
                     this.props.children
                 }
+                </Spin>
             </div>
         )
     }
