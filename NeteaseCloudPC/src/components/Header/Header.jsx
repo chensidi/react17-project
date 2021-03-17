@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef, } from 'react'
 import { Link, NavLink, useHistory, } from 'react-router-dom';
 import { navs } from './nav';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state) => {
+    return {
+        showSubNav: state.globalData.showSubNav
+    }
+}
 
 function formatClass(i, len) {
     if (i === len - 1) {
@@ -12,7 +19,7 @@ function formatClass(i, len) {
     }
 }
 
-const Header = () => {
+const Header = (props) => {
     const [navArr] = useState(navs);
     const [subNav] = useState([
         '推荐',
@@ -24,23 +31,15 @@ const Header = () => {
     ])
     const history = useHistory();
     const searchRef = useRef(null);
-    const [showSub, changeShowSub] = useState(true); //是否显示二级分类菜单
     function searchHandler(e) {
-        console.log(e);
         const val = e.target.value,
               keyCode = e.code;
         if (val.trim() != '' && keyCode === 'Enter') {
-            history.push({pathname: '/search', search: `?kw=${val}`})
+            history.replace({pathname: '/search', search: `?kw=${val}`})
         }
     }
     useEffect(() => {
         searchRef.current.value = decodeURIComponent(history.location.search.match(/kw=(.+)/)?.[1] || '');
-        console.log(history.location.pathname)
-        if (history.location.pathname === '/search') {
-            changeShowSub(false);
-        } else {
-            changeShowSub(true);
-        }
     })
     return (
         <div className="g-topbar">
@@ -78,7 +77,7 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-            <div className={['m-subnav j-tflag', showSub?'':'m-subnav-up'].join(' ')}>
+            <div className={`m-subnav j-tflag ${!props.showSubNav&&'m-subnav-up'}`}>
                 <div className="wrap f-pr">
                     <ul className="nav">
                         {
@@ -106,4 +105,4 @@ const Header = () => {
     )
 }
 
-export default Header;
+export default connect(mapStateToProps)(Header);

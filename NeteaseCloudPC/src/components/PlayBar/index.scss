@@ -415,6 +415,10 @@
                 }
                 background-color: rgba(0,0,0,0.4);
             }
+            &.z-sel {
+                background-color: rgba(0,0,0,0.3);
+                _background-color: #202020;
+            }
         }
     }
     .col {

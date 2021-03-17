@@ -1,12 +1,12 @@
 import { Component, Fragment, } from 'react';
-import AsyncComponent from '@/components/AsyncComponent';
 import { Tabs, Spin, } from 'antd';
 import { searchApi } from '@/api/search';
-import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, UserPanel } from './components';
+import { setSubNav } from '@/store/action';
+import store from '@/store';
+import Main from '@/components/Main';
+import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, UserPanel, NotResult, } from './components';
 
 const { TabPane } = Tabs;
-const Main = AsyncComponent(() => import('@/components/Main'));
-
 class SearchPage extends Component {
     state = {
         kw: '',
@@ -34,6 +34,7 @@ class SearchPage extends Component {
         unit: '首'
     }
     componentDidMount() {
+        store.dispatch(setSubNav(false));
         let kw = this.props.location.search.match(/kw=(.+)/)[1];
         kw = decodeURIComponent(kw);
         setTimeout(() => {this.searchInput.value = kw;}, 100)
@@ -54,60 +55,44 @@ class SearchPage extends Component {
             let target, data, unit;
             switch (type) {
                 case '1': 
-                    if (res.songs) {
-                        target = 'songList';
-                        data = res.songs;
-                        unit = '首';
-                    }
+                    target = 'songList';
+                    data = res?.songs || [];
+                    unit = '首';
                     break;
                 case '10':
-                    if (res.albums) {
-                        target = 'albums';
-                        data = res.albums;
-                        unit = '张';
-                    }
+                    target = 'albums';
+                    data = res?.albums || [];
+                    unit = '张';
                     break;
                 case '100':
-                    if (res.artists) {
-                        target = 'artists';
-                        data = res.artists;
-                        unit = '位';
-                    }
+                    target = 'artists';
+                    data = res?.artists || [];
+                    unit = '位';
                     break;
                 case '1014':
-                    if (res.videos) {
-                        target = 'videos';
-                        data = res.videos;
-                        unit = '个';
-                    }
+                    target = 'videos';
+                    data = res?.videos || [];
+                    unit = '个';
                     break;
                 case '1006':
-                    if (res.songs) {
-                        target = 'lyrics';
-                        data = res.songs;
-                        unit = '个';
-                    }
+                    target = 'lyrics';
+                    data = res?.songs || [];
+                    unit = '个';
                     break;
                 case '1000':
-                    if (res.playlists) {
-                        target = 'playLists';
-                        data = res.playlists;
-                        unit = '个';
-                    }
+                    target = 'playLists';
+                    data = res?.playlists || [];
+                    unit = '个';
                     break;
                 case '1009':
-                    if (res.djRadios) {
-                        target = 'djRadios';
-                        data = res.djRadios;
-                        unit = '位';
-                    }
+                    target = 'djRadios';
+                    data = res?.djRadios || [];
+                    unit = '位';
                     break;
                 case '1002':
-                    if (res.userprofiles) {
-                        target = 'userprofiles';
-                        data = res.userprofiles;
-                        unit = '位';
-                    }
+                    target = 'userprofiles';
+                    data = res?.userprofiles || [];
+                    unit = '位';
                     break;
             }
             if (data) {
@@ -178,39 +163,42 @@ class SearchPage extends Component {
                                                 }) 
                                             }
                                         </div>
+                                        <NotResult num={songList.length}  />
                                     </div>
                                 </Spin>
                             </TabPane>
                             <TabPane tab='歌手' key='100'>
                                 <Spin tip="Loading..." spinning={loading}>
                                     <div className="n-srchrst ztag">
-                                    <div className="m-sgerlist m-sgerlist-1">
-                                    <ul className="m-cvrlst m-cvrlst-5 f-cb">
-                                        {
-                                            artists.map(artist => {
-                                                return (
-                                                    <SingerItem key={artist.id} {...artist} />
-                                                )
-                                            })
-                                        }
-                                    </ul>
+                                        <div className="m-sgerlist m-sgerlist-1">
+                                            <ul className="m-cvrlst m-cvrlst-5 f-cb">
+                                                {
+                                                    artists.map(artist => {
+                                                        return (
+                                                            <SingerItem key={artist.id} {...artist} />
+                                                        )
+                                                    })
+                                                }
+                                            </ul>
+                                        </div>
+                                        <NotResult num={artists.length}  />
                                     </div>
-                                </div>
                                 </Spin>
                             </TabPane>
                             <TabPane tab='专辑' key='10'>
                                 <Spin tip="Loading..." spinning={loading}>
-                                <div className="n-srchrst ztag">
-                                    <ul className="m-cvrlst m-cvrlst-alb3 f-cb">
-                                        {
-                                            albums.map(album => {
-                                                return (
-                                                    <AlbumItem key={album.id} {...album} />
-                                                )
-                                            })
-                                        }
-                                    </ul>
-                                </div>
+                                    <div className="n-srchrst ztag">
+                                        <ul className="m-cvrlst m-cvrlst-alb3 f-cb">
+                                            {
+                                                albums.map(album => {
+                                                    return (
+                                                        <AlbumItem key={album.id} {...album} />
+                                                    )
+                                                })
+                                            }
+                                        </ul>
+                                        <NotResult num={albums.length}  />
+                                    </div>
                                 </Spin>
                             </TabPane>
                             <TabPane tab='视频' key='1014'>
@@ -225,6 +213,7 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </ul>
+                                    <NotResult num={videos.length}  />
                                 </div>
                                 </Spin>
                             </TabPane>
@@ -243,14 +232,16 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </div>
+                                    <NotResult num={lyrics.length}  />
                                 </div>
                                 </Spin>
                             </TabPane>
                             <TabPane tab='歌单' key='1000'>
                                 <Spin tip="Loading..." spinning={loading}>
-                                <div className="n-srchrst">
-                                    <PlayLists list={playLists}  />
-                                </div>
+                                    <div className="n-srchrst">
+                                        <PlayLists list={playLists}  />
+                                        <NotResult num={playLists.length}  />
+                                    </div>
                                 </Spin>
                             </TabPane>
                             <TabPane tab='声音主播' key='1009'>
@@ -265,14 +256,16 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </ul>
+                                    <NotResult num={djRadios.length}  />
                                 </div>
                                 </Spin>
                             </TabPane>
                             <TabPane tab='用户' key='1002'>
                                 <Spin tip="Loading..." spinning={loading}>
-                                <div className="n-srchrst ztag">
-                                    <UserPanel list={userprofiles} />
-                                </div>
+                                    <div className="n-srchrst ztag">
+                                        <UserPanel list={userprofiles} />
+                                        <NotResult num={userprofiles.length}  />
+                                    </div>
                                 </Spin>
                             </TabPane>
                         </Tabs>

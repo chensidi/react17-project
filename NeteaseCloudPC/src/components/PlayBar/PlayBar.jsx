@@ -38,7 +38,7 @@ const HistoryItem = forwardRef((props, ref) => {
         })
     }
     return (
-        <li onClick={playItem}>
+        <li onClick={playItem} className={props.id === props.curSong.id ? 'z-sel' : ''}>
             <div className="col col-1">
                 {
                     props.id === props.curSong.id && <div className="playicn"></div>

@@ -1,22 +1,17 @@
-import { SET_CURSONG, SET_USERINFO, SET_HISTORY, GET_SONGINFO, SET_LOCK, SET_Loading } from "./action-type";
+import { SET_CURSONG, 
+    SET_USERINFO, 
+    SET_HISTORY, 
+    SET_LOCK, 
+    SET_LOADING,
+    SET_SUB_NAV, } from "./action-type";
 import commonRequest from '@/api/common';
 import { mediaTimeFormat, artistsFormat } from '@/utils/utils';
-import { message } from 'antd';
 
 async function getSongById(defaultId) { //根据id获取歌曲信息
     const id = defaultId;
     const url = await commonRequest.getSongUrl(id);
     const lyc = await commonRequest.getLyric(id);
     const details = await commonRequest.getSongDetails(id);
-    /* props.setCurSong({
-        url,
-        name: details.name,
-        singer: artistsFormat(details.ar),
-        lyc: res,
-        id,
-        alblum: details.al,
-        duration: mediaTimeFormat(details.dt)
-    }) */
     return { id, details, lyc, url };
 }
 
@@ -43,7 +38,7 @@ export const setUserInfo = (userInfo) => {
 
 export const setLoadingPlaybar = (loading) => {
     return {
-        type: SET_Loading,
+        type: SET_LOADING,
         loading, 
     }
 }
@@ -71,5 +66,12 @@ export const setLock = (lock) => {
     return {
         type: SET_LOCK,
         lock
+    }
+}
+
+export const setSubNav = (show) => {
+    return {
+        type: SET_SUB_NAV,
+        show
     }
 }

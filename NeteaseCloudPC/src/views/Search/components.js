@@ -339,3 +339,17 @@ export const UserPanel = (props) => {
         </table>
     )
 }
+
+export const NotResult = (props) => {
+    const num = props.num;
+    return (
+        num <= 0 ? (
+            <div className="n-nmusic">
+                <h3 className="f-ff2">
+                    <i className="u-icn u-icn-21"></i>
+                    很抱歉，未能找到相关搜索结果！
+                </h3>
+            </div>
+        ) : null
+    )
+}

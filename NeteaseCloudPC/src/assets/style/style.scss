@@ -1302,3 +1302,44 @@ table {
         background-position: 0 -1020px;
     }
 }
+
+.n-nmusic {
+    padding: 105px 0 105px 0;
+    text-align: center;
+    h3 {
+        padding-bottom: 38px;
+        font-size: 18px;
+    }
+    .u-icn-21 {
+        margin-right: 17px;
+    }
+}
+
+.u-icn-21 {
+    width: 64px;
+    height: 50px;
+    background-position: 0 -347px;
+}
+
+.m-playbar .list li:hover .col, .m-playbar .list li:hover .col a, .m-playbar .list li:hover .col a:hover, .m-playbar .list li.z-sel .col, .m-playbar .list li.z-sel .col a, .m-playbar .list li.z-sel .col a:hover {
+    color: #fff;
+}
+
+
+.m-back, .m-lycifo .downapp, .m-plshare .btn, .m-pubcode .code, .m-multi .bg, .m-multi .bg a:hover {
+    background: url(https://s2.music.126.net/style/web2/img/sprite.png?974d69ced13d5c8c4afbbf71c2181fad) no-repeat 0 9999px;
+}
+
+.m-back {
+    display: block;
+    position: fixed;
+    _position: absolute;
+    text-indent: -9999px;
+    left: 50%;
+    margin-left: 500px;
+    bottom: 160px;
+    width: 49px;
+    height: 44px;
+    background-position: -265px -47px;
+    cursor: pointer;
+}

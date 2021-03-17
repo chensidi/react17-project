@@ -1,5 +1,5 @@
 import Header from '@/components/Header/Header';
-import { HashRouter as Router } from 'react-router-dom';
+import { HashRouter as Router, useHistory, } from 'react-router-dom';
 import Footer from '@/components/Footer/Footer';
 import PlayBar from '@/components/PlayBar/PlayBar';
 

@@ -1,17 +1,17 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { setCurSong } from '@store/action';
+import { setCurSong, setSubNav, } from '@store/action';
 import { Button, Spin } from 'antd';
 import sessionStore from '@utils/sessionStore';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
 import homeConfig from './config';
 import NewDiskSwiper from './Swiper';
+import Main from '@/components/Main';
 // import './index.scss';
 // import { Link } from 'react-router-dom';
 
 const Banner = AsyncComponent(() => import('@/components/Banner/Banner'))
-const Main = AsyncComponent(() => import('@/components/Main'));
 const BlockTitle = AsyncComponent(() => import('@/components/BlockTitle'));
 const CoverItem = AsyncComponent(() => import('@/components/Covers/CoverItem'));
 const RankModule = AsyncComponent(() => import('./Rank'));
@@ -21,13 +21,14 @@ const mapStateToProps = (state) => {
     return {
         curSong: state.globalData.curSong ? 
         state.globalData.curSong : sessionStore.get('globalData').curSong,
-        userInfo: state.user.userInfo
+        userInfo: state.user.userInfo,
     }
 }
 
 const mapDispatchToProps = (dispath) => {
     return {
-        setCurSong: (song) => dispath(setCurSong(song))
+        setCurSong: (song) => dispath(setCurSong(song)),
+        setSubNav: (show) => dispath(setSubNav(show))
     }
 }
 
@@ -40,6 +41,7 @@ class Home extends Component {
         loading: false
     };
     async componentDidMount() {
+        this.props.setSubNav(true);
         this.setState({loading: true})
         await this._loadBanners();
         await this._getRecommend();
