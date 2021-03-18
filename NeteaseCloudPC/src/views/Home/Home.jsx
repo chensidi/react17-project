@@ -138,22 +138,6 @@ class Home extends Component {
                         </div>
                     </div>
                 </Main>
-                <div>
-                    {
-                        this.props.curSong && (
-                            <p>
-                                {this.props.curSong.name}
-                                {this.props.curSong.url}
-                                {this.props.curSong.singer}
-                                {this.props.userInfo.name}
-                            </p>
-                        )
-                    }
-                    
-                </div>
-                <p>
-                    <Button onClick={this.change}>change song</Button>
-                </p>
                 {
                     this.props.children
                 }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, } from 'react'
-import { Link, NavLink, useHistory, } from 'react-router-dom';
+import { Link, NavLink, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { navs } from './nav';
 import { connect } from 'react-redux';
 
@@ -35,12 +35,21 @@ const Header = (props) => {
         const val = e.target.value,
               keyCode = e.code;
         if (val.trim() != '' && keyCode === 'Enter') {
-            history.replace({pathname: '/search', search: `?kw=${val}`})
+            history.push(`/search/${val}`)
         }
     }
     useEffect(() => {
-        searchRef.current.value = decodeURIComponent(history.location.search.match(/kw=(.+)/)?.[1] || '');
+        searchRef.current.value = decodeURIComponent(kw);
+        if (!kw) return;
+        try {
+            document.querySelector('.srch.j-flag').value = kw;
+            setTimeout(() => document.querySelector('.btn.j-flag').click(), 10)
+        } catch (err) {
+            console.log(err);
+        }
     })
+    const kw = useRouteMatch('/search/:kw')?.params?.kw || '';
+    
     return (
         <div className="g-topbar">
             <div className="m-top">
@@ -71,7 +80,13 @@ const Header = (props) => {
                     <div className="m-srch f-pr j-suggest">
                         <div className="srchbg">
                             <span className="parent">
-                            <input type="text" ref={searchRef} className="txt j-flag" onKeyPress={searchHandler} />
+                            <input 
+                                type="text" 
+                                ref={searchRef} 
+                                className="txt j-flag" 
+                                onKeyPress={searchHandler}
+                                placeholder="音乐/视频/电台/用户" 
+                            />
                             </span>
                         </div>
                     </div>

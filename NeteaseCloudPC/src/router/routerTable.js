@@ -20,7 +20,7 @@ const routes = [
         name: 'Personal'
     },
     {
-        path: '/search',
+        path: '/search/:kw',
         component: Search,
         name: 'Search'
     }

@@ -35,14 +35,14 @@ class SearchPage extends Component {
     }
     componentDidMount() {
         store.dispatch(setSubNav(false));
-        let kw = this.props.location.search.match(/kw=(.+)/)[1];
+        let kw = this.props.match.params.kw;
         kw = decodeURIComponent(kw);
         setTimeout(() => {this.searchInput.value = kw;}, 100)
         this.search(kw, '1');
         this.setState({kw});
     }
     callback = (key) => {
-        this.searchInput.value = this.state.kw;
+        // this.searchInput.value = this.state.kw;
         this.setState({
             curType: key
         })
@@ -106,6 +106,7 @@ class SearchPage extends Component {
 
     searchHandler = (e) => {
         if (e.code === 'Enter' && e.target.value !== '') {
+            this.props.history.replace(`/search/${e.target.value}`)
             this.search(e.target.value, this.state.curType);
         }
     }
@@ -130,9 +131,9 @@ class SearchPage extends Component {
             playLists,
             djRadios,
             userprofiles,
-            kw,
             unit,
         } = this.state;
+        const kw = this.searchInput?.value || this.state.kw;
         return (
             <Main className="g-bd">
                 <div className="g-wrap n-srch">
@@ -163,7 +164,7 @@ class SearchPage extends Component {
                                                 }) 
                                             }
                                         </div>
-                                        <NotResult num={songList.length}  />
+                                        <NotResult num={songList.length} loading={loading}  />
                                     </div>
                                 </Spin>
                             </TabPane>
@@ -181,7 +182,7 @@ class SearchPage extends Component {
                                                 }
                                             </ul>
                                         </div>
-                                        <NotResult num={artists.length}  />
+                                        <NotResult num={artists.length} loading={loading}  />
                                     </div>
                                 </Spin>
                             </TabPane>
@@ -197,7 +198,7 @@ class SearchPage extends Component {
                                                 })
                                             }
                                         </ul>
-                                        <NotResult num={albums.length}  />
+                                        <NotResult num={albums.length} loading={loading}  />
                                     </div>
                                 </Spin>
                             </TabPane>
@@ -213,7 +214,7 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </ul>
-                                    <NotResult num={videos.length}  />
+                                    <NotResult num={videos.length} loading={loading}  />
                                 </div>
                                 </Spin>
                             </TabPane>
@@ -232,7 +233,7 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </div>
-                                    <NotResult num={lyrics.length}  />
+                                    <NotResult num={lyrics.length} loading={loading}  />
                                 </div>
                                 </Spin>
                             </TabPane>
@@ -240,7 +241,7 @@ class SearchPage extends Component {
                                 <Spin tip="Loading..." spinning={loading}>
                                     <div className="n-srchrst">
                                         <PlayLists list={playLists}  />
-                                        <NotResult num={playLists.length}  />
+                                        <NotResult num={playLists.length} loading={loading}  />
                                     </div>
                                 </Spin>
                             </TabPane>
@@ -256,7 +257,7 @@ class SearchPage extends Component {
                                             })
                                         }
                                     </ul>
-                                    <NotResult num={djRadios.length}  />
+                                    <NotResult num={djRadios.length} loading={loading}  />
                                 </div>
                                 </Spin>
                             </TabPane>

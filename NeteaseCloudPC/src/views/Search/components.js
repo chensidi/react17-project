@@ -341,9 +341,9 @@ export const UserPanel = (props) => {
 }
 
 export const NotResult = (props) => {
-    const num = props.num;
+    const { num, loading } = props;
     return (
-        num <= 0 ? (
+        num <= 0 && !loading ? (
             <div className="n-nmusic">
                 <h3 className="f-ff2">
                     <i className="u-icn u-icn-21"></i>
