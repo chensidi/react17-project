@@ -1344,3 +1344,351 @@ table {
     cursor: pointer;
     z-index: 100;
 }
+
+.g-bd4 {
+    background: url(https://s2.music.126.net/style/web2/img/frame/wrap4.png?c89405a51bee79d4f48ad782a0cac336) repeat-y center 0;
+}
+
+.g-mn4 {
+    float: left;
+    width: 100%;
+    margin-right: -270px;
+}
+
+.g-mn4c {
+    margin-right: 271px;
+}
+
+.g-wrap6 {
+    padding: 47px 30px 40px 39px;
+}
+
+.m-lycifo {
+    margin-top: -10px;
+    .cvrwrap {
+        float: left;
+        width: 206px;
+        margin-right: -226px;
+        .out {
+            float: left;
+            margin: 20px 0 0 46px;
+        }
+        .dec {
+            text-decoration: underline;
+        }
+    }
+    .des {
+        margin: 10px 0;
+        span {
+            color: #333;
+        }
+    }
+
+    .cnt {
+        float: right;
+        width: 414px;
+    }
+
+    .hd  {
+        .lab {
+            float: left;
+        }
+    }
+
+    .tit {
+        margin-left: 64px;
+        position: relative;
+        top: -6px;
+        font-size: 24px;
+        em {
+            margin-right: 7px;
+        }
+    }
+    .bd {
+        height: 299px;
+        margin-top: 13px;
+        line-height: 23px;
+    }
+    .bd-open {
+        height: auto;
+    }
+    .crl {
+        margin-top: 5px;
+        span {
+            cursor: pointer;
+        }
+    }
+}
+
+.u-cover .bottom, .u-cover .msk, .n-musicsd .lst .avatar .msk {
+    background: url(https://s2.music.126.net/style/web2/img/coverall.png?907bac5af26ce134b53a520667f5cebe) no-repeat;
+    _background: url(https://s2.music.126.net/style/web2/img/coverall.png?907bac5af26ce134b53a520667f5cebe) no-repeat 0 9999px;
+}
+
+.u-cover-6 {
+    width: 198px;
+    height: 198px;
+    img {
+        width: 130px;
+        height: 130px;
+        margin: 34px;
+    }
+    .msk {
+        width: 206px;
+        height: 205px;
+        top: -4px;
+        left: -4px;
+        background-position: -140px -580px;
+        _background-position: 0 0;
+    }
+}
+
+.u-icn-95 {
+    width: 16px;
+    height: 16px;
+    background-position: -34px -863px;
+}
+
+.u-icn-37 {
+    width: 54px;
+    height: 24px;
+    background-position: 0 -463px !important;
+}
+
+.s-fc7, a.s-fc7:hover {
+    color: #0c73c2;
+}
+
+.m-info {
+    .btns {
+        margin-bottom: 25px;
+        margin-right: -10px;
+        .u-btni-add {
+            margin-right: 5px;
+        }
+    }
+}
+
+.u-btn2, .u-btn2 i, .u-btn2 .icn, .u-btni, .u-btni i, .u-tag, .u-tag i, .u-btni-addply .ply {
+    background: url(https://s2.music.126.net/style/web2/img/button2.png?396632176f6e2ccd934839dfdd50e00c) no-repeat 0 9999px;
+}
+
+.u-btni-addply {
+    float: left;
+    i {
+        padding: 0 7px 0 8px;
+    }
+    .ply {
+        float: left;
+        width: 20px;
+        height: 18px;
+        margin: 6px 2px 2px 0;
+        background-position: 0 -1622px;
+        overflow: hidden;
+    }
+}
+
+.u-btn2-2 {
+    color: #fff;
+    background-position: right -428px;
+    i {
+        color: #fff;
+        background-position: 0 -387px;
+    }
+}
+
+.u-btn2 {
+    padding: 0 5px 0 0;
+    white-space: nowrap;
+    &, & i {
+        display: inline-block;
+        *display: inline;
+        *zoom: 1;
+        height: 31px;
+        line-height: 31px;
+        overflow: hidden;
+        *line-height: 32px;
+        vertical-align: top;
+        text-align: center;
+        cursor: pointer;
+    }
+    &:hover {
+        color: #fff;
+        background-position: right -510px;
+    }
+}
+
+.u-btni-add {
+    width: 31px;
+    margin-left: -3px;
+    padding-right: 0;
+    background-position: 0 -1588px;
+    &:hover {
+        background-position: -40px -1588px;
+    }
+}
+
+.u-btni {
+    padding: 0 5px 0 0;
+    white-space: nowrap;
+    &, & i{
+        float: left;
+        height: 31px;
+        line-height: 30px;
+        min-width: 23px;
+        cursor: pointer;
+    }
+    i {
+        padding: 0 7px 0 36px;
+    }
+}
+
+.m-info .btns2 .u-btni, .m-info .btns .u-btni {
+    margin-right: 6px;
+}
+
+.u-btni-share, .u-btni-fav, .u-btni-cmmt, .u-btni-dl {
+    background-position: right -1020px;
+}
+
+.u-btni-fav i {
+    background-position: 0 -977px;
+}
+
+.u-btni-share, .u-btni-fav, .u-btni-cmmt, .u-btni-dl, .u-btni-unfav {
+    i {
+        padding-right: 2px;
+        padding-left: 28px;
+    }
+    &:hover {
+        background-position: right -1106px;
+    }
+}
+
+.u-btni-share i {
+    background-position: 0 -1225px;
+}
+
+.u-btni-dl i {
+    background-position: 0 -2761px;
+}
+
+.u-btni-cmmt i {
+    background-position: 0 -1465px;
+}
+
+.f-brk {
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+}
+
+.lrc-user {
+    text-align: right;
+    margin-top: 48px;
+    line-height: 30px;
+}
+
+.n-cmt {
+    margin-top: 40px;
+}
+
+.u-title {
+    height: 40px;
+    border-bottom: 2px solid #c20c0c;
+    h3 {
+        float: left;
+        font-size: 24px;
+        font-weight: normal;
+    }
+    .sub {
+        float: left;
+        margin: 13px 0 0 10px;
+    }
+}
+
+.u-title-1 {
+    height: 33px;
+    h3 {
+        font-size: 20px;
+        line-height: 28px;
+    }
+    .sub {
+        margin: 9px 0 0 20px;
+    }
+}
+
+.u-hd4 {
+    position: relative;
+    top: 1px;
+    height: 20px;
+    border-bottom: 1px solid #cfcfcf;
+}
+
+.m-cmmt .cmmts {
+    .itm {
+        padding: 15px 0;
+        border-top: 1px dotted #ccc;
+    }
+    .cntwrap {
+        margin-left: 60px;
+        .s-fc7 {
+            margin-right: 5px;
+        }
+        .u-icn2 {
+            margin-right: 5px;
+            vertical-align: -2px;
+        }
+    }
+    .cnt {
+        width: 100%;
+        overflow: hidden;
+        line-height: 20px;
+    }
+    div.rp {
+        margin-top: 15px;
+        text-align: right;
+    }
+    .time {
+        float: left;
+        margin: 0 !important;
+    }
+    .zan {
+        margin-top: -4px;
+    }
+    .que {
+        padding: 8px 19px;
+        margin-top: 10px;
+        line-height: 20px;
+        background: #f4f4f4;
+        border: 1px solid #dedede;
+        .darr {
+            position: absolute;
+            top: -7px;
+            left: 20px;
+            font-size: 12px;
+            line-height: 14px;
+        }
+    }
+}
+
+.m-cmmt .head, .m-cmmt .head img {
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-right: -100px;
+}
+
+.m-cmmt .cmmts img {
+    vertical-align: middle;
+}
+
+.u-icn2-12, .u-icn2-13 {
+    width: 15px;
+    height: 14px;
+    background-position: -150px 0;
+}
+
+.pagination-wrap {
+    text-align: center;
+}

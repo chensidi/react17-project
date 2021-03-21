@@ -13,7 +13,7 @@ export default {
             return err;
         }
     },
-    async getLyric(id) { //获取歌词
+    async getLyric(id, key = false) { //获取歌词
         try {
             message.loading({ 
                 content: '获取歌词中...', 
@@ -26,6 +26,9 @@ export default {
             const res = await http.get(`/lyric`, {
                 id
             })
+            if (key) {
+                return res;
+            }
             return res.lrc.lyric
         } catch (err) {
             return err;
@@ -43,4 +46,16 @@ export default {
             return err;
         }
     },
+    async getCmtOfSong({id, limit = 20, offset = 0} = {}) { //获取歌曲评论
+        try {
+            const res = await http.get(`/comment/music`, {
+                id,
+                limit,
+                offset
+            })
+            return res;
+        } catch (err) {
+            return err;
+        }
+    }
 }

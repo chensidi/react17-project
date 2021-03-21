@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { setCurSong, setSubNav, } from '@store/action';
-import { Button, Spin } from 'antd';
+import { Spin } from 'antd';
 import sessionStore from '@utils/sessionStore';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
