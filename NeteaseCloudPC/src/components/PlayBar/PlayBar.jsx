@@ -294,8 +294,10 @@ const PlayBar = (props) => {
     }
     function onError(e) { //音频资源出错
         console.log(e);
+        const errTIme = mp3.current.currentTime; //记录出错位置
         // message.error('资源出错请重新点击播放');
         getSongById().then(() => {
+            mp3.current.currentTime = errTIme;
             mp3.current.play();
             changeMp3Info({
                 ...mp3Info,

@@ -1692,3 +1692,90 @@ table {
 .pagination-wrap {
     text-align: center;
 }
+
+.g-sd4 {
+    position: relative;
+    float: right;
+    width: 270px;
+    zoom: 1;
+}
+
+.g-wrap7 {
+    padding: 20px 40px 40px 30px;
+}
+
+.u-hd3 {
+    position: relative;
+    *zoom: 1;
+    height: 23px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    color: #333;
+}
+
+.m-rctlist {
+    margin-bottom: 25px;
+    li {
+        float: left;
+        width: 200px;
+        height: 50px;
+        margin-bottom: 15px;
+        line-height: 24px;
+    }
+    .cver {
+        margin-right: -60px;
+        &, & img {
+            float: left;
+            width: 50px;
+            height: 50px;
+        }
+    }
+    .info {
+        margin-left: 60px;
+        line-height: 24px;
+        p {
+            width: 140px;
+        }
+    }
+    .by {
+        float: left;
+    }
+    .nm {
+        float: left;
+        max-width: 106px;
+        margin: 0 2px 0 4px;
+    }
+}
+
+.m-sglist {
+    margin-bottom: 25px;
+    li {
+        margin-top: 10px;
+    }
+    .txt {
+        float: left;
+        width: 156px;
+        line-height: 16px;
+    }
+    .opr {
+        float: right;
+        position: relative;
+        top: 10px;
+        line-height: 32px;
+        span {
+            float: left;
+            width: 10px;
+            height: 11px;
+            background: url(https://s2.music.126.net/style/web2/img/icon2.png?29478c5cc864a506e54988edbc51a561) no-repeat -9999px -9999px;
+            opacity: 0.9;
+            cursor: pointer;
+        }
+        .play {
+            margin-right: 16px;
+            background-position: -69px -455px;
+        }
+        .add {
+            background-position: -87px -454px;
+        }
+    }
+}

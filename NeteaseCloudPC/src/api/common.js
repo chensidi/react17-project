@@ -57,5 +57,25 @@ export default {
         } catch (err) {
             return err;
         }
+    },
+    async getSameList(id) { //获取相似歌单
+        try {
+            const res = await http.get(`/simi/playlist`, {
+                id,
+            })
+            return res.playlists;
+        } catch (err) {
+            return err;
+        }
+    },
+    async getSameSong(id) { //获取相似歌曲
+        try {
+            const res = await http.get(`/simi/song`, {
+                id,
+            })
+            return res.songs;
+        } catch (err) {
+            return err;
+        }
     }
 }

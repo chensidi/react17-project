@@ -5,6 +5,7 @@ import commonApi from '@/api/common';
 import { artistsFormat, lrcFilter, playItem } from '@/utils/utils';
 import { Pagination, message } from 'antd';
 import Comment from '@/components/Comment/Comment';
+import { SameLists, SameSongs } from './components';
 
 class Song extends Component {
     state = {
@@ -19,7 +20,9 @@ class Song extends Component {
         hotCmts: [],
         cmts: [],
         cmtsTotal: 0,
-        curPage: 1
+        curPage: 1,
+        sameLists: [],
+        sameSongs: []
     }
 
     getSongDetails = async (id) => {
@@ -36,7 +39,7 @@ class Song extends Component {
     getLrc = async (id) => {
         const res = await commonApi.getLyric(id, true);
         const lrcObj = {
-            lrcArr: lrcFilter(res.lrc.lyric),
+            lrcArr: lrcFilter(res?.lrc?.lyric || ''),
             lrcUser: res.lyricUser
         }
         this.setState({lrcObj});
@@ -59,6 +62,16 @@ class Song extends Component {
         this.setState(dataSet);
     }
 
+    _getSameLists = async (id) => {
+        const sameLists = await commonApi.getSameList(id);
+        this.setState({sameLists});
+    }
+
+    _getSameSongs = async (id) => {
+        const sameSongs = await commonApi.getSameSong(id);
+        this.setState({sameSongs});
+    }
+
     pageChange = async (page, pageSize) => {
         this.setState({curPage: page});
         message.loading({ 
@@ -79,6 +92,9 @@ class Song extends Component {
         this.getSongDetails(id);
         this.getLrc(id);
         this.getCmt(id);
+        this._getSameLists(id);
+        this._getSameSongs(id);
+        document.body.scrollTo(0, 0);
     }
 
     render() {
@@ -90,6 +106,8 @@ class Song extends Component {
             cmts,
             cmtsTotal,
             curPage,
+            sameLists,
+            sameSongs,
             id
         } = this.state;
         return (
@@ -231,6 +249,12 @@ class Song extends Component {
                             </div>
                         </div>
                     </div>
+                    <div className="g-sd4">
+                        <div className="g-wrap7">
+                            <SameLists lists={sameLists} />
+                            <SameSongs songs={sameSongs} />
+                        </div>
+                    </div>                                    
                 </Main>
             </div>
         )
