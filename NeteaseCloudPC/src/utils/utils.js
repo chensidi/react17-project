@@ -1,5 +1,5 @@
 import store from '@/store';
-import { getSongInfo, setHistory, } from '@/store/action';
+import { getSongInfo, setHistory, setCurSong } from '@/store/action';
 import commonRequest from '@/api/common';
 import { message } from 'antd';
 
@@ -115,13 +115,14 @@ export function addToPlay(id) { //添加到播放列表
     })
 }
 
-export function delFromPlay(id, e) { //从播放列表里删除
+export async function delFromPlay(id, e) { //从播放列表里删除
     e.stopPropagation();
     const historyPlay = store.getState().globalData.historyPlay;
-    let idx;
+    let idx, curId;
     for(let i = 0; i < historyPlay.length; i ++) {
         if (historyPlay[i].id === id) {
             idx = i;
+            curId = id;
             break;
         }
     }
@@ -129,4 +130,14 @@ export function delFromPlay(id, e) { //从播放列表里删除
     console.log(idx);
     historyPlay.splice(idx, 1);
     store.dispatch(setHistory(historyPlay));
+
+    if (curId === store.getState().globalData.curSong.id) { //删除的正在playing
+        if (idx >= historyPlay.length) {
+            idx = historyPlay.length - 1;
+        }
+    }
+    const res = await commonRequest.getLyric(historyPlay[idx].id);
+    console.log(idx)
+    store.dispatch(setCurSong({...historyPlay[idx], lyc: res}));
+    document.querySelector('.listlyric').scrollTop = 0;
 }
