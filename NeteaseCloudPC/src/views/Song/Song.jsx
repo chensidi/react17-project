@@ -6,6 +6,7 @@ import { artistsFormat, lrcFilter, playItem } from '@/utils/utils';
 import { Pagination, message } from 'antd';
 import Comment from '@/components/Comment/Comment';
 import { SameLists, SameSongs } from './components';
+import { addToPlay } from '@/utils/utils';
 
 class Song extends Component {
     state = {
@@ -155,7 +156,7 @@ class Song extends Component {
                                                             播放
                                                         </i>
                                                     </div>
-                                                    <div className="u-btni u-btni-add"></div>
+                                                    <div className="u-btni u-btni-add" onClick={() => addToPlay(id)}></div>
                                                     <div className="u-btni u-btni-fav">
                                                         <i>收藏</i>
                                                     </div>

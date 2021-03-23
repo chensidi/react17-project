@@ -2,7 +2,7 @@ import './index.scss';
 import { Link } from 'react-router-dom';
 import { useState, createRef, memo, useEffect, useRef, forwardRef, } from 'react';
 import { connect } from 'react-redux';
-import { mediaTimeFormat, formatLrc, artistsFormat, } from '@/utils/utils';
+import { mediaTimeFormat, formatLrc, artistsFormat, delFromPlay } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
 import { message } from 'antd';
@@ -31,7 +31,7 @@ function compare() {
 
 const HistoryItem = forwardRef((props, ref) => {
     function playItem() {
-        console.log(ref);
+        // console.log(ref);
         props.getSongById(props.id).then(() => {
             ref.current.currentTime = 0;
             props.initMp3();
@@ -47,7 +47,7 @@ const HistoryItem = forwardRef((props, ref) => {
             <div className="col col-2">{ props.name }</div>
             <div className="col col-3">
                 <div className="icns">
-                    <i className="ico icn-del" title="删除"></i>
+                    <i className="ico icn-del" title="删除" onClick={(e) => delFromPlay(props.id, e)}></i>
                     <i className="ico ico-dl" title="下载"></i>
                     <i className="ico ico-share" title="分享"></i>
                     <i className="j-t ico ico-add" title="收藏"></i>

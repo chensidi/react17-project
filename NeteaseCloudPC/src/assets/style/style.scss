@@ -744,6 +744,9 @@ a {
         }
         .hshow {
             visibility: hidden;
+            i {
+                cursor: pointer;
+            }
         }
         .u-icn-81 {
             margin-right: 8px;

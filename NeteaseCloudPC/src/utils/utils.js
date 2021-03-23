@@ -1,5 +1,13 @@
 import store from '@/store';
 import { getSongInfo, setHistory, } from '@/store/action';
+import commonRequest from '@/api/common';
+import { message } from 'antd';
+
+async function getSongDetails(id) {
+    const url = await commonRequest.getSongUrl(id);
+    const details = await commonRequest.getSongDetails(id);
+    return { id, details, url };
+}
 
 export function mediaTimeFormat(time) { //毫秒转
     time = Math.round(time);
@@ -55,7 +63,7 @@ export function playTimesFormat(num, unit = 10000, unitName = '万') { //数量�
     return num >= unit ? (num / unit).toFixed(1) + unitName : num;
 }
 
-export function playItem(id) {
+export function playItem(id) { //播放单曲
     const historyPlay = store.getState().globalData.historyPlay;
     let exist = false;
     for(let i = 0; i < historyPlay.length; i ++) {
@@ -79,4 +87,46 @@ export function playItem(id) {
         historyPlay.unshift(nowItem);
         store.dispatch(setHistory(historyPlay));
     })
+}
+
+export function addToPlay(id) { //添加到播放列表
+    const historyPlay = store.getState().globalData.historyPlay;
+    let exist = false;
+    for(let i = 0; i < historyPlay.length; i ++) {
+        if (historyPlay[i].id === id) {
+            exist = true;
+            break;
+        }
+    }
+    if (exist) return;
+    getSongDetails(id).then(res => {
+        const { id, url, details } = res;
+        const addItem = {
+            url,
+            name: details.name,
+            singer: artistsFormat(details.ar),
+            id,
+            alblum: details.al,
+            duration: mediaTimeFormat(details.dt / 1000)
+        }
+        historyPlay.push(addItem); 
+        store.dispatch(setHistory(historyPlay));
+        message.success('已添加到播放列表', 1);
+    })
+}
+
+export function delFromPlay(id, e) { //从播放列表里删除
+    e.stopPropagation();
+    const historyPlay = store.getState().globalData.historyPlay;
+    let idx;
+    for(let i = 0; i < historyPlay.length; i ++) {
+        if (historyPlay[i].id === id) {
+            idx = i;
+            break;
+        }
+    }
+    if (idx == null) return;
+    console.log(idx);
+    historyPlay.splice(idx, 1);
+    store.dispatch(setHistory(historyPlay));
 }

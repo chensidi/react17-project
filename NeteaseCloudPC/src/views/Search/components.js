@@ -2,35 +2,7 @@ import { Link } from 'react-router-dom';
 import { mediaTimeFormat, artistsFormat, playTimesFormat } from '@/utils/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useState } from 'react';
-import store from '@/store';
-import { getSongInfo, setHistory, } from '@/store/action';
-
-function playItem(id) {
-    const historyPlay = store.getState().globalData.historyPlay;
-    let exist = false;
-    for(let i = 0; i < historyPlay.length; i ++) {
-        if (historyPlay[i].id === id) {
-            exist = true;
-            break;
-        }
-    }
-    if (exist) return;
-    store.dispatch(getSongInfo(id)).then((res) => {
-        // console.log(res);
-        const song = res.song;
-        const nowItem = {
-            url: song.url,
-            name: song.name,
-            singer: song.singer,
-            id: song.id,
-            alblum: song.alblum,
-            duration: song.duration
-        }
-        historyPlay.unshift(nowItem);
-        store.dispatch(setHistory(historyPlay));
-    })
-}
-
+import { playItem, addToPlay } from '@/utils/utils';
 
 export const SongItem = (props) => {
     const { i, name, mv, ar, al, dt, id } = props;
@@ -51,7 +23,7 @@ export const SongItem = (props) => {
             </div>
             <div className="td">
                 <div className="opt hshow">
-                    <i className="u-icn u-icn-81 icn-add"></i>
+                    <i className="u-icn u-icn-81 icn-add" onClick={() => addToPlay(id)}></i>
                     <i className="icn icn-fav"></i>
                     <i className="icn icn-share"></i>
                     <i className="icn icn-dl"></i>
