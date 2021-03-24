@@ -68,13 +68,14 @@ export function playItem(id) { //播放单曲
     let exist = false;
     for(let i = 0; i < historyPlay.length; i ++) {
         if (historyPlay[i].id === id) {
+            if (id === store.getState().globalData.curSong.id) return;
             exist = true;
             break;
         }
     }
-    if (exist) return;
     store.dispatch(getSongInfo(id)).then((res) => {
         // console.log(res);
+        if (exist) return;
         const song = res.song;
         const nowItem = {
             url: song.url,
@@ -85,7 +86,7 @@ export function playItem(id) { //播放单曲
             duration: song.duration
         }
         historyPlay.unshift(nowItem);
-        store.dispatch(setHistory(historyPlay));
+        store.dispatch(setHistory([...historyPlay]));
     })
 }
 
@@ -110,7 +111,7 @@ export function addToPlay(id) { //添加到播放列表
             duration: mediaTimeFormat(details.dt / 1000)
         }
         historyPlay.push(addItem); 
-        store.dispatch(setHistory(historyPlay));
+        store.dispatch(setHistory([...historyPlay]));
         message.success('已添加到播放列表', 1);
     })
 }
@@ -129,15 +130,14 @@ export async function delFromPlay(id, e) { //从播放列表里删除
     if (idx == null) return;
     console.log(idx);
     historyPlay.splice(idx, 1);
-    store.dispatch(setHistory(historyPlay));
+    store.dispatch(setHistory([...historyPlay]));
 
     if (curId === store.getState().globalData.curSong.id) { //删除的正在playing
         if (idx >= historyPlay.length) {
             idx = historyPlay.length - 1;
         }
+        const res = await commonRequest.getLyric(historyPlay[idx].id);
+        store.dispatch(setCurSong({...historyPlay[idx], lyc: res}));
+        document.querySelector('.listlyric').scrollTop = 0;
     }
-    const res = await commonRequest.getLyric(historyPlay[idx].id);
-    console.log(idx)
-    store.dispatch(setCurSong({...historyPlay[idx], lyc: res}));
-    document.querySelector('.listlyric').scrollTop = 0;
 }

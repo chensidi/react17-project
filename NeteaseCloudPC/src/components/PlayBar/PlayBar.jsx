@@ -316,6 +316,7 @@ const PlayBar = (props) => {
     }
 
     useEffect(() => {
+        console.log('listen')
         if (props.curSong?.id == null) return;
         count ++;
         if (count === 1) {
@@ -412,7 +413,7 @@ const PlayBar = (props) => {
                     <img src={`${props.curSong?.alblum?.picUrl}?imageView&blur=3x3`} className="imgbg j-flag" alt=""/>
                     <div className="listhd">
                         <div className="listhdc">
-                            <h4>播放列表(<span className="j-flag">1</span>)</h4>
+                            <h4>播放列表(<span className="j-flag">{ props.historyPlay.length }</span>)</h4>
                             <span className="addall">
                                 <i className="ico ico-add"></i>
                                 收藏全部

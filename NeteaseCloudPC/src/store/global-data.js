@@ -38,6 +38,10 @@ const globalReducer = (state = initialData, action) => {
                 keep: [...keeps]
             }
         case SET_HISTORY:
+            /* 
+                此处踩坑😂,redux是对地址的比较  
+                如果地址没变，即使值变了，UI也不会更新
+            */
             sessionStore.set('globalData', {
                 ...state,
                 historyPlay: action.history
