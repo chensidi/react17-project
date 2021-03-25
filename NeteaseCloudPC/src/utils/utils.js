@@ -63,6 +63,16 @@ export function playTimesFormat(num, unit = 10000, unitName = '万') { //数量�
     return num >= unit ? (num / unit).toFixed(1) + unitName : num;
 }
 
+export function getRandom(min, max, exclude = []) { //产生随机数
+    let item = min + (max - min) * Math.random();
+    item = Math.floor(item);
+    if (exclude.includes(item)) {
+        return getRandom(min, max, exclude);
+    } else {
+        return item;
+    }
+}
+
 export function playItem(id) { //播放单曲
     const historyPlay = store.getState().globalData.historyPlay;
     let exist = false;

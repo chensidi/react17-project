@@ -2,7 +2,7 @@ import './index.scss';
 import { Link } from 'react-router-dom';
 import { useState, createRef, memo, useEffect, useRef, forwardRef, } from 'react';
 import { connect } from 'react-redux';
-import { mediaTimeFormat, formatLrc, artistsFormat, delFromPlay } from '@/utils/utils';
+import { mediaTimeFormat, formatLrc, artistsFormat, delFromPlay, getRandom } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
 import { message } from 'antd';
@@ -68,6 +68,21 @@ let timer = null, //playbar锁定计时器
     scrollTimer = null; //歌词滚动锁定计时器
 let count = 0;
 
+const playMode = [
+    {
+        class: 'icn-loop',
+        txt: '列表循环',
+    },
+    {
+        class: 'icn-shuffle',
+        txt: '随机播放',
+    },
+    {
+        class: 'icn-one',
+        txt: '单曲循环',
+    }
+]
+
 const PlayBar = (props) => {
     const [downUpKey, changeDownUp] = useState(false); //控制能否拖动的开关
     const barRef = useRef(null); //进度条ref
@@ -89,6 +104,7 @@ const PlayBar = (props) => {
     const [curIdx, changeCurIdx] = useState(0);
     const [canScrollLrc, changeCanScroll] = useState(true);
     const [showPanel, changeShow] = useState(false); //是否展示歌词面板
+    const [songMode, changeMode] = useState(0); //播放模式，循环/随机/单曲
 
     // 没有歌曲的话，默认设置为张学友 - 咖啡
     if (props.curSong == null) {
@@ -241,26 +257,55 @@ const PlayBar = (props) => {
         onEnd();
         cutSong();
     }
-    async function cutSong(flag = true) { //播放上/下一首
+    function getNextPlay(flag = true) { //在不同模式下计算下一曲的id
         let idx;
-        for(let i = 0; i < props.historyPlay.length; i ++) {
-            const song = props.historyPlay[i];
-            if (song.id === props.curSong.id) {
-                idx = i;
-                break;
-            }
+        switch (songMode) {
+            case 0: //列表循环
+                for(let i = 0; i < props.historyPlay.length; i ++) {
+                    const song = props.historyPlay[i];
+                    if (song.id === props.curSong.id) {
+                        idx = i;
+                        break;
+                    }
+                }
+                flag ? ++idx : --idx;
+                //针对首尾情况
+                if (idx >= props.historyPlay.length) {
+                    idx = 0;
+                }
+                if (idx < 0) {
+                    idx = props.historyPlay.length - 1;
+                }
+                return props.historyPlay[idx]; 
+
+            case 1: //随机模式
+                let len = props.historyPlay.length;
+                for(let i = 0; i < props.historyPlay.length; i ++) {
+                    const song = props.historyPlay[i];
+                    if (song.id === props.curSong.id) {
+                        idx = i;
+                        break;
+                    }
+                }
+                idx = getRandom(0, len, [idx]);
+                return props.historyPlay[idx];
+            
+            case 2: //单曲循环
+                return props.curSong;
         }
-        flag ? ++idx : --idx;
-        //针对首尾情况
-        if (idx >= props.historyPlay.length) {
-            idx = 0;
+    }
+    async function cutSong(flag = true) { //播放上/下一首
+        const song = getNextPlay(flag);
+        if (songMode === 2) {
+            mp3.current.play();
+            changeMp3Info({
+                ...mp3Info,
+                isPlay: true
+            })
+        } else {
+            const res = await commonRequest.getLyric(song.id);
+            props.setCurSong({...song, lyc: res});
         }
-        if (idx < 0) {
-            idx = props.historyPlay.length - 1;
-        }
-        const res = await commonRequest.getLyric(props.historyPlay[idx].id);
-        console.log(idx)
-        props.setCurSong({...props.historyPlay[idx], lyc: res});
         document.querySelector('.listlyric').scrollTop = 0;
     }
     function onEnd() { //播放结束
@@ -313,6 +358,10 @@ const PlayBar = (props) => {
             ...mp3Info,
             isPlay: true
         })
+    }
+
+    function changePlayMode() {
+        songMode >= 2 ? changeMode(0) : changeMode(songMode + 1);
     }
 
     useEffect(() => {
@@ -404,6 +453,11 @@ const PlayBar = (props) => {
                         </div>
                     </div>
                     <div className="ctrl f-fl f-pr j-flag">
+                        <span 
+                        className={`icn ${playMode[songMode].class}`} 
+                        title={playMode[songMode].txt}
+                        onClick={changePlayMode}>
+                        </span>
                         <span className="add f-pr" onClick={() => changeShow(!showPanel)}>
                             <em className="icn icn-list s-fc3" title="播放列表">{ props.historyPlay.length }</em>
                         </span>

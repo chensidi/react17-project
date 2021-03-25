@@ -190,6 +190,7 @@
         height: 25px;
         margin: 11px 2px 0 0;
         text-indent: -9999px;
+        cursor: pointer;
     }
     .icn-list {
         display: block;
@@ -490,6 +491,15 @@
     .ico-add {
         width: 16px;
         background-position: -24px 0;
+    }
+    .icn-loop {
+        background-position: -3px -344px;
+    }
+    .icn-shuffle {
+        background-position: -66px -248px;
+    }
+    .icn-one {
+        background-position: -66px -344px;
     }
 }
 

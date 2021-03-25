@@ -35,7 +35,7 @@ const Header = (props) => {
         const val = e.target.value,
               keyCode = e.code;
         if (val.trim() != '' && keyCode === 'Enter') {
-            history.push(`/search/${val}`)
+            history.push(`/search/${encodeURIComponent(val)}`)
         }
     }
     useEffect(() => {

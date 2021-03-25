@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { artistsFormat } from '@/utils/utils';
+import { artistsFormat, playItem, addToPlay } from '@/utils/utils';
 
 export const SameLists = (props) => {
     const {lists} = props;
@@ -67,8 +67,8 @@ export const SameSongs = (props) => {
                                     </div>
                                 </div>
                                 <div className="opr f-cb">
-                                    <span className="play"></span>
-                                    <span className="add"></span>
+                                    <span className="play" onClick={() => playItem(song.id)}></span>
+                                    <span className="add" onClick={() => addToPlay(song.id)}></span>
                                 </div>
                             </li>
                         )
