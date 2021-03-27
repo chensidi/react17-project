@@ -459,6 +459,7 @@ a {
         &:hover {
             background-position: 0 -60px;
         }
+        cursor: pointer;
     }
     .icon-headset {
         display: inline-block;
@@ -572,6 +573,19 @@ a {
     }
     &:hover .icon-play {
         display: block;
+    }
+}
+
+.u-cover-alb2, .u-cover-alb3, .u-cover-9 {
+    .icon-play {
+        left: 94px;
+        width: 28px;
+        height: 28px;
+        background-position: 0 -140px;
+        _background-position: 0 0;
+        &:hover {
+            background-position: 0 -170px;
+        }
     }
 }
 
@@ -1044,7 +1058,7 @@ a {
 .u-icn-69, .u-icn-70 {
     width: 11px;
     height: 8px;
-    background-position: -65px -520px;
+    background-position: -65px -520px !important;
 }
 
 .u-icn-70 {
@@ -1449,7 +1463,7 @@ table {
 .u-icn-95 {
     width: 16px;
     height: 16px;
-    background-position: -34px -863px;
+    background-position: -34px -863px !important;
 }
 
 .u-icn-37 {

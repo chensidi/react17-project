@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { mediaTimeFormat, artistsFormat, playTimesFormat } from '@/utils/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useState } from 'react';
-import { playItem, addToPlay } from '@/utils/utils';
+import { playItem, addToPlay, replaceHistory, } from '@/utils/utils';
+import albumApi from '@/api/album';
 
 export const SongItem = (props) => {
     const { i, name, mv, ar, al, dt, id } = props;
@@ -72,18 +73,30 @@ export const SingerItem = (props) => {
     )
 }
 
+async function playAlbum(id) { //播放整张专辑内容
+    const res = await albumApi.getAlbumInfo(id);
+    //将历史记录变为当前专辑列表
+    replaceHistory(res.songs);
+    //将当前播放歌曲切换为该专辑第一首歌曲
+    playItem(res.songs[0].id);
+}
+
 export const AlbumItem = (props) => {
-    const { picUrl, name, artists, } = props;
+    const { picUrl, name, artists, id, } = props;
     return (
         <li>
             <div className="u-cover u-cover-alb2">
-                <Link to="">
+                <Link to="" title={name}>
                     <LazyLoadImage width={130} height={130} src={picUrl}>
                     </LazyLoadImage>
                     <span className="msk"></span>
                 </Link>
-                <Link to="" className="icon-play f-alpha f-fr">
-                </Link>
+                <i 
+                    className="icon-play f-alpha f-fr" 
+                    onClick={() => playAlbum(id)}
+                    title="播放"
+                >
+                </i>
             </div>
             <p className="dec">
                 <Link to="" className="tit f-thide s-fc0">

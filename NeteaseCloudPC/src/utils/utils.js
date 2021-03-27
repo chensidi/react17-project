@@ -151,3 +151,22 @@ export async function delFromPlay(id, e) { //从播放列表里删除
         document.querySelector('.listlyric').scrollTop = 0;
     }
 }
+
+export function replaceHistory(list) { //替换播放历史记录
+    const newList = list.map(item => {
+        const addItem = {
+            url: '',
+            name: item.name,
+            singer: artistsFormat(item.ar),
+            id: item.id,
+            alblum: item.al,
+            duration: mediaTimeFormat(item.dt / 1000)
+        }
+        return addItem;
+    })
+    store.dispatch(setHistory([...newList]));
+}
+
+export function clearHistory() { //清除历史记录
+    store.dispatch(setHistory([]));
+}

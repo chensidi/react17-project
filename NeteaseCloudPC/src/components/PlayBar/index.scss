@@ -216,6 +216,26 @@
         width: 986px;
         height: 301px;
         margin-left: -493px;
+        .nocnt {
+            color: #aaa;
+            padding-top: 85px;
+            text-align: center;
+            line-height: 43px;
+            & a {
+                color: #aaa;
+            }
+            .ico {
+                float: none;
+                display: inline-block;
+                position: relative;
+                top: -4px;
+                width: 36px;
+                height: 29px;
+                margin-right: 3px;
+                background-position: -138px 0;
+                vertical-align: middle;
+            }
+        }
     }
     .listhd {
         background-position: 0 0;
@@ -603,3 +623,6 @@
     zoom: 1;
 }
 
+.f-tdu, .f-tdu:hover {
+    text-decoration: underline;
+}

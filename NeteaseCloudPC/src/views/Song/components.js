@@ -55,7 +55,7 @@ export const SameSongs = (props) => {
                 {
                     songs.map(song => {
                         return (
-                            <li className="f-cb">
+                            <li className="f-cb" key={song.id}>
                                 <div className="txt">
                                     <div className="f-thide">
                                         <Link to="" title={song.name}>{ song.name }</Link>

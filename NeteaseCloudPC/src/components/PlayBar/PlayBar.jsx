@@ -2,7 +2,7 @@ import './index.scss';
 import { Link } from 'react-router-dom';
 import { useState, createRef, memo, useEffect, useRef, forwardRef, } from 'react';
 import { connect } from 'react-redux';
-import { mediaTimeFormat, formatLrc, artistsFormat, delFromPlay, getRandom } from '@/utils/utils';
+import { mediaTimeFormat, formatLrc, artistsFormat, delFromPlay, getRandom, clearHistory } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
 import { message } from 'antd';
@@ -268,7 +268,9 @@ const PlayBar = (props) => {
                         break;
                     }
                 }
-                flag ? ++idx : --idx;
+                if (idx) {
+                    flag ? ++idx : --idx;
+                }
                 //针对首尾情况
                 if (idx >= props.historyPlay.length) {
                     idx = 0;
@@ -276,7 +278,11 @@ const PlayBar = (props) => {
                 if (idx < 0) {
                     idx = props.historyPlay.length - 1;
                 }
-                return props.historyPlay[idx]; 
+                if (idx != null) {
+                    return props.historyPlay[idx]; 
+                } else { //有可能历史记录被清除了
+                    return props.curSong;
+                }
 
             case 1: //随机模式
                 let len = props.historyPlay.length;
@@ -288,7 +294,7 @@ const PlayBar = (props) => {
                     }
                 }
                 idx = getRandom(0, len, [idx]);
-                return props.historyPlay[idx];
+                return props.historyPlay[idx] || props.curSong;
             
             case 2: //单曲循环
                 return props.curSong;
@@ -455,7 +461,7 @@ const PlayBar = (props) => {
                     <div className="ctrl f-fl f-pr j-flag">
                         <span 
                         className={`icn ${playMode[songMode].class}`} 
-                        title={playMode[songMode].txt}
+                        title={playMode[songMode].txt }
                         onClick={changePlayMode}>
                         </span>
                         <span className="add f-pr" onClick={() => changeShow(!showPanel)}>
@@ -473,7 +479,7 @@ const PlayBar = (props) => {
                                 收藏全部
                             </span>
                             <span className="line"></span>
-                            <span className="clear">
+                            <span className="clear" onClick={clearHistory}>
                                 <i className='ico icn-del'></i>
                                 清除
                             </span>
@@ -499,6 +505,15 @@ const PlayBar = (props) => {
                                 })
                             }
                         </ul>
+                        <div className="nocnt">
+                            <i className="ico ico-face"></i>
+                            你还没有添加任何歌曲
+                            <p>
+                            去首页<Link to="/" className="f-tdu" replace={true}>发现音乐</Link>
+                            ，或在<Link to="/Personal" className="f-tdu" replace={true}>我的音乐</Link>
+                            收听自己收藏的歌单。
+                            </p>
+                        </div>
                     </div>
                         <div className="msk2"></div>
                         <div className="listlyric j-flag" onWheel={scrollHandler}>
