@@ -1,5 +1,4 @@
 import http from '@/api/http';
-import { message } from 'antd';
 
 export default {
     async getAlbumInfo(id) { //获取专辑内容

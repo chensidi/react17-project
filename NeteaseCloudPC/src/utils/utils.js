@@ -17,6 +17,7 @@ export function mediaTimeFormat(time) { //毫秒转
 }
 
 export function formatLrc(lrc) { //歌词转数组
+    if (typeof lrc !== 'string') return [];
     let split1 = lrc.split('[')
     split1.shift();
     let split2 = [];

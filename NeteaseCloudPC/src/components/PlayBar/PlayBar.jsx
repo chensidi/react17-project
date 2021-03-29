@@ -268,7 +268,7 @@ const PlayBar = (props) => {
                         break;
                     }
                 }
-                if (idx) {
+                if (idx != null) {
                     flag ? ++idx : --idx;
                 }
                 //针对首尾情况
