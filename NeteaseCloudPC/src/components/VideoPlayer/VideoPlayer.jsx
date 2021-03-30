@@ -1,4 +1,6 @@
 import { useState, useRef, useReducer, useEffect, } from 'react';
+import Fullscreen from 'fullscreen-react';
+
 import { mediaTimeFormat } from '@/utils/utils';
 import './index.scss';
 
@@ -11,8 +13,11 @@ const brs = {
 const VideoPlayer = (props) => {
     const { urls = [], cover = '', duration = 0, } = props;
     const [playStatus, changeStatus] = useState(false);
+    const [isEnter, setIsEnter] = useState(false);
     const video = useRef(null);
     const progress = useRef(null);
+    const vdo = useRef();
+    const [timeTip, changeTimeTip] = useState({show: false, left: 0, txt: '', subLeft: 0});
 
     useEffect(() => {
         vdoDispatch(actions.setDuration(duration))
@@ -40,6 +45,11 @@ const VideoPlayer = (props) => {
                     ...state,
                     buffered: action.buffered
                 }
+            case 'setLoading':
+                return {
+                    ...state,
+                    loading: action.loading
+                }
             default:
                 return state;
         }
@@ -51,6 +61,7 @@ const VideoPlayer = (props) => {
         voice: 50,
         pc: '0%',
         buffered: '0%',
+        loading: true
     }
 
     const actions = {
@@ -76,6 +87,12 @@ const VideoPlayer = (props) => {
             return {
                 type: 'updateBuffer',
                 buffered: pc
+            }
+        },
+        setLoading(loading) {
+            return {
+                type: 'setLoading',
+                loading
             }
         }
     }
@@ -115,26 +132,60 @@ const VideoPlayer = (props) => {
         }
     }
 
-    function jump(e) { //点击指定播放位置
-        console.log(e);
+    function getCommonRect(ev, flag = true) {
         const { width, left } = progress.current.getBoundingClientRect();
-        let curWidth = e.clientX - left; //实际宽度
-        let curProgress = Math.round(curWidth / width * 100);
+        let curWidth = ev.clientX - left; //实际宽度
+        let curProgress = curWidth / width * 100;
+        flag && (curProgress = Math.round(curProgress));
         if (curProgress <= 0) {
             curProgress = 0;
         }
         if (curProgress >= 100) {
             curProgress = 100;
         }
-        console.log(curProgress);
+        return {curWidth, curProgress, width}
+    }
+
+    function jump(e) { //点击指定播放位置
+        const { curProgress } = getCommonRect(e);
         vdoDispatch(actions.updatePc(curProgress + '%'));
         const time = videoDetails.duration * curProgress / 100;
         video.current.currentTime = time;
         vdoDispatch(actions.updateTime(time));
+        video.current.play();
+        changeStatus(true);
+    }
+
+    function moveHandler(e) { //在播放条上移动
+        let { curWidth, curProgress, width } = getCommonRect(e, false);
+        let subLeft = 0;
+        if (curWidth <= 21) {
+            subLeft = curWidth - 21 < -14 ? -14 : curWidth - 21;
+            curWidth = 21;
+        }
+        if (curWidth >= width - 21) {
+            subLeft = 21 - (width - curWidth) > 14 ? 14 : 21 - (width - curWidth);
+            curWidth = width - 21;
+        }
+        changeTimeTip({
+            show: true,
+            left: curWidth - 21,
+            txt: mediaTimeFormat(curProgress * duration / 100),
+            subLeft
+        });
+    }
+
+    function readyPlay() { //准备就绪
+        setTimeout(() => {
+            vdoDispatch(actions.setLoading(false));
+            video.current.play();
+            changeStatus(true);
+        }, 1000)
     }
 
     return (
-        <div className="vdo-player">
+        <Fullscreen isEnter={isEnter} onChange={setIsEnter}>
+        <div className="vdo-player" ref={vdo}>
             <div className={`m-ctvideo z-active ${playStatus?'z-play':'z-pause'}`}>
                 <div className="player">
                     <video className="media" 
@@ -142,15 +193,20 @@ const VideoPlayer = (props) => {
                         ref={video}
                         onTimeUpdate={timeUpdate}
                         onProgress={onProgress}
+                        onCanPlayThrough={readyPlay}
+                        onLoadedData={() => console.log('loadedDataa')}
                     >
                     </video>
-                    <div className="poster ffull">
+                    <div className="poster ffull" style={{display: videoDetails.loading?'':'none'}}>
                         <img className="j-pic pic" src={cover} alt=""/>
                     </div>
-                    <div className="play ffull" onClick={playHandler}>
-                        <i className="icn"></i>
+                    <div className="play ffull"  
+                    onClick={playHandler}>
+                        {
+                            videoDetails.loading ? null : <i className="icn"></i>
+                        }
                     </div>
-                    <span className="loading"></span>
+                    <span className="loading" style={{display: videoDetails.loading?'':'none'}}></span>
                 </div>
                 <div className="controls">
                     <div className="wrap">
@@ -179,7 +235,7 @@ const VideoPlayer = (props) => {
                                     <li className="arrow"></li>
                                 </ul>
                             </div>
-                            <i className="full ffr"></i>
+                            <i className="full ffr" onClick={() => setIsEnter(prev => !prev)}></i>
                         </div>
                         <div className="foh">
                             <div className="j-left left">
@@ -187,7 +243,15 @@ const VideoPlayer = (props) => {
                                 <i className="play ffl" onClick={playHandler}></i>
                             </div>
                             <div className="j-progress progresswrap">
-                                <div className="progress progress-2" onClick={jump} ref={progress}>
+                                <div className="progress progress-2" 
+                                    onClick={jump} 
+                                    ref={progress}
+                                    onMouseMove={moveHandler}
+                                >
+                                    <div className="j-ht" style={{left: timeTip.left}}>
+                                        <span className="hovertime">{ timeTip.txt }</span>
+                                        <span className="arrow" style={{left: timeTip.subLeft}}></span>
+                                    </div>
                                     <div className="j-out1 out out-1" style={{width: videoDetails.pc}}>
                                         <div className="in">
                                             <div className="dot"></div>
@@ -201,6 +265,7 @@ const VideoPlayer = (props) => {
                 </div>
             </div>
         </div>
+        </Fullscreen>
     )
 }
 

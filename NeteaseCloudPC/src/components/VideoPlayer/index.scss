@@ -44,7 +44,7 @@
             }
         }
         .loading {
-            display: none;
+            // display: none;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -68,7 +68,7 @@
         background: rgba(255, 255, 255, 0);
     }
     .poster {
-        display: none;
+        // display: none;
         background: rgba(0, 0, 0, 0.1);
         .pic {
             display: block;
@@ -109,6 +109,19 @@
                 line-height: 34px;
                 color: rgba(255, 255, 255, 0.5);
                 position: static;
+            }
+            .arrow {
+                display: block;
+                position: absolute;
+                top: auto;
+                bottom: -7px;
+                left: 0;
+                right: auto;
+                width: 100%;
+                height: 7px;
+                background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAHAgMAAABB3ES3AAAADFBMVEUCAgI+Pj5HcEw4ODgkC8kmAAAABHRSTlO0awDA/mVZJgAAACRJREFUCB1jOMDAzCxwgodJh0GTiZthCRPT4QlMjLscmBgkGQBKkgUi8CVBlQAAAABJRU5ErkJggg==) no-repeat;
+                background-position: center top;
+                cursor: default;
             }
             .volume {
                 position: relative;
@@ -221,19 +234,6 @@
                         }
                     }
                 }
-                .arrow {
-                    display: block;
-                    position: absolute;
-                    top: auto;
-                    bottom: -7px;
-                    left: 0;
-                    right: auto;
-                    width: 100%;
-                    height: 7px;
-                    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAHAgMAAABB3ES3AAAADFBMVEUCAgI+Pj5HcEw4ODgkC8kmAAAABHRSTlO0awDA/mVZJgAAACRJREFUCB1jOMDAzCxwgodJh0GTiZthCRPT4QlMjLscmBgkGQBKkgUi8CVBlQAAAABJRU5ErkJggg==) no-repeat;
-                    background-position: center top;
-                    cursor: default;
-                }
             }
             .full {
                 display: block;
@@ -310,6 +310,25 @@
             left: 10px;
             right: 10px;
             width: auto;
+            &:hover {
+                .j-ht {
+                    display: block;
+                } 
+            }
+            .j-ht {
+                display: none;
+                position: absolute;
+                top: -27px;
+                min-width: 44px;
+                .hovertime {
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    padding: 5px;
+                    background: rgba(0, 0, 0, 0.7);
+                }
+                .arrow {
+                    bottom: -10px;
+                }
+            }
         }
     }
     &.z-active .controls {

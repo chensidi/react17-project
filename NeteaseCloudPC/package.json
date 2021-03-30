@@ -9,6 +9,7 @@
     "antd": "^4.12.2",
     "axios": "^0.21.1",
     "customize-cra": "^1.0.0",
+    "fullscreen-react": "^1.0.4",
     "http-proxy-middleware": "^1.0.6",
     "node-sass": "4.14.0",
     "react": "^17.0.1",
