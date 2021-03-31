@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { mediaTimeFormat, formatLrc, artistsFormat, delFromPlay, getRandom, clearHistory } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
-import { message } from 'antd';
  
 const mapStateToProps = (state) => {
     return {
@@ -505,15 +504,18 @@ const PlayBar = (props) => {
                                 })
                             }
                         </ul>
-                        <div className="nocnt">
-                            <i className="ico ico-face"></i>
-                            你还没有添加任何歌曲
-                            <p>
-                            去首页<Link to="/" className="f-tdu" replace={true}>发现音乐</Link>
-                            ，或在<Link to="/Personal" className="f-tdu" replace={true}>我的音乐</Link>
-                            收听自己收藏的歌单。
-                            </p>
-                        </div>
+                        {
+                            !props.historyPlay?.length ?
+                            <div className="nocnt">
+                                <i className="ico ico-face"></i>
+                                你还没有添加任何歌曲
+                                <p>
+                                去首页<Link to="/" className="f-tdu" replace={true}>发现音乐</Link>
+                                ，或在<Link to="/Personal" className="f-tdu" replace={true}>我的音乐</Link>
+                                收听自己收藏的歌单。
+                                </p>
+                            </div> : null
+                        }
                     </div>
                         <div className="msk2"></div>
                         <div className="listlyric j-flag" onWheel={scrollHandler}>

@@ -1,5 +1,5 @@
 import { Carousel } from 'antd';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import './index.scss';
 
 const Banner = (props) => {
@@ -28,4 +28,4 @@ const Banner = (props) => {
     )
 }
 
-export default Banner;
+export default memo(Banner);

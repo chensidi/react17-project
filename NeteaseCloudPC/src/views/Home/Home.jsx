@@ -1,7 +1,8 @@
-import { Component } from 'react';
+import { Component, PureComponent, memo } from 'react';
 import { connect } from 'react-redux';
 import { setCurSong, setSubNav, } from '@store/action';
 import { Spin } from 'antd';
+
 import sessionStore from '@utils/sessionStore';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
@@ -32,7 +33,7 @@ const mapDispatchToProps = (dispath) => {
     }
 }
 
-class Home extends Component {
+class Home extends PureComponent {
     state = {
         banners: [],
         recommends: [],
@@ -93,16 +94,7 @@ class Home extends Component {
             ranks: arr
         })
     }
-    change = () => {
-        this.props.setCurSong({
-            song: 'aaa',
-            url: 'ddd',
-            singer: 'jacky'
-        })
-    }
-    changeSwiper = (flag) => {
-        flag ? this.swp.next() : this.swp.prev()
-    }
+    
     render() {
         const { banners, recommends, newDisk, ranks, loading} = this.state;
         const { hotNav } = homeConfig;

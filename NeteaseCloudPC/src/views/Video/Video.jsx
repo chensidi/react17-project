@@ -20,24 +20,29 @@ class Video extends Component {
         const vid = this.props.match.params.id;
         const res = await videoApi.getVideoInfo(vid);
         this.setState({
-            title: res.title,
-            desc: res.description,
+            title: res.title ?? res.name,
+            desc: res.description ?? res.desc,
             publishTime: res.publishTime,
-            playTime: res.playTime,
+            playTime: res.playTime ?? res.playCount,
             shareCount: res.shareCount,
-            cover: res.coverUrl,
-            creator: res.creator.nickname
+            cover: res.coverUrl ?? res.cover,
+            creator: res?.creator?.nickname
         })
         return {
-            duration: res.durationms / 1000,
-            cover: res.coverUrl,
+            duration: res.durationms ?? res.duration / 1000,
+            cover: res.coverUrl ?? res.cover,
         }
     }
 
     getVideoUrl = async () => {
         const vid = this.props.match.params.id;
-        const res = await videoApi.getVideoUrl(vid);
-        return res;
+        let res = await videoApi.getVideoUrl(vid);
+        if (res.length === 0) {
+            res = await videoApi.getMVUrl(vid);
+            return res;
+        } else {
+            return res;
+        }
     }
 
     componentDidMount() {

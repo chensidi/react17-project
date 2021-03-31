@@ -1,5 +1,6 @@
 import './index.scss';
-import { Link } from 'react-router-dom';
+import { memo } from 'react';
+
 const LiItem = (props) => {
     const { item, idx } = props;
     return (
@@ -67,4 +68,4 @@ const RankModule = (props) => {
     )
 }
 
-export default RankModule;
+export default memo(RankModule);

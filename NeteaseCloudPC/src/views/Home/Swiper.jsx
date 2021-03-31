@@ -1,4 +1,4 @@
-import { createRef, } from 'react';
+import { createRef, memo } from 'react';
 import { Carousel } from 'antd';
 import './index.scss';
 
@@ -52,4 +52,4 @@ const NewDiskSwiper = (props) => {
 };
 
 
-export default NewDiskSwiper;
+export default memo(NewDiskSwiper);

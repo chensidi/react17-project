@@ -1,15 +1,18 @@
-import { useState, useRef, useReducer, useEffect, } from 'react';
+import { useState, useRef, useReducer, useEffect, useCallback, } from 'react';
 import Fullscreen from 'fullscreen-react';
 
 import { mediaTimeFormat } from '@/utils/utils';
 import './index.scss';
 
-const brs = {
+const brs = { //码率集合
     '1080': '1080P',
     '720': '超清',
     '480': '高清',
     '240': '标清'
 }
+
+let timer; //计时器
+
 const VideoPlayer = (props) => {
     const { urls = [], cover = '', duration = 0, } = props;
     const [playStatus, changeStatus] = useState(false);
@@ -17,10 +20,20 @@ const VideoPlayer = (props) => {
     const video = useRef(null);
     const progress = useRef(null);
     const vdo = useRef();
-    const [timeTip, changeTimeTip] = useState({show: false, left: 0, txt: '', subLeft: 0});
+    const [timeTip, changeTimeTip] = useState({
+        show: false, 
+        left: 0, 
+        txt: '', 
+        subLeft: 0,
+        isActive: false,
+    });
 
     useEffect(() => {
-        vdoDispatch(actions.setDuration(duration))
+        vdoDispatch(actions.setDuration(duration));
+        return () => {
+            clearTimeout(timer);
+            timer = null;
+        }
     }, [duration])
 
     function vdoReducer(state, action) {
@@ -49,6 +62,11 @@ const VideoPlayer = (props) => {
                 return {
                     ...state,
                     loading: action.loading
+                }
+            case 'setActive':
+                return {
+                    ...state,
+                    isActive: action.active
                 }
             default:
                 return state;
@@ -94,12 +112,18 @@ const VideoPlayer = (props) => {
                 type: 'setLoading',
                 loading
             }
+        },
+        setActive(active) {
+            return {
+                type: 'setActive',
+                active
+            }
         }
     }
 
     const [videoDetails, vdoDispatch] = useReducer(vdoReducer, initReducer);
 
-    function playHandler() { //播放控制
+    const playHandler = useCallback(() => { //播放控制
         if (video.current.paused) {
             video.current.play();
             changeStatus(true);
@@ -107,19 +131,19 @@ const VideoPlayer = (props) => {
             video.current.pause();
             changeStatus(false);
         }
-    }
-
-    function timeUpdate() { //播放中更新
+    }, [])
+    
+    const timeUpdate = useCallback(() => { //播放中更新
         //更新当前时间
         const time = video.current.currentTime;
         vdoDispatch(actions.updateTime(time));
         //更新进度
-        const pc = time / videoDetails.duration * 100 + '%';
+        const pc = time / video.current.duration * 100 + '%';
         vdoDispatch(actions.updatePc(pc));
         onProgress();
-    }
+    }, [])
 
-    function onProgress() {
+    const onProgress = useCallback(() => {
         try {
             const timeRanges = video.current.buffered;
             const loadProgress = timeRanges.end(timeRanges.length - 1);
@@ -130,9 +154,9 @@ const VideoPlayer = (props) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    }, [])
 
-    function getCommonRect(ev, flag = true) {
+    const getCommonRect = useCallback((ev, flag = true) => {
         const { width, left } = progress.current.getBoundingClientRect();
         let curWidth = ev.clientX - left; //实际宽度
         let curProgress = curWidth / width * 100;
@@ -144,9 +168,9 @@ const VideoPlayer = (props) => {
             curProgress = 100;
         }
         return {curWidth, curProgress, width}
-    }
+    }, [])
 
-    function jump(e) { //点击指定播放位置
+    const jump = useCallback((e) => { //点击指定播放位置
         const { curProgress } = getCommonRect(e);
         vdoDispatch(actions.updatePc(curProgress + '%'));
         const time = videoDetails.duration * curProgress / 100;
@@ -154,9 +178,9 @@ const VideoPlayer = (props) => {
         vdoDispatch(actions.updateTime(time));
         video.current.play();
         changeStatus(true);
-    }
+    })
 
-    function moveHandler(e) { //在播放条上移动
+    const moveHandler = useCallback((e) => { //在播放条上移动
         let { curWidth, curProgress, width } = getCommonRect(e, false);
         let subLeft = 0;
         if (curWidth <= 21) {
@@ -167,26 +191,40 @@ const VideoPlayer = (props) => {
             subLeft = 21 - (width - curWidth) > 14 ? 14 : 21 - (width - curWidth);
             curWidth = width - 21;
         }
+        // console.log(mediaTimeFormat(curProgress * duration / 100))
         changeTimeTip({
             show: true,
             left: curWidth - 21,
             txt: mediaTimeFormat(curProgress * duration / 100),
             subLeft
         });
-    }
+    }, [])
 
-    function readyPlay() { //准备就绪
+    const readyPlay = useCallback(() => { //准备就绪
         setTimeout(() => {
             vdoDispatch(actions.setLoading(false));
             video.current.play();
             changeStatus(true);
         }, 1000)
-    }
+    }, [])
+
+    const moveFull = useCallback(() => { //整屏幕移动
+        clearTimeout(timer);
+        timer = null;
+        vdoDispatch(actions.setActive(true));
+        if (!video.current.paused) {
+            timer = setTimeout(() => {
+                if (!video.current.paused) {
+                    vdoDispatch(actions.setActive(false))
+                }
+            }, 3000);
+        }
+    }, [])
 
     return (
         <Fullscreen isEnter={isEnter} onChange={setIsEnter}>
-        <div className="vdo-player" ref={vdo}>
-            <div className={`m-ctvideo z-active ${playStatus?'z-play':'z-pause'}`}>
+        <div className="vdo-player" ref={vdo} onMouseMove={moveFull}>
+            <div className={`m-ctvideo ${videoDetails.isActive ? 'z-active' : ''} ${playStatus?'z-play':'z-pause'}`}>
                 <div className="player">
                     <video className="media" 
                         src={urls[0]?.url} 
