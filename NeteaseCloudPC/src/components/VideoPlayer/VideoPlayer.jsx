@@ -11,7 +11,7 @@ const brs = { //码率集合
     '240': '标清'
 }
 
-let timer; //计时器
+let timer, readyTimer; //计时器
 
 const VideoPlayer = (props) => {
     const { urls = [], cover = '', duration = 0, } = props;
@@ -32,7 +32,9 @@ const VideoPlayer = (props) => {
         vdoDispatch(actions.setDuration(duration));
         return () => {
             clearTimeout(timer);
+            clearTimeout(readyTimer);
             timer = null;
+            readyTimer = null;
         }
     }, [duration])
 
@@ -201,7 +203,7 @@ const VideoPlayer = (props) => {
     }, [])
 
     const readyPlay = useCallback(() => { //准备就绪
-        setTimeout(() => {
+        readyTimer = setTimeout(() => {
             vdoDispatch(actions.setLoading(false));
             video.current.play();
             changeStatus(true);

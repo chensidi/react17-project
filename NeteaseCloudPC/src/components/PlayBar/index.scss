@@ -240,6 +240,8 @@
     .listhd {
         background-position: 0 0;
         height: 41px;
+        z-index: 100;
+        position: relative;
     }
     .listhd, .listbd {
         padding: 0 5px;

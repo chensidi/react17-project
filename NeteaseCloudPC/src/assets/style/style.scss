@@ -1818,3 +1818,12 @@ table {
         }
     }
 }
+
+.m-mvintr {
+    p {
+        line-height: 18px;
+        &.intr {
+            margin-top: 10px;
+        }
+    }
+}

@@ -128,11 +128,11 @@ export const VideoItem = (props) => {
                     { playTimesFormat(playTime) }
                 </p>
                 <p className="bl u-msk u-msk-2">{ mediaTimeFormat(durationms/1000) }</p>
-                <Link to={`/video/${vid}`} className="link"></Link>
+                <Link to={`/video/${vid}${markTypes == null?'?mv=mv':''}`} className="link"></Link>
             </div>
             <h4 className="title f-thide">
                 { markTypes == null ? (<i className="tag u-icn2 u-icn2-smvtag"></i>) : null }
-                <Link to="" className="s-fc0">{ title }</Link>
+                <Link to={`/video/${vid}`} className="s-fc0">{ title }</Link>
             </h4>
             <h5 className="name f-thide">
                 { markTypes != null ? 'by' : null} <Link to="" className="s-fc3">{ artistsFormat(creator, 'userName') }</Link>

@@ -8,10 +8,7 @@ export default {
             });
             return res.data;
         } catch (err) {
-            let res = await http.get(`/mv/detail`, {
-                mvid: id
-            })
-            return res.data;
+            return err;
         }
     },
     async getVideoUrl(id) { //获取视频地址
@@ -24,12 +21,22 @@ export default {
             return err;
         }
     },
+    async getMVInfo(id) { //mv信息
+        try {
+            const res = await http.get(`/mv/detail`, {
+                mvid: id
+            })
+            return res.data;
+        } catch (err) {
+            return err;
+        }
+    },
     async getMVUrl(id) { //获取MV地址
         try {
             const res = await http.get(`/mv/url`, {
                 id,
             });
-            return [{url: res.data.url}];
+            return [{url: res.data.url, r: res.data.r}];
         } catch (err) {
             return err;
         }
