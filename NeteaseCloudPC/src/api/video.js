@@ -31,10 +31,11 @@ export default {
             return err;
         }
     },
-    async getMVUrl(id) { //获取MV地址
+    async getMVUrl(id, r=1080) { //获取MV地址
         try {
             const res = await http.get(`/mv/url`, {
                 id,
+                r
             });
             return [{url: res.data.url, r: res.data.r}];
         } catch (err) {

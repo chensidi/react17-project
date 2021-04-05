@@ -1,10 +1,11 @@
 import { useState, useRef, useReducer, useEffect, useCallback, } from 'react';
 import Fullscreen from 'fullscreen-react';
+import { Slider } from 'antd';
 
 import { mediaTimeFormat } from '@/utils/utils';
 import './index.scss';
 
-const brs = { //码率集合
+const brsMap = { //码率集合
     '1080': '1080P',
     '720': '超清',
     '480': '高清',
@@ -14,7 +15,7 @@ const brs = { //码率集合
 let timer, readyTimer; //计时器
 
 const VideoPlayer = (props) => {
-    const { urls = [], cover = '', duration = 0, } = props;
+    const { urls = [], cover = '', duration = 0, brs = [], urlArr = [] } = props;
     const [playStatus, changeStatus] = useState(false);
     const [isEnter, setIsEnter] = useState(false);
     const video = useRef(null);
@@ -70,6 +71,11 @@ const VideoPlayer = (props) => {
                     ...state,
                     isActive: action.active
                 }
+            case 'setBr': 
+                return {
+                    ...state,
+                    br: action.br
+                }
             default:
                 return state;
         }
@@ -81,7 +87,8 @@ const VideoPlayer = (props) => {
         voice: 50,
         pc: '0%',
         buffered: '0%',
-        loading: true
+        loading: true,
+        br: urls[0]?.r,
     }
 
     const actions = {
@@ -119,6 +126,12 @@ const VideoPlayer = (props) => {
             return {
                 type: 'setActive',
                 active
+            }
+        },
+        setBr(br) {
+            return {
+                type: 'setBr',
+                br
             }
         }
     }
@@ -193,11 +206,10 @@ const VideoPlayer = (props) => {
             subLeft = 21 - (width - curWidth) > 14 ? 14 : 21 - (width - curWidth);
             curWidth = width - 21;
         }
-        // console.log(mediaTimeFormat(curProgress * duration / 100))
         changeTimeTip({
             show: true,
             left: curWidth - 21,
-            txt: mediaTimeFormat(curProgress * duration / 100),
+            txt: mediaTimeFormat(curProgress * video.current.duration / 100),
             subLeft
         });
     }, [])
@@ -221,6 +233,21 @@ const VideoPlayer = (props) => {
                 }
             }, 3000);
         }
+    }, [])
+
+    const chooseBr = useCallback((idx, br) => { //切换分辨率
+        const curTime = video.current.currentTime;
+        urlArr[idx] && (video.current.src = urlArr[idx]);
+        video.current.currentTime = curTime;
+        vdoDispatch(actions.setBr(br))
+    })
+
+    const voiceChange = useCallback((val) => {
+        video.current.volume = val / 100;
+    })
+
+    useEffect(() => {
+        video.current.volume = .5;
     }, [])
 
     return (
@@ -254,26 +281,40 @@ const VideoPlayer = (props) => {
                             <div className="duration ffl">{ mediaTimeFormat(videoDetails.duration) }</div>
                             <div className="volume ffl">
                                 <span className="j-mute mute"></span>
+                                <Slider 
+                                    className="volume-slider" 
+                                    vertical 
+                                    defaultValue={videoDetails.voice} 
+                                    onChange={voiceChange}
+                                />
                             </div>
                             <div className="brs ffl">
                                 <div className="bridge"></div>
                                 <div className="current">
-                                    <span className="j-label label">{ brs[urls[0]?.r] }</span>
+                                    <span className="j-label label">{ brsMap[videoDetails.br || urls[0]?.r] }</span>
                                 </div>
-                                <ul className="j-options options">
-                                    {
-                                        urls.map(url => {
-                                            return (
-                                                <li className="itm" key={url.r}>
-                                                    <span className="label">
-                                                        { brs[url.r] }
-                                                    </span>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                    <li className="arrow"></li>
-                                </ul>
+                                {
+                                    brs.length ?
+                                    <ul className="j-options options">
+                                        {
+                                            brs.map((br, i) => {
+                                                return (
+                                                    <li 
+                                                        className={`itm ${(videoDetails.br || urls[0]?.r) === br ? 'z-sel' : ''}`} 
+                                                        key={br}
+                                                        onClick={() => chooseBr(i, br)}
+                                                    >
+                                                        <span className="label">
+                                                            { brsMap[br] }
+                                                        </span>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                        <li className="arrow"></li>
+                                    </ul>
+                                    : null
+                                }
                             </div>
                             <i className="full ffr" onClick={() => setIsEnter(prev => !prev)}></i>
                         </div>

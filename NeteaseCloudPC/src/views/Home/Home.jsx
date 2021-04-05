@@ -33,6 +33,8 @@ const mapDispatchToProps = (dispath) => {
     }
 }
 
+let timer;
+
 class Home extends PureComponent {
     state = {
         banners: [],
@@ -49,8 +51,14 @@ class Home extends PureComponent {
         await this._getNewDisk();
         // this._getRank();
         await this._getTopList();
-        setTimeout(() => this.setState({loading: false}), 500)
+        timer = setTimeout(() => this.setState({loading: false}), 500)
     }
+
+    componentWillUnmount() {
+        clearTimeout(timer);
+        timer = null;
+    }
+
     _loadBanners = async () => { //轮播图
         let res = await homeApis.getBanners();
         this.setState({
@@ -106,26 +114,32 @@ class Home extends PureComponent {
                     <div className="g-mn1">
                         <div className="g-mn1c">
                             <div className="g-wrap3">
-                                <div className="n-rcmd">
-                                    <BlockTitle {...hotNav} />
-                                    <ul className="m-cvrlst f-cb">
-                                        {
-                                            recommends.map(item => {
-                                                return (
-                                                    <CoverItem key={item.id} {...item} />
-                                                )
-                                            })
-                                        }
-                                    </ul>
-                                </div>
-                                <div className="n-new">
-                                    <BlockTitle title={{path: '', txt: '新碟上架'}} />
-                                    <NewDiskSwiper newDisk={newDisk} />
-                                </div>
-                                <div className="n-bill">
-                                    <BlockTitle title={{path: '', txt: '榜单'}} />
-                                    <RankModule ranks={ranks} />
-                                </div>
+                                {
+                                    !loading ? (
+                                        <>
+                                        <div className="n-rcmd">
+                                            <BlockTitle {...hotNav} />
+                                            <ul className="m-cvrlst f-cb">
+                                                {
+                                                    recommends.map(item => {
+                                                        return (
+                                                            <CoverItem key={item.id} {...item} />
+                                                        )
+                                                    })
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div className="n-new">
+                                            <BlockTitle title={{path: '', txt: '新碟上架'}} />
+                                            <NewDiskSwiper newDisk={newDisk} />
+                                        </div>
+                                        <div className="n-bill">
+                                            <BlockTitle title={{path: '', txt: '榜单'}} />
+                                            <RankModule ranks={ranks} />
+                                        </div>
+                                        </>
+                                    ) : null
+                                }
                             </div>
                         </div>
                     </div>

@@ -37,6 +37,7 @@ class Video extends Component {
     getMVInfo = async () => {
         const vid = this.props.match.params.id;
         const res = await videoApi.getMVInfo(vid);
+        
         this.setState({
             title: res.name,
             desc: res.desc,
@@ -44,11 +45,13 @@ class Video extends Component {
             playTime: res.playCount,
             shareCount: res.shareCount,
             cover: res.cover,
-            creator: res?.creator?.nickname
+            creator: res?.creator?.nickname,
+            
         })
         return {
             duration: res.duration / 1000,
             cover: res.cover,
+            brs: res.brs
         }
     }
 
@@ -64,6 +67,28 @@ class Video extends Component {
         return res;
     }
 
+    getAllMvUrls = async (brs) => {
+        if (brs.length === 0) return;
+        const vid = this.props.match.params.id;
+        let urlArr = [];
+        async function getUrl(br) {
+            let res = await videoApi.getMVUrl(vid, br);
+            return res[0].url;
+        }
+        brs.map(br => {
+            urlArr.push(getUrl(br));
+        })
+        Promise.all(urlArr).then(res => {
+            console.log(res);
+            this.setState({
+                videoInfo: {
+                    ...this.state.videoInfo,
+                    urlArr: res
+                }
+            })
+        })
+    }
+
     componentDidMount() {
         document.body.scrollTo(0,0);
         const search = this.props.history.location.search;
@@ -74,11 +99,23 @@ class Video extends Component {
             ]
         )
         .then(res => {
+            let brs = [];
+            if (res[0].brs) {
+                brs = res[0].brs.map(item => {
+                    return item.br;
+                })
+                brs.sort((a, b) => {
+                    return b - a;
+                })
+                console.log(brs);
+            }
+            this.getAllMvUrls(brs);
             this.setState({
                 videoInfo: {
                     urls: res[1],
                     cover: res[0].cover,
-                    duration: res[0].duration
+                    duration: res[0].duration,
+                    brs
                 }
             })
         })
