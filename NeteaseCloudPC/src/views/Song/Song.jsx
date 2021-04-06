@@ -3,8 +3,8 @@ import Main from '@/components/Main';
 import { Link } from 'react-router-dom';
 import commonApi from '@/api/common';
 import { artistsFormat, lrcFilter, playItem } from '@/utils/utils';
-import { Pagination, message } from 'antd';
-import Comment from '@/components/Comment/Comment';
+import { message } from 'antd';
+import { CommentWrap } from '@/components/Comment/Comment';
 import { SameLists, SameSongs } from './components';
 import { addToPlay } from '@/utils/utils';
 
@@ -23,7 +23,12 @@ class Song extends Component {
         cmtsTotal: 0,
         curPage: 1,
         sameLists: [],
-        sameSongs: []
+        sameSongs: [],
+        cmtsData: {
+            hotCmts: [],
+            cmts: [],
+            total: 0
+        }
     }
 
     getSongDetails = async (id) => {
@@ -53,12 +58,16 @@ class Song extends Component {
             offset
         })
         let dataSet = offset > 0 ? {
-            cmts: res.comments,
-            cmtsTotal: res.total
+            cmtsData: {
+                ...this.state.cmtsData,
+                cmts: res.comments
+            }
         } : {
-            hotCmts: res.hotComments,
-            cmts: res.comments,
-            cmtsTotal: res.total
+            cmtsData: {
+                total: res.total,
+                hotCmts: res.hotComments,
+                cmts: res.comments
+            }
         }
         this.setState(dataSet);
     }
@@ -74,17 +83,7 @@ class Song extends Component {
     }
 
     pageChange = async (page, pageSize) => {
-        this.setState({curPage: page});
-        message.loading({ 
-            content: '获取评论中...', 
-            key: 'loadCmt', 
-            duration: 0 ,
-            style: {
-                marginTop: '40vh',
-            },
-        });
         await this.getCmt(this.state.id, 20, (page - 1) * pageSize)
-        message.destroy('loadCmt')
     }
 
     componentDidMount() {
@@ -103,13 +102,10 @@ class Song extends Component {
             songInfo,
             lrcObj, 
             openLrc,
-            hotCmts,
-            cmts,
-            cmtsTotal,
-            curPage,
             sameLists,
             sameSongs,
-            id
+            id,
+            cmtsData
         } = this.state;
         return (
             <div>
@@ -197,56 +193,10 @@ class Song extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="n-cmt">
-                                    <div>
-                                        <div className="u-title u-title-1">
-                                            <h3>
-                                                <span className="f-ff2">
-                                                评论
-                                                </span>
-                                            </h3>
-                                            <span className="sub s-fc3">共{ cmtsTotal }条评论</span>
-                                        </div>
-                                        <div className="m-cmmt">
-                                            <div className="cmmts j-flag">
-                                                {
-                                                    hotCmts.length ? 
-                                                    <div className="u-hd4">
-                                                        精彩评论
-                                                    </div> : null
-                                                }
-                                                {
-                                                    hotCmts.map(cmt => {
-                                                        return (
-                                                            <Comment key={cmt.commentId} {...cmt} />
-                                                        )
-                                                    })
-                                                }
-                                                <br/><br/>
-                                                <div className="u-hd4">
-                                                    最新评论
-                                                </div>
-                                                {
-                                                    cmts.map(cmt => {
-                                                        return (
-                                                            <Comment key={cmt.commentId} {...cmt} />
-                                                        )
-                                                    })
-                                                }
-                                            </div>
-                                            <div className="pagination-wrap">
-                                                <Pagination 
-                                                    defaultCurrent={1} 
-                                                    total={cmtsTotal} 
-                                                    pageSize={20} 
-                                                    showSizeChanger={false}
-                                                    onChange={this.pageChange}
-                                                    current={curPage}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <CommentWrap 
+                                    onChange={this.pageChange}
+                                    {...cmtsData}
+                                />
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,8 @@ import Main from '@/components/Main';
 import { Link } from 'react-router-dom';
 import videoApi from '@/api/video';
 import VideoPlayer from '@/components/VideoPlayer/VideoPlayer';
+import { CommentWrap } from '@/components/Comment/Comment';
+import { message } from 'antd';
 
 class Video extends Component {
     state = {
@@ -13,7 +15,13 @@ class Video extends Component {
         playTime: '',
         shareCount: '',
         cover: '',
-        creator: ''
+        creator: '',
+        hotCmts: [],
+        cmtsData: {
+            total: 0,
+            hotCmts: [],
+            cmts: []
+        }
     }
 
     getVideoInfo = async () => {
@@ -119,11 +127,35 @@ class Video extends Component {
                 }
             })
         })
-        
+        if (this.props.history.location.search) {
+            this.getMvCmts();
+        }
+    }
+
+    getMvCmts = async (limit = 20, offset = 0) => {
+        const vid = this.props.match.params.id;
+        const res = await videoApi.getCmts(vid, limit, offset);
+        let dataSet = offset > 0 ? {
+            cmtsData: {
+                ...this.state.cmtsData,
+                cmts: res.comments
+            }
+        } : {
+            cmtsData: {
+                total: res.total,
+                hotCmts: res.hotComments,
+                cmts: res.comments
+            }
+        }
+        this.setState(dataSet)
+    }
+
+    changeCmts = async (page, pageSize) => {
+        await this.getMvCmts(20, (page - 1) * pageSize);
     }
 
     render() {
-        const { videoInfo, title, creator, publishTime, playTime, desc } = this.state;
+        const { videoInfo, title, creator, publishTime, playTime, desc, cmtsData } = this.state;
         const search = this.props.history.location.search;
         return (
             <Main className="g-bd4">
@@ -144,8 +176,13 @@ class Video extends Component {
                                 </div>
                                 <VideoPlayer {...videoInfo} />
                             </div>
+                            <CommentWrap 
+                                {...cmtsData}
+                                onChange={this.changeCmts}
+                            />
                         </div>
                     </div>
+                    
                 </div>
                 <div className="g-sd4">
                     <div className="g-wrap7">

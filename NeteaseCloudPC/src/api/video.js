@@ -42,4 +42,16 @@ export default {
             return err;
         }
     },
+    async getCmts(id, limit = 20, offset = 0) { //mv评论
+        try {
+            const res = await http.get(`/comment/mv`, {
+                id,
+                limit,
+                offset,
+            });
+            return res;
+        } catch (err) {
+            return err;
+        }
+    }
 }

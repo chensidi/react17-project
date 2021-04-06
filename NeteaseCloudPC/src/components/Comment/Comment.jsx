@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Pagination, message } from 'antd';
+import { useState, useCallback } from 'react';
 
 function timeFormat(timeStamp) {
     const time = new Date(timeStamp);
@@ -10,6 +12,7 @@ function timeFormat(timeStamp) {
 
 const Comment = (props) => {
     const { user, content, time, likedCount, beReplied } = props;
+
     return (
         <div className="itm">
             <div className="head">
@@ -43,6 +46,75 @@ const Comment = (props) => {
                         <i className="zan u-icn2 u-icn2-12"></i>
                         ({ likedCount })
                     </span>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export const CommentWrap = (props) => {
+    const { total, hotCmts, cmts, onChange } = props;
+    const [curPage, changePage] = useState(1);
+
+    const pageChange = useCallback(async (page, pageSize) => {
+        changePage(page);
+        message.loading({ 
+            content: '获取评论中...', 
+            key: 'loadCmt', 
+            duration: 0 ,
+            style: {
+                marginTop: '40vh',
+            },
+        });
+        await onChange(page, pageSize);
+        message.destroy('loadCmt')
+    }, [])
+    return (
+        <div className="n-cmt">
+            <div>
+                <div className="u-title u-title-1">
+                    <h3>
+                        <span className="f-ff2">
+                        评论
+                        </span>
+                    </h3>
+                    <span className="sub s-fc3">共{ total }条评论</span>
+                </div>
+                <div className="m-cmmt">
+                    <div className="cmmts j-flag">
+                        <div className="u-hd4">
+                            精彩评论
+                        </div>
+                        {
+                            hotCmts.map(cmt => {
+                                return (
+                                    <Comment key={cmt.commentId} {...cmt} />
+                                )
+                            })
+                        }
+                        <br/>
+                        <br/>
+                        <div className="u-hd4">
+                            最新评论
+                        </div>
+                        {
+                            cmts.map(cmt => {
+                                return (
+                                    <Comment key={cmt.commentId} {...cmt} />
+                                )
+                            })
+                        }
+                    </div>
+                    <div className="pagination-wrap">
+                        <Pagination 
+                            defaultCurrent={1} 
+                            total={total} 
+                            pageSize={20} 
+                            showSizeChanger={false}
+                            current={curPage}
+                            onChange={pageChange}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
