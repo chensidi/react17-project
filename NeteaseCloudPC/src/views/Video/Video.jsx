@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom';
 import videoApi from '@/api/video';
 import VideoPlayer from '@/components/VideoPlayer/VideoPlayer';
 import { CommentWrap } from '@/components/Comment/Comment';
-import { message } from 'antd';
+import { RelatedVdo } from './Components';
+
+let vid;
 
 class Video extends Component {
     state = {
+        vid: '',
         videoInfo: {},
         title: '',
         desc: '',
@@ -21,11 +24,12 @@ class Video extends Component {
             total: 0,
             hotCmts: [],
             cmts: []
-        }
+        },
+        relatedVdo: []
     }
 
     getVideoInfo = async () => {
-        const vid = this.props.match.params.id;
+        // const vid = this.props.match.params.id;
         const res = await videoApi.getVideoInfo(vid);
         this.setState({
             title: res.title,
@@ -43,7 +47,7 @@ class Video extends Component {
     }
 
     getMVInfo = async () => {
-        const vid = this.props.match.params.id;
+        // const vid = this.props.match.params.id;
         const res = await videoApi.getMVInfo(vid);
         
         this.setState({
@@ -64,20 +68,20 @@ class Video extends Component {
     }
 
     getVideoUrl = async () => {
-        const vid = this.props.match.params.id;
+        // const vid = this.props.match.params.id;
         let res = await videoApi.getVideoUrl(vid);
         return res;
     }
 
     getMVUrl = async () => {
-        const vid = this.props.match.params.id;
+        // const vid = this.props.match.params.id;
         let res = await videoApi.getMVUrl(vid);
         return res;
     }
 
     getAllMvUrls = async (brs) => {
         if (brs.length === 0) return;
-        const vid = this.props.match.params.id;
+        // const vid = this.props.match.params.id;
         let urlArr = [];
         async function getUrl(br) {
             let res = await videoApi.getMVUrl(vid, br);
@@ -97,7 +101,9 @@ class Video extends Component {
         })
     }
 
-    componentDidMount() {
+    init = async (id) => {
+        vid = id ?? this.props.match.params.id;
+        this.setState({vid});
         document.body.scrollTo(0,0);
         const search = this.props.history.location.search;
         Promise.all(
@@ -127,14 +133,26 @@ class Video extends Component {
                 }
             })
         })
-        if (this.props.history.location.search) {
-            this.getMvCmts();
+        this.getMvCmts();
+        this.getRelatedVdo();
+    }
+
+    componentDidMount() {
+        this.init();
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.match.params.id !== this.state.vid) {
+            console.log('refresh');
+            console.log(this.props.match.params.id, newProps.match.params.id)
+            this.init(newProps.match.params.id);
         }
     }
 
     getMvCmts = async (limit = 20, offset = 0) => {
-        const vid = this.props.match.params.id;
-        const res = await videoApi.getCmts(vid, limit, offset);
+        // const vid = this.props.match.params.id;
+        const requestFn = this.props.history.location.search ? videoApi.getCmts : videoApi.getVdoCmts;
+        const res = await requestFn(vid, limit, offset);
         let dataSet = offset > 0 ? {
             cmtsData: {
                 ...this.state.cmtsData,
@@ -150,12 +168,20 @@ class Video extends Component {
         this.setState(dataSet)
     }
 
+    getRelatedVdo = async () => {
+        // const vid = this.props.match.params.id;
+        const res = await videoApi.getRelatedVdo(vid);
+        this.setState({
+            relatedVdo: res
+        })
+    }
+
     changeCmts = async (page, pageSize) => {
         await this.getMvCmts(20, (page - 1) * pageSize);
     }
 
     render() {
-        const { videoInfo, title, creator, publishTime, playTime, desc, cmtsData } = this.state;
+        const { videoInfo, title, creator, publishTime, playTime, desc, cmtsData, relatedVdo } = this.state;
         const search = this.props.history.location.search;
         return (
             <Main className="g-bd4">
@@ -200,6 +226,7 @@ class Video extends Component {
                                 { desc }
                             </p>
                         </div>
+                        <RelatedVdo relatedVdo={relatedVdo} />
                     </div>
                 </div>
             </Main>

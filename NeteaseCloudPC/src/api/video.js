@@ -53,5 +53,27 @@ export default {
         } catch (err) {
             return err;
         }
+    },
+    async getVdoCmts(id, limit = 20, offset = 0) { //普通视频评论
+        try {
+            const res = await http.get(`/comment/video`, {
+                id,
+                limit,
+                offset,
+            });
+            return res;
+        } catch (err) {
+            return err;
+        }
+    },
+    async getRelatedVdo(id) { //相关视频
+        try {
+            const res = await http.get(`/related/allvideo`, {
+                id,
+            });
+            return res.data;
+        } catch (err) {
+            return err;
+        }
     }
 }
