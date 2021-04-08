@@ -5,6 +5,7 @@ import videoApi from '@/api/video';
 import VideoPlayer from '@/components/VideoPlayer/VideoPlayer';
 import { CommentWrap } from '@/components/Comment/Comment';
 import { RelatedVdo } from './Components';
+import { timeToYMD, playTimesFormat } from '@/utils/utils';
 
 let vid;
 
@@ -52,7 +53,7 @@ class Video extends Component {
         
         this.setState({
             title: res.name,
-            desc: res.desc,
+            desc: res.desc || res.briefDesc,
             publishTime: res.publishTime,
             playTime: res.playCount,
             shareCount: res.shareCount,
@@ -91,7 +92,7 @@ class Video extends Component {
             urlArr.push(getUrl(br));
         })
         Promise.all(urlArr).then(res => {
-            console.log(res);
+            // console.log(res);
             this.setState({
                 videoInfo: {
                     ...this.state.videoInfo,
@@ -121,7 +122,7 @@ class Video extends Component {
                 brs.sort((a, b) => {
                     return b - a;
                 })
-                console.log(brs);
+                // console.log(brs);
             }
             this.getAllMvUrls(brs);
             this.setState({
@@ -144,7 +145,7 @@ class Video extends Component {
     componentWillReceiveProps(newProps) {
         if (newProps.match.params.id !== this.state.vid) {
             console.log('refresh');
-            console.log(this.props.match.params.id, newProps.match.params.id)
+            // console.log(this.props.match.params.id, newProps.match.params.id)
             this.init(newProps.match.params.id);
         }
     }
@@ -217,10 +218,10 @@ class Video extends Component {
                         </h3>
                         <div className="m-mvintr">
                             <p className="s-fc4">
-                                发布时间：{ publishTime }
+                                发布时间：{ timeToYMD(publishTime) }
                             </p>
                             <p className="s-fc4">
-                                播放次数：{ playTime }次
+                                播放次数：{ playTimesFormat(playTime) }次
                             </p>
                             <p className="intr">
                                 { desc }

@@ -5,3 +5,4 @@ export const GET_SONGINFO = 'getSongInfo';
 export const SET_LOCK = 'setLock';
 export const SET_LOADING = 'playbarLoading';
 export const SET_SUB_NAV = 'setSubNav';
+export const SET_SEARCH_TAB = 'setSearchTab';

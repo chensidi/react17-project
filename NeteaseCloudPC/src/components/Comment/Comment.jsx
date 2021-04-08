@@ -82,39 +82,54 @@ export const CommentWrap = (props) => {
                 </div>
                 <div className="m-cmmt">
                     <div className="cmmts j-flag">
-                        <div className="u-hd4">
-                            精彩评论
-                        </div>
                         {
-                            hotCmts.map(cmt => {
-                                return (
-                                    <Comment key={cmt.commentId} {...cmt} />
-                                )
-                            })
+                            hotCmts.length > 0 ?
+                            <>
+                            <div className="u-hd4">
+                                精彩评论
+                            </div>
+                            {
+                                hotCmts.map(cmt => {
+                                    return (
+                                        <Comment key={cmt.commentId} {...cmt} />
+                                    )
+                                })
+                            }
+                            </>
+                            : null
                         }
                         <br/>
                         <br/>
-                        <div className="u-hd4">
-                            最新评论
-                        </div>
                         {
-                            cmts.map(cmt => {
-                                return (
-                                    <Comment key={cmt.commentId} {...cmt} />
-                                )
-                            })
+                            cmts.length > 0 ?
+                            <>
+                                <div className="u-hd4">
+                                    最新评论
+                                </div>
+                                {
+                                    cmts.map(cmt => {
+                                        return (
+                                            <Comment key={cmt.commentId} {...cmt} />
+                                        )
+                                    })
+                                }
+                            </>
+                            : null
                         }
                     </div>
-                    <div className="pagination-wrap">
-                        <Pagination 
-                            defaultCurrent={1} 
-                            total={total} 
-                            pageSize={20} 
-                            showSizeChanger={false}
-                            current={curPage}
-                            onChange={pageChange}
-                        />
-                    </div>
+                    {
+                        cmts.length > 0 ?
+                        <div className="pagination-wrap">
+                            <Pagination 
+                                defaultCurrent={1} 
+                                total={total} 
+                                pageSize={20} 
+                                showSizeChanger={false}
+                                current={curPage}
+                                onChange={pageChange}
+                            />
+                        </div>: null
+                    }
                 </div>
             </div>
         </div>

@@ -171,3 +171,14 @@ export function replaceHistory(list) { //替换播放历史记录
 export function clearHistory() { //清除历史记录
     store.dispatch(setHistory([]));
 }
+
+export function timeToYMD(time) {
+    if (isNaN(Number(time))) return time;
+    const date = new Date(time);
+    const [year, month, day] = [
+        date.getFullYear(),
+        (date.getMonth() + 1).toString().padStart(2, 0),
+        date.getDate().toString().padStart(2, 0)
+    ]
+    return [year, month, day].join('-')
+}

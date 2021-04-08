@@ -3,7 +3,8 @@ import { SET_CURSONG,
     SET_HISTORY, 
     SET_LOCK, 
     SET_LOADING,
-    SET_SUB_NAV, } from "./action-type";
+    SET_SUB_NAV,
+    SET_SEARCH_TAB, } from "./action-type";
 import commonRequest from '@/api/common';
 import { mediaTimeFormat, artistsFormat } from '@/utils/utils';
 
@@ -73,5 +74,12 @@ export const setSubNav = (show) => {
     return {
         type: SET_SUB_NAV,
         show
+    }
+}
+
+export const setSearchTab = (tab) => {
+    return {
+        type: SET_SEARCH_TAB,
+        tab
     }
 }

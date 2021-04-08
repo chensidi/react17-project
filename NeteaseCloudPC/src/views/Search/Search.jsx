@@ -4,9 +4,24 @@ import { searchApi } from '@/api/search';
 import { setSubNav } from '@/store/action';
 import store from '@/store';
 import Main from '@/components/Main';
+import { connect } from 'react-redux';
 import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, UserPanel, NotResult, } from './components';
+import { setSearchTab } from '@/store/action';
 
 const { TabPane } = Tabs;
+
+const mapStateTopProps = (state) => {
+    return {
+        tabType: state.globalData.searchTab
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setTab: (tab) => dispatch(setSearchTab(tab))
+    }
+}
+
 class SearchPage extends Component {
     state = {
         kw: '',
@@ -38,14 +53,18 @@ class SearchPage extends Component {
         let kw = this.props.match.params.kw;
         kw = decodeURIComponent(kw);
         setTimeout(() => {this.searchInput.value = kw;}, 100)
-        this.search(kw, '1');
-        this.setState({kw});
+        this.search(kw, this.props.tabType ?? '1');
+        this.setState({
+            kw,
+            curType: this.props.tabType ?? '1'
+        });
     }
     callback = (key) => {
         // this.searchInput.value = this.state.kw;
         this.setState({
             curType: key
         })
+        this.props.setTab(key);
         this.search(this.state.kw, key);
     }
 
@@ -133,6 +152,7 @@ class SearchPage extends Component {
             userprofiles,
             unit,
         } = this.state;
+        const { tabType } = this.props;
         const kw = this.searchInput?.value || this.state.kw;
         return (
             <Main className="g-bd">
@@ -151,7 +171,7 @@ class SearchPage extends Component {
                         <div className="snote s-fc4 ztag">
                         搜索“{kw}”，找到 <em className="s-fc6">{ curNum }</em> { unit }{ tabs[curType] }
                         </div>
-                        <Tabs onChange={this.callback} type="card">
+                        <Tabs onChange={this.callback} type="card" defaultActiveKey={tabType}>
                             <TabPane tab='单曲' key='1'>
                                 <Spin tip="Loading..." spinning={loading}>
                                     <div className="n-srchrst">
@@ -277,4 +297,4 @@ class SearchPage extends Component {
     }
 }
 
-export default SearchPage;
+export default connect(mapStateTopProps, mapDispatchToProps)(SearchPage);
