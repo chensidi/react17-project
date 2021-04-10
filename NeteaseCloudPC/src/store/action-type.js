@@ -6,3 +6,4 @@ export const SET_LOCK = 'setLock';
 export const SET_LOADING = 'playbarLoading';
 export const SET_SUB_NAV = 'setSubNav';
 export const SET_SEARCH_TAB = 'setSearchTab';
+export const SET_SEARCH_PAGE = 'setSearchPage';

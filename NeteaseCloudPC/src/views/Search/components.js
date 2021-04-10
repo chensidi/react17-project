@@ -115,7 +115,7 @@ export const AlbumItem = (props) => {
 }
 
 export const VideoItem = (props) => {
-    const { coverUrl, playTime, title, creator, durationms, markTypes, vid } = props;
+    const { coverUrl, playTime, title, creator, durationms, markTypes, vid, type } = props;
     return (
         <li>
             <div className="cover f-pr">
@@ -128,7 +128,7 @@ export const VideoItem = (props) => {
                     { playTimesFormat(playTime) }
                 </p>
                 <p className="bl u-msk u-msk-2">{ mediaTimeFormat(durationms/1000) }</p>
-                <Link to={`/video/${vid}${markTypes == null?'?mv=mv':''}`} className="link"></Link>
+                <Link to={`/video/${vid}${type === 0 ?'?mv=mv':''}`} className="link"></Link>
             </div>
             <h4 className="title f-thide">
                 { markTypes == null ? (<i className="tag u-icn2 u-icn2-smvtag"></i>) : null }

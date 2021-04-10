@@ -4,7 +4,8 @@ import { SET_CURSONG,
     SET_LOCK, 
     SET_LOADING, 
     SET_SUB_NAV,
-    SET_SEARCH_TAB, } from "./action-type";
+    SET_SEARCH_TAB,
+    SET_SEARCH_PAGE } from "./action-type";
 import sessionStore from '@/utils/sessionStore';
 
 let initialData = {
@@ -15,6 +16,7 @@ let initialData = {
     loading: false, //歌曲加载状态
     showSubNav: true, //是否展示二级导航条
     searchTab: '1', //搜素类型默认为1
+    searchPage: 1, //搜素页数默认为1
 } 
 
 const globalReducer = (state = initialData, action) => {
@@ -75,6 +77,11 @@ const globalReducer = (state = initialData, action) => {
             return {
                 ...state,
                 searchTab: action.tab
+            }
+        case SET_SEARCH_PAGE: 
+            return {
+                ...state,
+                searchPage: action.page
             }
         default:
             return state;

@@ -4,7 +4,8 @@ import { SET_CURSONG,
     SET_LOCK, 
     SET_LOADING,
     SET_SUB_NAV,
-    SET_SEARCH_TAB, } from "./action-type";
+    SET_SEARCH_TAB,
+    SET_SEARCH_PAGE } from "./action-type";
 import commonRequest from '@/api/common';
 import { mediaTimeFormat, artistsFormat } from '@/utils/utils';
 
@@ -83,3 +84,11 @@ export const setSearchTab = (tab) => {
         tab
     }
 }
+
+export const setSearchPage = (page) => {
+    return {
+        type: SET_SEARCH_PAGE,
+        page
+    }
+}
+

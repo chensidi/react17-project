@@ -246,6 +246,10 @@ const VideoPlayer = (props) => {
         video.current.volume = val / 100;
     })
 
+    const endHandler = useCallback(() => {
+        changeStatus(false);
+    })
+
     useEffect(() => {
         video.current.volume = .5;
     }, [])
@@ -262,6 +266,7 @@ const VideoPlayer = (props) => {
                         onProgress={onProgress}
                         onCanPlayThrough={readyPlay}
                         onLoadedData={() => console.log('loadedDataa')}
+                        onEnded={endHandler}
                     >
                     </video>
                     <div className="poster ffull" style={{display: videoDetails.loading?'':'none'}}>

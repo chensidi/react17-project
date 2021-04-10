@@ -1,24 +1,26 @@
 import { Component, Fragment, } from 'react';
-import { Tabs, Spin, } from 'antd';
+import { Tabs, Spin, Pagination, } from 'antd';
 import { searchApi } from '@/api/search';
 import { setSubNav } from '@/store/action';
 import store from '@/store';
 import Main from '@/components/Main';
 import { connect } from 'react-redux';
 import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, UserPanel, NotResult, } from './components';
-import { setSearchTab } from '@/store/action';
+import { setSearchTab, setSearchPage } from '@/store/action';
 
 const { TabPane } = Tabs;
 
 const mapStateTopProps = (state) => {
     return {
-        tabType: state.globalData.searchTab
+        tabType: state.globalData.searchTab,
+        searchPage: state.globalData.searchPage
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setTab: (tab) => dispatch(setSearchTab(tab))
+        setTab: tab => dispatch(setSearchTab(tab)),
+        setSearchPage: page => dispatch(setSearchPage(page))
     }
 }
 
@@ -46,14 +48,16 @@ class SearchPage extends Component {
         djRadios: [],
         userprofiles: [],
         loading: false,
-        unit: '首'
+        unit: '首',
+        total: 0,
+        curPage: this.props.searchPage
     }
     componentDidMount() {
         store.dispatch(setSubNav(false));
         let kw = this.props.match.params.kw;
         kw = decodeURIComponent(kw);
         setTimeout(() => {this.searchInput.value = kw;}, 100)
-        this.search(kw, this.props.tabType ?? '1');
+        this.search(kw, this.props.tabType ?? '1', 30, (this.props.searchPage - 1) * 30);
         this.setState({
             kw,
             curType: this.props.tabType ?? '1'
@@ -62,63 +66,78 @@ class SearchPage extends Component {
     callback = (key) => {
         // this.searchInput.value = this.state.kw;
         this.setState({
-            curType: key
+            curType: key,
+            curPage: 1
         })
         this.props.setTab(key);
+        this.props.setSearchPage(1);
         this.search(this.state.kw, key);
     }
 
-    search = (kw, type) => { //搜索
+    search = (kw, type, limit, offset) => { //搜索
         this.setState({loading: true});
-        searchApi.searchByKw(kw, type).then(res => {
-            let target, data, unit;
+        searchApi.searchByKw(kw, type, limit, offset).then(res => {
+            let target, data, unit, total = 0;
             switch (type) {
                 case '1': 
                     target = 'songList';
                     data = res?.songs || [];
                     unit = '首';
+                    total = res.songCount;
                     break;
                 case '10':
                     target = 'albums';
                     data = res?.albums || [];
                     unit = '张';
+                    total = res.albumCount;
                     break;
                 case '100':
                     target = 'artists';
                     data = res?.artists || [];
                     unit = '位';
+                    total = res.artistCount;
                     break;
                 case '1014':
                     target = 'videos';
                     data = res?.videos || [];
                     unit = '个';
+                    total = res.videoCount;
                     break;
                 case '1006':
                     target = 'lyrics';
                     data = res?.songs || [];
                     unit = '个';
+                    total = res.songCount;
                     break;
                 case '1000':
                     target = 'playLists';
                     data = res?.playlists || [];
                     unit = '个';
+                    total = res.playlistCount;
                     break;
                 case '1009':
                     target = 'djRadios';
                     data = res?.djRadios || [];
                     unit = '位';
+                    total = res.djRadiosCount;
                     break;
                 case '1002':
                     target = 'userprofiles';
                     data = res?.userprofiles || [];
                     unit = '位';
+                    total = res.userprofileCount;
                     break;
             }
             if (data) {
                 setTimeout(() => {
                     this.setState({loading: false})
                 }, 500)
-                this.setState({[target]: data, curNum: data.length, unit})
+                this.setState({
+                    [target]: data, 
+                    curNum: data.length,
+                    unit,
+                    total
+                })
             }
         })
     }
@@ -126,7 +145,9 @@ class SearchPage extends Component {
     searchHandler = (e) => {
         if (e.code === 'Enter' && e.target.value !== '') {
             this.props.history.replace(`/search/${e.target.value}`)
-            this.search(e.target.value, this.state.curType);
+            // this.search(e.target.value, this.state.curType);
+            this.setState({curPage: 1});
+            this.props.setSearchPage(1);
         }
     }
 
@@ -134,6 +155,14 @@ class SearchPage extends Component {
         if (e.target.value) {
             this.setState({kw: e.target.value});
         }
+    }
+
+    pageChange = (page, pageSize) => {
+        this.setState({
+            curPage: page
+        })
+        this.props.setSearchPage(page);
+        this.search(this.state.kw, this.state.curType, pageSize, (page - 1) * pageSize)
     }
 
     render() {
@@ -151,6 +180,8 @@ class SearchPage extends Component {
             djRadios,
             userprofiles,
             unit,
+            total,
+            curPage
         } = this.state;
         const { tabType } = this.props;
         const kw = this.searchInput?.value || this.state.kw;
@@ -169,7 +200,7 @@ class SearchPage extends Component {
                     </div>
                     <section>
                         <div className="snote s-fc4 ztag">
-                        搜索“{kw}”，找到 <em className="s-fc6">{ curNum }</em> { unit }{ tabs[curType] }
+                        搜索“{kw}”，找到 <em className="s-fc6">{ total }</em> { unit }{ tabs[curType] }
                         </div>
                         <Tabs onChange={this.callback} type="card" defaultActiveKey={tabType}>
                             <TabPane tab='单曲' key='1'>
@@ -290,6 +321,18 @@ class SearchPage extends Component {
                                 </Spin>
                             </TabPane>
                         </Tabs>
+                        {
+                            total >= 30 ?
+                            <div className="search-pagination">
+                                <Pagination 
+                                    current={curPage}
+                                    total={total} 
+                                    showSizeChanger={false}
+                                    onChange={this.pageChange}
+                                    pageSize={30}
+                                />
+                            </div>: null
+                        }
                     </section>
                 </div>
             </Main>
