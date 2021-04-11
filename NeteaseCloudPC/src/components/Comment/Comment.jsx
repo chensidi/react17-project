@@ -28,7 +28,7 @@ const Comment = (props) => {
             </div>
             <div className="cntwrap">
                 <div>
-                    <div className="cnt f-brk">
+                    <div className="cnt f-brk nf">
                         <Link to="" className="s-fc7">{ user.nickname }</Link>
                         ：{ content }
                     </div>

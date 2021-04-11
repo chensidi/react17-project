@@ -8,6 +8,7 @@ import { SET_CURSONG,
     SET_SEARCH_PAGE } from "./action-type";
 import commonRequest from '@/api/common';
 import { mediaTimeFormat, artistsFormat } from '@/utils/utils';
+import store from './index'
 
 async function getSongById(defaultId) { //根据id获取歌曲信息
     const id = defaultId;
@@ -46,7 +47,8 @@ export const setLoadingPlaybar = (loading) => {
 }
 
 export const getSongInfo = (id) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        console.log(getState())
         dispatch(setLoadingPlaybar(true));
         return getSongById(id).then(res => {
             const { lyc, url, details } = res;

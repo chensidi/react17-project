@@ -1885,3 +1885,49 @@ table {
     text-align: center;
     margin-top: 20px;
 }
+
+.n-albdesc {
+    margin-top: 20px;
+}
+
+.f-brk {
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    p {
+        color: #666;
+        text-indent: 2em;
+        line-height: 24px;
+        margin-top: 4px;
+    }
+}
+
+
+/* 专辑内部歌曲列表table */
+.n-songtb {
+    margin-top: 27px;
+}
+
+.u-title-1 {
+    height: 33px;
+    .out {
+        margin-top: 5px;
+        float: right;
+    }
+}
+
+.small-tb {
+    .w0 {
+        width: 200px !important;
+    }
+}
+
+.u-icn-16 {
+    width: 54px;
+    height: 24px;
+    background-position: 0 -186px;
+}
+
+.nf {
+    float: none !important;
+}
