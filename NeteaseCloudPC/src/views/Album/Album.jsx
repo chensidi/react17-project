@@ -2,9 +2,10 @@ import Main from '@/components/Main';
 import { Link, useParams } from 'react-router-dom';
 import albumApi from '@/api/album';
 import { useEffect, useState, useCallback } from 'react';
-import { artistsFormat, timeToYMD } from '@utils/utils'
+import { artistsFormat, timeToYMD, playAlbum } from '@utils/utils'
 import { SongItem } from '../Search/components';
 import { CommentWrap } from '@/components/Comment/Comment'
+import BtnTools from '@/components/Common/BtnTools';
 
 const Album = () => {
 
@@ -41,6 +42,10 @@ const Album = () => {
     const changeCmts = async (page, pageSize) => {
         await getAlbumCmts(id, 20, (page - 1) * pageSize);
     }
+
+    const playAlbumFn = useCallback(() => {
+        playAlbum(id);
+    })
 
     useEffect(() => {
         getAlbumInfo(id);
@@ -84,29 +89,7 @@ const Album = () => {
                                         发行公司:
                                         { albumInfo.company }
                                     </p>
-                                    <div className="m-info">
-                                        <div className="btns f-cb">
-                                            <div className="u-btn2 u-btn2-2 u-btni-addply f-fl">
-                                                <i>
-                                                    <em className="ply"></em>
-                                                    播放
-                                                </i>
-                                            </div>
-                                            <div className="u-btni u-btni-add"></div>
-                                            <div className="u-btni u-btni-fav">
-                                                <i>收藏</i>
-                                            </div>
-                                            <div className="u-btni u-btni-share">
-                                                <i>分享</i>
-                                            </div>
-                                            <div className="u-btni u-btni-dl">
-                                                <i>下载</i>
-                                            </div>
-                                            <div className="u-btni u-btni-cmmt">
-                                                <i>评论(120)</i>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <BtnTools {...albumInfo.info} playHandler={playAlbumFn} />
                                 </div>
                             </div>
                             <div className="n-albdesc">

@@ -48,7 +48,6 @@ export const setLoadingPlaybar = (loading) => {
 
 export const getSongInfo = (id) => {
     return (dispatch, getState) => {
-        console.log(getState())
         dispatch(setLoadingPlaybar(true));
         return getSongById(id).then(res => {
             const { lyc, url, details } = res;

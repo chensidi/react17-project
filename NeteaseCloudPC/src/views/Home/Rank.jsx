@@ -1,5 +1,6 @@
 import './index.scss';
 import { memo } from 'react';
+import { Link } from 'react-router-dom';
 
 const LiItem = (props) => {
     const { item, idx } = props;
@@ -9,7 +10,9 @@ const LiItem = (props) => {
                 {idx + 1}
             </span>
             <span className="nm s-fc0 f-thide" title={item.name}>
-                {item.name}
+                <Link to={`/song/${item.id}`}>
+                    {item.name}
+                </Link>
             </span>
             <div className="oper">
                 <em title="播放" className="s-bg s-bg-11"></em>

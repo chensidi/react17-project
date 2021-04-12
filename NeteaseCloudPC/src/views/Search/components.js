@@ -2,8 +2,7 @@ import { Link } from 'react-router-dom';
 import { mediaTimeFormat, artistsFormat, playTimesFormat } from '@/utils/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useState } from 'react';
-import { playItem, addToPlay, replaceHistory, } from '@/utils/utils';
-import albumApi from '@/api/album';
+import { playItem, addToPlay, playAlbum } from '@/utils/utils';
 
 export const SongItem = (props) => {
     const { i, name, mv, ar, al, dt, id } = props;
@@ -71,14 +70,6 @@ export const SingerItem = (props) => {
             </p>
         </li>
     )
-}
-
-async function playAlbum(id) { //播放整张专辑内容
-    const res = await albumApi.getAlbumInfo(id);
-    //将历史记录变为当前专辑列表
-    replaceHistory(res.songs);
-    //将当前播放歌曲切换为该专辑第一首歌曲
-    playItem(res.songs[0].id);
 }
 
 export const AlbumItem = (props) => {

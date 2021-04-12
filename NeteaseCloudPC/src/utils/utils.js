@@ -1,6 +1,7 @@
 import store from '@/store';
 import { getSongInfo, setHistory, setCurSong } from '@/store/action';
 import commonRequest from '@/api/common';
+import albumApi from '@/api/album';
 import { message } from 'antd';
 
 async function getSongDetails(id) {
@@ -105,8 +106,9 @@ export function addToPlay(id) { //添加到播放列表
     const historyPlay = store.getState().globalData.historyPlay;
     let exist = false;
     for(let i = 0; i < historyPlay.length; i ++) {
-        if (historyPlay[i].id === id) {
+        if (historyPlay[i].id == id) {
             exist = true;
+            message.success('此歌曲已在播放列表中', 1);
             break;
         }
     }
@@ -181,4 +183,12 @@ export function timeToYMD(time) {
         date.getDate().toString().padStart(2, 0)
     ]
     return [year, month, day].join('-');
+}
+
+export async function playAlbum(id) { //播放整张专辑内容
+    const res = await albumApi.getAlbumInfo(id);
+    //将历史记录变为当前专辑列表
+    replaceHistory(res.songs);
+    //将当前播放歌曲切换为该专辑第一首歌曲
+    playItem(res.songs[0].id);
 }

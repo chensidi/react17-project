@@ -424,9 +424,9 @@ const PlayBar = (props) => {
                     </div>
                     <div className="play">
                         <div className="j-flag words">
-                            <span className="f-thide name fc1 f-fl" title={props?.curSong?.name}>
+                            <Link to={`/song/${props?.curSong?.id}`} className="f-thide name fc1 f-fl" title={props?.curSong?.name}>
                             {props?.curSong?.name}
-                            </span>
+                            </Link>
                             <em className="mv f-fl"></em>
                             <span className="by f-thide f-fl">
                                 <span className={props?.curSong?.singer}>

@@ -1,4 +1,5 @@
 import { createRef, memo } from 'react';
+import { Link } from 'react-router-dom';
 import { Carousel } from 'antd';
 import './index.scss';
 
@@ -23,13 +24,13 @@ const NewDiskSwiper = (props) => {
                                     <li key={li.id}>
                                         <div className="u-cover u-cover-alb1">
                                             <img src={li.picUrl} alt="" />
-                                            <a href="/#" className="msk"></a>
+                                            <Link to={`/album/${li.id}`} className="msk"></Link>
                                             <a href="/#" title="播放" className="icon-play f-alpha f-fr"></a>
                                         </div>
                                         <p className="f-thide">
-                                            <a href="/#" className="s-fc0 tit">
+                                            <Link to={`/album/${li.id}`} className="s-fc0 tit">
                                                 {li.name}
-                                            </a>
+                                            </Link>
                                         </p>
                                         <p className="tit f-thide">
                                             <a href="/#" className="s-fc3">

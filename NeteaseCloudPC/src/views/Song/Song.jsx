@@ -3,10 +3,10 @@ import Main from '@/components/Main';
 import { Link } from 'react-router-dom';
 import commonApi from '@/api/common';
 import { artistsFormat, lrcFilter, playItem } from '@/utils/utils';
-import { message } from 'antd';
 import { CommentWrap } from '@/components/Comment/Comment';
 import { SameLists, SameSongs } from './components';
 import { addToPlay } from '@/utils/utils';
+import BtnTools from '@/components/Common/BtnTools';
 
 class Song extends Component {
     state = {
@@ -86,8 +86,7 @@ class Song extends Component {
         await this.getCmt(this.state.id, 20, (page - 1) * pageSize)
     }
 
-    componentDidMount() {
-        const id = this.props.match.params?.id;
+    init = (id) => {
         this.setState({id});
         this.getSongDetails(id);
         this.getLrc(id);
@@ -95,6 +94,19 @@ class Song extends Component {
         this._getSameLists(id);
         this._getSameSongs(id);
         document.body.scrollTo(0, 0);
+    }
+
+    componentDidMount() {
+        const id = this.props.match.params?.id;
+        this.init(id);
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.match.params.id !== this.state.id) {
+            console.log('refresh');
+            // console.log(this.props.match.params.id, newProps.match.params.id)
+            this.init(newProps.match.params.id);
+        }
     }
 
     render() {
@@ -134,39 +146,21 @@ class Song extends Component {
                                             </div>
                                             <p className="des s-fc4">
                                                 歌手：
-                                                <span title="张学友">
+                                                <span title={artistsFormat(songInfo?.artists || [])}>
                                                     <Link to="" className="des s-fc7">{ artistsFormat(songInfo?.artists || []) }</Link>
                                                 </span>
                                             </p>
                                             <p className="des s-fc4">
                                                 所属专辑：
-                                                <span title="情缘十载">
-                                                    <Link to="" className="des s-fc7">{ songInfo?.album?.name }</Link>
+                                                <span title={songInfo?.album?.name}>
+                                                    <Link to={`/album/${songInfo?.album?.id}`} className="des s-fc7">{ songInfo?.album?.name }</Link>
                                                 </span>
                                             </p>
-                                            <div className="m-info">
-                                                <div className="btns f-cb">
-                                                    <div className="u-btn2 u-btn2-2 u-btni-addply f-fl" onClick={() => playItem(id)}>
-                                                        <i>
-                                                            <em className="ply"></em>
-                                                            播放
-                                                        </i>
-                                                    </div>
-                                                    <div className="u-btni u-btni-add" onClick={() => addToPlay(id)}></div>
-                                                    <div className="u-btni u-btni-fav">
-                                                        <i>收藏</i>
-                                                    </div>
-                                                    <div className="u-btni u-btni-share">
-                                                        <i>分享</i>
-                                                    </div>
-                                                    <div className="u-btni u-btni-dl">
-                                                        <i>下载</i>
-                                                    </div>
-                                                    <div className="u-btni u-btni-cmmt">
-                                                        <i>评论(120)</i>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <BtnTools 
+                                                commentCount={cmtsData.total} 
+                                                playHandler={() => playItem(id)} 
+                                                addHandler={() => addToPlay(id)}
+                                            />
                                             <div className="bd bd-open f-brk f-ib">
                                                 {
                                                     lrcObj.lrcArr.slice(0, openLrc?-1:10).map((lrc, i) => {
