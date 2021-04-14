@@ -1499,6 +1499,28 @@ table {
             margin-right: 5px;
         }
     }
+    .user {
+        
+        .face {
+            margin-right: 10px;
+            &, & img {
+                float: left;
+                width: 35px;
+                height: 35px;
+            }
+        }
+        .time {
+            margin-left: 15px;
+        }
+        .name {
+            float: left;
+        }
+    }
+}
+
+.userow {
+    margin: 0 0 20px;
+    line-height: 35px;
 }
 
 .u-btn2, .u-btn2 i, .u-btn2 .icn, .u-btni, .u-btni i, .u-tag, .u-tag i, .u-btni-addply .ply {

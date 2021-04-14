@@ -192,3 +192,4 @@ export async function playAlbum(id) { //播放整张专辑内容
     //将当前播放歌曲切换为该专辑第一首歌曲
     playItem(res.songs[0].id);
 }
+
