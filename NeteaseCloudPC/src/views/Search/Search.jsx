@@ -202,7 +202,7 @@ class SearchPage extends Component {
                         <div className="snote s-fc4 ztag">
                         搜索“{kw}”，找到 <em className="s-fc6">{ total }</em> { unit }{ tabs[curType] }
                         </div>
-                        <Tabs onChange={this.callback} type="card" defaultActiveKey={tabType}>
+                        <Tabs className="my-tabs" onChange={this.callback} type="card" defaultActiveKey={tabType}>
                             <TabPane tab='单曲' key='1'>
                                 <Spin tip="Loading..." spinning={loading}>
                                     <div className="n-srchrst">

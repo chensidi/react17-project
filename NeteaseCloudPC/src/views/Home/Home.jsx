@@ -6,11 +6,14 @@ import { Spin } from 'antd';
 import sessionStore from '@utils/sessionStore';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
+import singerApi from '@/api/singer';
+import djApi from '@/api/dj';
 import homeConfig from './config';
 import NewDiskSwiper from './Swiper';
 import Main from '@/components/Main';
+import { SingerBlock, DjBlock } from './AsideComponents';
 // import './index.scss';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Banner = AsyncComponent(() => import('@/components/Banner/Banner'))
 const BlockTitle = AsyncComponent(() => import('@/components/BlockTitle'));
@@ -41,17 +44,24 @@ class Home extends PureComponent {
         recommends: [],
         newDisk: [],
         ranks: [],
-        loading: false
+        loading: false,
+        hotSingers: [],
+        hotDjs: []
     };
     async componentDidMount() {
         this.props.setSubNav(true);
-        this.setState({loading: true})
-        await this._loadBanners();
-        await this._getRecommend();
-        await this._getNewDisk();
-        // this._getRank();
-        await this._getTopList();
-        timer = setTimeout(() => this.setState({loading: false}), 500)
+        this.setState({loading: true});
+        Promise.all([
+            this._loadBanners(),
+            this._loadBanners(),
+            this._getRecommend(),
+            this._getNewDisk(),
+            this._getTopList(),
+            this._getHotSingers(),
+            this._getHotDjs()
+        ]).then(() => {
+            timer = setTimeout(() => this.setState({loading: false}), 500)
+        })
     }
 
     componentWillUnmount() {
@@ -102,9 +112,24 @@ class Home extends PureComponent {
             ranks: arr
         })
     }
+
+    _getHotSingers = async () => {
+        const singers = await singerApi.getHotSingers(5);
+        this.setState({hotSingers: singers});
+    }
+
+    _getHotDjs = async () => {
+        const djs = await djApi.getHotDjs(5);
+        this.setState({hotDjs: djs.list})
+    }
     
     render() {
-        const { banners, recommends, newDisk, ranks, loading} = this.state;
+        const { banners, 
+            recommends, 
+            newDisk, ranks, 
+            loading, 
+            hotSingers,
+            hotDjs } = this.state;
         const { hotNav } = homeConfig;
         return (
             <div>
@@ -142,6 +167,16 @@ class Home extends PureComponent {
                                 }
                             </div>
                         </div>
+                    </div>
+                    <div className="g-sd1">
+                        <div className="n-user-profile">
+                            <div className="n-myinfo n-myinfo-1 s-bg s-bg-1">
+                                <p className="note s-fc3">登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
+                                <span className="btn s-bg s-bg-2 f-tdn">用户登录</span>
+                            </div>
+                        </div>
+                        <SingerBlock hotSingers={hotSingers} />
+                        <DjBlock hotDjs={hotDjs} />
                     </div>
                 </Main>
                 {
