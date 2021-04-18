@@ -12,7 +12,7 @@ let initialData = {
     curSong: sessionStore.get('globalData').curSong || null, //当前歌曲
     keep: ['Home'],
     historyPlay: sessionStore.get('globalData').historyPlay || [], //历史播放记录
-    lock: sessionStore.get('globalData').lock || false, //是否锁定播放栏
+    lock: sessionStore.get('globalData').lock || true, //是否锁定播放栏
     loading: false, //歌曲加载状态
     showSubNav: true, //是否展示二级导航条
     searchTab: '1', //搜素类型默认为1
