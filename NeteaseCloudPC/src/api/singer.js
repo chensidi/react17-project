@@ -11,5 +11,28 @@ export default {
         } catch (err) {
             return err;
         }
+    },
+    async getSongs(id, limit=21, offset=0, order='hot') { //歌手歌曲
+        try {
+            let res = await http.get(`/artist/songs`, {
+                limit,
+                offset,
+                id,
+                order
+            });
+            return res;
+        } catch (err) {
+            return err;
+        }
+    },
+    async getDetails(id) { //歌手详情
+        try {
+            let res = await http.get(`/artist/detail`, {
+                id,
+            });
+            return res.data;
+        } catch (err) {
+            return err;
+        }
     }
 }

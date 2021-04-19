@@ -419,9 +419,9 @@ const PlayBar = (props) => {
                         <span ref={playBtn} className={['j-flag', mp3Info.isPlay?'pas':'ply'].join(' ')} title="播放/暂停(p)" onClick={playPause}></span>
                         <span ref={nextBtn} className="nxt" title="下一首(ctrl+→)" onClick={() => cutSong(true)}></span>
                     </div>
-                    <div className="head j-flag">
+                    <Link to={`/song/${props?.curSong?.id}`} className="head j-flag">
                         <img src={props?.curSong?.alblum?.picUrl} alt=""/>
-                    </div>
+                    </Link>
                     <div className="play">
                         <div className="j-flag words">
                             <Link to={`/song/${props?.curSong?.id}`} className="f-thide name fc1 f-fl" title={props?.curSong?.name}>

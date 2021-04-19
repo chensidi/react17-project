@@ -45,11 +45,11 @@ export const SongItem = (props) => {
 }
 
 export const SingerItem = (props) => {
-    const { img1v1Url, name } = props;
+    const { img1v1Url, name, id } = props;
     return (
         <li>
             <div className="u-cover u-cover-5">
-                <Link to="">
+                <Link to={`/singer/${id}`}>
                     <LazyLoadImage 
                     width={130} 
                     height={130} 
@@ -167,7 +167,8 @@ const PlayTr = (props) => {
         trackCount, 
         creator, 
         bookCount, 
-        playCount } = props;
+        playCount,
+        id } = props;
     return (
         <tr className={["h-flag", i % 2 ? 'even' : ''].join(' ')}>
             <td className="first w0">
@@ -194,7 +195,7 @@ const PlayTr = (props) => {
                     <div className="tt">
                         <div className="ttc">
                             <span className="txt">
-                                <Link to="">
+                                <Link to={`/playlist/${id}`}>
                                     <span className="s-fc7">{ name }</span>
                                 </Link>
                             </span>

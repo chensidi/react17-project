@@ -2095,3 +2095,80 @@ table {
         vertical-align: middle;
     }
 }
+
+.n-sltlyr .icn, .n-mvlist .mvpic .btn, .n-artist .btn-rz, .n-artist .btnfav {
+    background: url(https://s2.music.126.net/style/web2/img/iconall.png?c6b0742ef93a2c9b438acf7a39d9e605) no-repeat;
+}
+
+.n-artist {
+    position: relative;
+    zoom: 1;
+    height: 333px;
+    margin-top: -20px;
+    margin-bottom: 10px;
+    .sname-max {
+        max-width: 75%;
+    }
+    .sname {
+        float: left;
+        max-width: 100%;
+        height: 34px;
+        line-height: 24px;
+        font-weight: normal;
+        font-size: 24px;
+        color: #333;
+    }
+    .salias {
+        float: left;
+        max-width: 23%;
+        padding-left: 10px;
+        font-size: 14px;
+        line-height: 32px;
+        color: #999;
+        font-weight: normal;
+    }
+    img, .mask {
+        display: block;
+        width: 640px;
+        height: 300px;
+    }
+    img {
+        object-fit: cover;
+    }
+    .mask {
+        position: absolute;
+        top: 34px;
+        left: 0;
+        background: url(https://s2.music.126.net/style/web2/img/ban_mask.png?7f9cab895b7f430317b27a4aabee1b27) no-repeat;
+    }
+    .btnfav {
+        display: block;
+        position: absolute;
+        bottom: 18px;
+        right: 20px;
+        width: 76px;
+        height: 32px;
+        background-position: 0 -500px;
+    }
+}
+
+.ant-pagination-item-active {
+    font-weight: 500;
+    background: #fff;
+    border-color: #c20c0c;
+    a {
+        color: #c20c0c; 
+    }
+}
+
+.ant-pagination-item:focus, .ant-pagination-item:hover {
+    border-color: #c20c0c;
+    a {
+        color: #c20c0c;
+    }
+}
+
+.ant-pagination-prev:hover .ant-pagination-item-link, .ant-pagination-next:hover .ant-pagination-item-link {
+    color: #c20c0c;
+    border-color: #c20c0c;
+}

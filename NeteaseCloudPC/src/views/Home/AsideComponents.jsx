@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 
-const SingerItem = ({img1v1Url, name, alias}) => {
+const SingerItem = ({img1v1Url, name, alias, id}) => {
     return (
         <li>
-            <Link to="" className="itm f-tdn">
+            <Link to={`/singer/${id}`} className="itm f-tdn">
                 <div className="head">
                     <img src={img1v1Url} alt=""/>
                 </div>
