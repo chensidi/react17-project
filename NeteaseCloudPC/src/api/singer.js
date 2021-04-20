@@ -34,5 +34,15 @@ export default {
         } catch (err) {
             return err;
         }
+    },
+    async getIntr(id) { //歌手介绍
+        try {
+            let res = await http.get(`/artist/desc`, {
+                id,
+            });
+            return res;
+        } catch (err) {
+            return err;
+        }
     }
 }

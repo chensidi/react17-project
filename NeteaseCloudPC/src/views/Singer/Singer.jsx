@@ -1,6 +1,6 @@
 import Main from '@/components/Main';
 import { Tabs } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, createContext, memo, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import singerApi from '@/api/singer';
@@ -13,11 +13,15 @@ const subRouter = [
     'introduce'
 ]
 
-const Singer = (props) => {
+export const Intrs = createContext({});
+
+const Singer = memo((props) => {
 
     const history = useHistory();
     const { id } = useParams();
     const [info, setInfo] = useState({});
+    const [intr, setIntr] = useState({});
+    const infos = useRef();
 
     const tabChange = useCallback((key) => { //子页面跳转
         const path = subRouter[key - 1];
@@ -27,17 +31,26 @@ const Singer = (props) => {
     const getSingerInfo = useCallback(async () => {
         const { artist={} } = await singerApi.getDetails(id);
         setInfo(artist);
+        infos.current = artist;
     }, [])
 
-    useEffect(() => { //默认初次跳转到歌手的歌曲子页
+    const getSingerIntr = useCallback(async () => {
+        const res = await singerApi.getIntr(id);
+        setIntr({
+            ...res,
+            ...infos.current
+        });
+    })
+
+    useEffect(async () => { //默认初次跳转到歌手的歌曲子页
         getSingerInfo();
+        getSingerIntr();
         history.replace(`/singer/${id}/song`);
     }, [])
 
     return (
-        <div>
-            <Main>
-                <div className="g-mn4">
+        <Main>
+            <div className="g-mn4">
                     <div className="g-mn4c">
                         <div className="g-wrap6">
                             <div className="n-artist f-cb">
@@ -63,13 +76,14 @@ const Singer = (props) => {
                                 <TabPane tab="艺人介绍" key="4">
                                 </TabPane>
                             </Tabs>
+                            <Intrs.Provider value={intr}>
                             { props.children }
+                            </Intrs.Provider>
                         </div>
                     </div>
                 </div>
-            </Main>
-        </div>
+        </Main>
     )
-}
+})
 
 export default Singer;

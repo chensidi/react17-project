@@ -17,7 +17,7 @@ export const SongItem = (props) => {
                 <div className="sn">
                     <div className="text">
                         <Link to={`/song/${id}`}>{ name }</Link>
-                        { mv ? <Link to="" className="mv"></Link> : null }
+                        { mv ? <Link to={`/video/${mv}?mv=mv`} className="mv"></Link> : null }
                     </div>
                 </div>
             </div>
