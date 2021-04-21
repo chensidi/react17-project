@@ -9,6 +9,7 @@ const PlayList = AsyncComponent(() => import('@/views/Album/PlayList'));
 const Singer = AsyncComponent(() => import('@/views/Singer/Singer'));
 const SingerSong = AsyncComponent(() => import('@/views/Singer/Song'));
 const SingerIntroduce = AsyncComponent(() => import('@/views/Singer/Introduce'));
+const SingerAlbum = AsyncComponent(() => import('@/views/Singer/Album'));
 
 const routes = [
     {
@@ -65,6 +66,11 @@ const routes = [
                 path: 'introduce',
                 component: SingerIntroduce,
                 name: 'SingerIntroduce',
+            },
+            {
+                path: 'album',
+                component: SingerAlbum,
+                name: 'SingerAlbum'
             }
         ]
     }

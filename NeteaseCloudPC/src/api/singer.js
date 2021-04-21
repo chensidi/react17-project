@@ -44,5 +44,17 @@ export default {
         } catch (err) {
             return err;
         }
+    },
+    async getAlbum(id, limit = 12, offset = 0) {  //歌手专辑
+        try {
+            let res = await http.get(`/artist/album`, {
+                id,
+                limit,
+                offset,
+            });
+            return res.hotAlbums;
+        } catch (err) {
+            return err;
+        }
     }
 }

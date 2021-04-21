@@ -2193,3 +2193,48 @@ table {
         text-indent: 2em;
     }
 }
+
+.m-cvrlst-alb4 {
+    margin: 20px 0 0 -18px;
+    li {
+        width: 145px;
+        height: 175px;
+        padding-left: 18px;
+    }
+}
+
+.u-cover-alb3 {
+    width: 120px;
+    height: 120px;
+    .msk {
+        width: 145px;
+        height: 120px;
+        background-position: -170px -850px;
+    }
+    .icon-play {
+        left: 85px;
+    }
+    background: url(https://s2.music.126.net/style/web2/img/coverall.png?794506443d427f42e53c826dc22daf02) no-repeat;
+
+}
+
+.m-cvrlst li {
+    .dec-1 {
+        line-height: 19px;
+        max-height: 38px;
+        .tit {
+            display: inline;
+        }
+    }
+    .dec {
+        margin: 8px 0 3px;
+        font-size: 14px;
+    }
+    .time {
+        margin: 0 !important;
+    }
+}
+
+.ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-link-icon, .ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-link-icon {
+    color: #8a060b;
+}
