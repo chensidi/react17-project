@@ -56,5 +56,27 @@ export default {
         } catch (err) {
             return err;
         }
+    },
+    async getMv(id, limit = 12, offset = 0) { //歌手mv
+        try {
+            let res = await http.get(`/artist/mv`, {
+                id,
+                limit,
+                offset,
+            });
+            return res.mvs;
+        } catch (err) {
+            return err;
+        }
+    },
+    async getSimi(id) { //相似歌手
+        try {
+            let res = await http.get(`/simi/artist`, {
+                id,
+            });
+            return res.artists;
+        } catch (err) {
+            return err;
+        }
     }
 }

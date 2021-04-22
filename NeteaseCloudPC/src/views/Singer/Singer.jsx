@@ -1,9 +1,10 @@
 import Main from '@/components/Main';
 import { Tabs } from 'antd';
 import { useCallback, useEffect, useState, createContext, memo, useRef } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Link } from 'react-router-dom';
 
 import singerApi from '@/api/singer';
+import singer from '@/api/singer';
 
 const { TabPane } = Tabs;
 const subRouter = [
@@ -15,12 +16,29 @@ const subRouter = [
 
 export const Intrs = createContext({});
 
+const SimiItem = (props) => {
+    const { img1v1Url, name, id } = props;
+    return (
+        <li>
+            <div className="hd">
+                <Link to={`/singer/${id}`}>
+                    <img src={img1v1Url} alt=""/>
+                </Link>
+            </div>
+            <p>
+                <Link to={`/singer/${id}`} className="nm nm-icn f-ib f-thide">{ name }</Link>
+            </p>
+        </li>
+    )
+}
+
 const Singer = memo((props) => {
 
     const history = useHistory();
-    const { id } = useParams();
+    let { id } = useParams();
     const [info, setInfo] = useState({});
     const [intr, setIntr] = useState({});
+    const [simi, setSimi] = useState([]);
     const infos = useRef();
 
     const tabChange = useCallback((key) => { //子页面跳转
@@ -28,13 +46,13 @@ const Singer = memo((props) => {
         history.push(`/singer/${id}/${path}`)
     }, [])
 
-    const getSingerInfo = useCallback(async () => {
+    const getSingerInfo = useCallback(async (id) => {
         const { artist={} } = await singerApi.getDetails(id);
         setInfo(artist);
         infos.current = artist;
     }, [])
 
-    const getSingerIntr = useCallback(async () => {
+    const getSingerIntr = useCallback(async (id) => {
         const res = await singerApi.getIntr(id);
         setIntr({
             ...res,
@@ -42,14 +60,28 @@ const Singer = memo((props) => {
         });
     })
 
-    useEffect(async () => { //默认初次跳转到歌手的歌曲子页
-        getSingerInfo();
-        getSingerIntr();
+    const getSimi = useCallback(async (id) => {
+        const res = await singerApi.getSimi(id);
+        setSimi(res.slice(0, 6));
+    }, [])
+
+    const init = useCallback((id) => {
+        getSingerInfo(id);
+        getSingerIntr(id);
+        getSimi(id);
         history.replace(`/singer/${id}/song`);
     }, [])
 
+    useEffect(async () => { //默认初次跳转到歌手的歌曲子页
+        init(id);
+    }, [])
+
+    useEffect(() => {
+        init(id);
+    }, [id])
+
     return (
-        <Main>
+        <Main className="g-bd4 f-cb">
             <div className="g-mn4">
                     <div className="g-mn4c">
                         <div className="g-wrap6">
@@ -80,6 +112,20 @@ const Singer = memo((props) => {
                             { props.children }
                             </Intrs.Provider>
                         </div>
+                    </div>
+                </div>
+                <div className="g-sd4">
+                    <div className="g-wrap7">
+                        <h3 className="u-hd3">
+                            <span className="f-fl">相似歌手</span>
+                        </h3>
+                        <ul className="m-hdlist f-cb">
+                            {
+                                simi.map(item => {
+                                    return <SimiItem key={item.id} {...item} />
+                                })
+                            }
+                        </ul>
                     </div>
                 </div>
         </Main>

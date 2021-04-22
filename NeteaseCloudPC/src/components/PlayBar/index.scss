@@ -332,7 +332,7 @@
         width: 980px;
         height: auto;
         opacity: .2;
-        filter: Alpha(opacity=20);
+        filter: blur(3px);
     }
     .listbd {
         position: absolute;
