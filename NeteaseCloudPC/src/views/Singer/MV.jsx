@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import  { Pagination, message } from 'antd';
 import { LazyLoadImage } from 'react-lazy-load-image-component'
@@ -28,7 +28,8 @@ const MVItem = (props) => {
 }
 
 const SingerMV = () => {
-
+    const location = useLocation();
+    const history = useHistory();
     const { mvSize } = useContext(Intrs);
     const { id } = useParams();
     const [lists, setLists] = useState([]);
@@ -41,11 +42,23 @@ const SingerMV = () => {
 
     const pageChange = useCallback((page, pageSize) => {
         setCurPage(page);
-        getMVs(pageSize, (page - 1) * pageSize)
+        getMVs(pageSize, (page - 1) * pageSize);
+        history.replace(history.location.pathname + `?page=${page}`)
     }, [])
 
-    useEffect(() => {
-        getMVs();
+    const computedPage = useCallback(() => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const page = location.search.match(/\=(.+)$/)[1];
+                setCurPage(Number(page));
+                resolve(Number(page));
+            })
+        })
+    })
+
+    useEffect(async () => {
+        const page = await computedPage();
+        getMVs(12, 12 * (page - 1));
     }, [])
 
     return (

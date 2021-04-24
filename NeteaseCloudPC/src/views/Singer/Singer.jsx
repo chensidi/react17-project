@@ -1,10 +1,9 @@
 import Main from '@/components/Main';
 import { Tabs } from 'antd';
 import { useCallback, useEffect, useState, createContext, memo, useRef } from 'react';
-import { useHistory, useParams, Link } from 'react-router-dom';
+import { useHistory, useParams, Link, useLocation } from 'react-router-dom';
 
 import singerApi from '@/api/singer';
-import singer from '@/api/singer';
 
 const { TabPane } = Tabs;
 const subRouter = [
@@ -35,49 +34,52 @@ const SimiItem = (props) => {
 const Singer = memo((props) => {
 
     const history = useHistory();
+    const location = useLocation();
     let { id } = useParams();
     const [info, setInfo] = useState({});
     const [intr, setIntr] = useState({});
     const [simi, setSimi] = useState([]);
     const infos = useRef();
+    const [active, setActive] = useState('song');
 
     const tabChange = useCallback((key) => { //子页面跳转
-        const path = subRouter[key - 1];
-        history.push(`/singer/${id}/${path}`)
-    }, [])
+        const path = key;
+        history.replace(`/singer/${id}/${path}?page=1`);
+        setActive(key);
+    }, [id])
 
-    const getSingerInfo = useCallback(async (id) => {
+    const getSingerInfo = useCallback(async () => {
         const { artist={} } = await singerApi.getDetails(id);
         setInfo(artist);
         infos.current = artist;
-    }, [])
+    }, [id])
 
-    const getSingerIntr = useCallback(async (id) => {
+    const getSingerIntr = useCallback(async () => {
         const res = await singerApi.getIntr(id);
         setIntr({
             ...res,
             ...infos.current
         });
-    })
+    }, [id])
 
-    const getSimi = useCallback(async (id) => {
+    const getSimi = useCallback(async () => {
         const res = await singerApi.getSimi(id);
         setSimi(res.slice(0, 6));
-    }, [])
+    }, [id])
 
-    const init = useCallback((id) => {
+    const init = useCallback(() => {
         getSingerInfo(id);
         getSingerIntr(id);
         getSimi(id);
-        history.replace(`/singer/${id}/song`);
-    }, [])
+        if (location.pathname === `/singer/${id}`) {
+            history.replace(`/singer/${id}/song?page=1`)
+        }
+    }, [id])
 
     useEffect(async () => { //默认初次跳转到歌手的歌曲子页
-        init(id);
-    }, [])
-
-    useEffect(() => {
-        init(id);
+        init();
+        const subPath = location.pathname.match(/\/([^\/]{1,})$/)[1];
+        setActive(subRouter.includes(subPath) ? subPath : 'song');
     }, [id])
 
     return (
@@ -98,14 +100,14 @@ const Singer = memo((props) => {
                                 <div className="mask f-alpha"></div>
                                 <span className="btnfav f-tid"></span>
                             </div>
-                            <Tabs onChange={tabChange} type="card">
-                                <TabPane tab="热门作品" key="1">
+                            <Tabs onChange={tabChange} type="card" activeKey={active}>
+                                <TabPane tab="热门作品" key="song">
                                 </TabPane>
-                                <TabPane tab="所有专辑" key="2">
+                                <TabPane tab="所有专辑" key="album">
                                 </TabPane>
-                                <TabPane tab="相关MV" key="3">
+                                <TabPane tab="相关MV" key="mv">
                                 </TabPane>
-                                <TabPane tab="艺人介绍" key="4">
+                                <TabPane tab="艺人介绍" key="introduce">
                                 </TabPane>
                             </Tabs>
                             <Intrs.Provider value={intr}>

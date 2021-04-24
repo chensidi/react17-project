@@ -119,6 +119,7 @@ class Song extends Component {
             id,
             cmtsData
         } = this.state;
+        const sid = songInfo?.artists && songInfo?.artists[0]?.id;
         return (
             <div>
                 <Main className="g-bd4">
@@ -147,7 +148,7 @@ class Song extends Component {
                                             <p className="des s-fc4">
                                                 歌手：
                                                 <span title={artistsFormat(songInfo?.artists || [])}>
-                                                    <Link to="" className="des s-fc7">{ artistsFormat(songInfo?.artists || []) }</Link>
+                                                    <Link to={`/singer/${sid}`} className="des s-fc7">{ artistsFormat(songInfo?.artists || []) }</Link>
                                                 </span>
                                             </p>
                                             <p className="des s-fc4">

@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation, useHistory } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import  { Pagination, message } from 'antd';
 
@@ -43,6 +43,8 @@ const AlbumItem = (props) => {
 const Album = () => {
 
     const { albumSize } = useContext(Intrs);
+    const location = useLocation();
+    const history = useHistory();
 
     let { id } = useParams();
     const [lists, setLists] = useState([]);
@@ -65,10 +67,22 @@ const Album = () => {
     const pageChange = useCallback((page, pageSize) => {
         setCurPage(page);
         getAlbum(pageSize, (page - 1) * pageSize)
+        history.replace(history.location.pathname + `?page=${page}`)
     }, [])
 
-    useEffect(() => {
-        getAlbum();
+    const computedPage = useCallback(() => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const page = location.search.match(/\=(.+)$/)[1];
+                setCurPage(Number(page));
+                resolve(Number(page));
+            })
+        })
+    })
+
+    useEffect(async () => {
+        const page = await computedPage();
+        getAlbum(12, (page - 1) * 12);
     }, [])
 
     return (

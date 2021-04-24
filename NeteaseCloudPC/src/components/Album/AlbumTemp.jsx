@@ -39,8 +39,8 @@ const AlbumTemp = (props) => {
                                         <>
                                             <p className="des s-fc4">
                                                 歌手：
-                                                <span title="张学友">
-                                                    <Link to="" className="des s-fc7">{ artistsFormat(albumInfo.artists ?? []) }</Link>
+                                                <span title={artistsFormat(albumInfo.artists ?? [])}>
+                                                    <Link to={`/singer/${albumInfo?.artist?.id}`} className="des s-fc7">{ artistsFormat(albumInfo.artists ?? []) }</Link>
                                                 </span>
                                             </p>
                                             <p className="des s-fc4">
