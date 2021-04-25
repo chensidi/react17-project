@@ -4,6 +4,10 @@
 预览地址 [Jacky仿网易PC版](http://zhoup.top:7000/)
 > 访问该地址需要登录，用户名为`jacky`, 密码为`123456`
 
+> 本项目同时在GitHub和gitee上更新
++ github地址为 <https://github.com/chensidi/react17-project>
++ gitee地址为 <https://gitee.com/chensidi/react17-project>
+
 ## 说明
 本人是音乐兼代码兼足球的忠实粉丝，平时不是写代码就去KTV，所以总是喜欢写一些与音乐或者足球的web应用，此前曾写过很多版本的music app, 比如vue2.x和react重构过移动端的仿网易云，也自己写后台node转发第三方的足球api，当然在此申明，**只是为了研究学习技术，绝不作为商业盈利！若有不法分子使用该程序谋利，后果自负**
 
