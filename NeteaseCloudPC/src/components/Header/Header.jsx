@@ -74,7 +74,7 @@ const Header = (props) => {
                         }
                     </ul>
                     <div className="m-tophead f-pr j-tflag">
-                        <a href="/#" className="link s-fc3">登录</a>
+                        <Link to="" className="link s-fc3">登录</Link>
                     </div>
                     <a href="https://music.163.com/login?targetUrl=%2Fcreatorcenter" target="_blank" className="m-topvd f-pr m-creator-center">创作者中心</a>
                     <div className="m-srch f-pr j-suggest">
@@ -99,7 +99,7 @@ const Header = (props) => {
                             subNav.map((item,i) => {
                                 return (
                                     <li key={`sub-${i}`}>
-                                        <a href="/#" className={i===0 ? 'z-slt' : ''}>
+                                        <Link to="" className={i===0 ? 'z-slt' : ''}>
                                             <em className={i===2 ? 'f-pr' :''}>
                                                 {item}
                                                 {
@@ -108,7 +108,7 @@ const Header = (props) => {
                                                     ) : null
                                                 }
                                             </em>
-                                        </a>
+                                        </Link>
                                     </li>
                                 )
                             })
