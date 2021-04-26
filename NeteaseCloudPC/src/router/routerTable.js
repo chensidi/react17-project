@@ -12,6 +12,7 @@ const SingerIntroduce = AsyncComponent(() => import('@/views/Singer/Introduce'))
 const SingerAlbum = AsyncComponent(() => import('@/views/Singer/Album'));
 const SingerMV = AsyncComponent(() => import('@/views/Singer/MV'));
 const TopList = AsyncComponent(() => import('@/views/Toplist/TopList'));
+const TopDetails = AsyncComponent(() => import('@/views/Toplist/Details'));
 
 const routes = [
     {
@@ -84,7 +85,14 @@ const routes = [
     {
         path: '/toplist',
         component: TopList,
-        name: 'TopList'
+        name: 'TopList',
+        children: [
+            {
+                path: ':id',
+                component: TopDetails,
+                name: 'TopDetails',
+            }
+        ]
     }
 ]
 

@@ -2,6 +2,7 @@ import store from '@/store';
 import { getSongInfo, setHistory, setCurSong } from '@/store/action';
 import commonRequest from '@/api/common';
 import albumApi from '@/api/album';
+import toplistApi from '@/api/toplist';
 import { message } from 'antd';
 
 async function getSongDetails(id) {
@@ -191,5 +192,19 @@ export async function playAlbum(id) { //播放整张专辑内容
     replaceHistory(res.songs);
     //将当前播放歌曲切换为该专辑第一首歌曲
     playItem(res.songs[0].id);
+}
+
+export async function playList(id, songs = []) { //播放整张歌单
+    let res = songs;
+    if (songs.length === 0) {
+        console.log(id)
+        res = await toplistApi.getTopDetails(id);
+        res = res.tracks;
+        console.log(res)
+    }
+    //将历史记录变为当前专辑列表
+    replaceHistory(res);
+    //将当前播放歌曲切换为该专辑第一首歌曲
+    playItem(res[0].id);
 }
 
