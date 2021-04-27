@@ -23,4 +23,27 @@ export const navs = [
         title: '下载客户端',
         path: '/Download' 
     },
+];
+
+export const subNav = [
+    {
+        path: '',
+        name: '推荐'
+    },
+    {
+        path: '/toplist',
+        name: '排行榜'
+    },
+    {
+        path: '',
+        name: '歌单'
+    },
+    {
+        path: '',
+        name: '歌手'
+    },
+    {
+        path: '',
+        name: '新碟上架'
+    },
 ]

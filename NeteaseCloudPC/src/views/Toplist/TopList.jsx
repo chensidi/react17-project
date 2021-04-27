@@ -1,4 +1,4 @@
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 
 import Main from '@/components/Main';
@@ -14,7 +14,7 @@ const TopList = (props) => {
     const getTopLists = useCallback(async () => { //获取榜单
         const lists =  await toplistApi.getTopLists();
         const { specialLists, globalLists } = listConvert(lists);
-        history.replace(`/toplist/${specialLists.list[0].id}`);
+        history.replace(`/home/toplist/${specialLists.list[0].id}`);
         setAside({specialLists, globalLists});
     }, [])
 
@@ -35,6 +35,14 @@ const TopList = (props) => {
     useEffect(() => {
         getTopLists();
     }, [])
+
+    useEffect(() => { //监听重定向
+        if (location.pathname.endsWith('toplist')) {
+            if (asideData.specialLists) {
+                history.replace(`/home/toplist/${asideData.specialLists.list[0].id}`);
+            }
+        }
+    }, [location.pathname])
 
     return (
         <Main className="g-bd3">

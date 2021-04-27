@@ -13,7 +13,6 @@ import NewDiskSwiper from './Swiper';
 import Main from '@/components/Main';
 import { SingerBlock, DjBlock } from './AsideComponents';
 // import './index.scss';
-import { Link } from 'react-router-dom';
 
 const Banner = AsyncComponent(() => import('@/components/Banner/Banner'))
 const BlockTitle = AsyncComponent(() => import('@/components/BlockTitle'));
@@ -159,7 +158,7 @@ class Home extends PureComponent {
                                             <NewDiskSwiper newDisk={newDisk} />
                                         </div>
                                         <div className="n-bill">
-                                            <BlockTitle title={{path: '', txt: '榜单'}} />
+                                            <BlockTitle title={{path: '/home/toplist', txt: '榜单'}} />
                                             <RankModule ranks={ranks} />
                                         </div>
                                         </>

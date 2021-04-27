@@ -10,23 +10,23 @@ const ListItem = (props) => {
     const { coverImgUrl = '', name = '', updateFrequency = '', id = 0 } = props;
     return (
         <li className={`mine ${activeId===id?'z-selected':''}`}>
-            <div className="item f-cb">
+            <Link className="item f-cb" to={`/home/toplist/${id}`}>
                 <div className="left">
-                    <Link to={`/toplist/${id}`} className="avatar">
+                    <span to={`/home/toplist/${id}`} className="avatar">
                         <LazyLoadImage width={40} height={40} src={coverImgUrl}>
                         </LazyLoadImage>
                         <span className="msk"></span>
-                    </Link>
+                    </span>
                 </div>
                 <p className="name">
-                    <Link to={`/toplist/${id}`} className="s-fc0">
+                    <span to={`/home/toplist/${id}`} className="s-fc0">
                         { name }
-                    </Link>
+                    </span>
                 </p>
                 <p className="s-fc4">
                     { updateFrequency }
                 </p>
-            </div>
+            </Link>
         </li>
     )
 }
@@ -51,8 +51,7 @@ const AsideNav = (props) => {
 
     const { specialLists = {}, globalLists = {} } = props;
     const { pathname } =  useLocation();
-    const tid = pathname.match(/toplist\/(.+)$/)[1];
-    
+    const tid = pathname.match(/toplist\/(.+)$/) && pathname.match(/toplist\/(.+)$/)[1];
 
     return (
         <aside className="g-sd3 g-sd3-1">

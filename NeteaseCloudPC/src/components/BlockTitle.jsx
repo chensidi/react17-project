@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 const BlockTitle = (props) => {
-    const { title, subs = [] } = props;
+    const { title, subs = [], path='' } = props;
     return (
         <div className="v-hd2">
             <Link to={title.path} className="tit f-ff2 f-tdn">{ title.txt }</Link>
@@ -21,7 +21,7 @@ const BlockTitle = (props) => {
                 }
             </div>
             <span className="more">
-                <a href="/#" className="s-fc3">更多</a>
+                <Link to={title.path} className="s-fc3">更多</Link>
                 <i className="cor s-bg s-bg-6">&nbsp;</i>
             </span>
         </div>

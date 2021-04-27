@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, NavLink, useHistory, useParams, useRouteMatch } from 'react-router-dom';
-import { navs } from './nav';
+import { navs, subNav } from './nav';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
@@ -20,17 +20,9 @@ function formatClass(i, len) {
 }
 
 const Header = (props) => {
-    const [navArr] = useState(navs);
-    const [subNav] = useState([
-        '推荐',
-        '排行榜',
-        '歌单',
-        '主播电台',
-        '歌手',
-        '新碟上架'
-    ])
     const history = useHistory();
     const searchRef = useRef(null);
+    const [activeSub, setActive] = useState(0);
     function searchHandler(e) {
         const val = e.target.value,
               keyCode = e.code;
@@ -48,6 +40,19 @@ const Header = (props) => {
             console.log(err);
         }
     })
+
+    useEffect(() => {
+        const { pathname } = history.location;
+        setActive(getActiveSub(pathname))
+    }, [history.location.pathname])
+
+    const getActiveSub = useCallback((pathname) => {
+        if (pathname === '/home') {
+            return 0;
+        }
+    return subNav.findIndex(item => item.path !== '' && pathname.includes(item.path))
+    }, [])
+
     const kw = useRouteMatch('/search/:kw')?.params?.kw || '';
     
     return (
@@ -59,11 +64,11 @@ const Header = (props) => {
                     </h1>
                     <ul className="m-nav j-tflag">
                         {
-                            navArr.map((item, i) => {
+                            navs.map((item, i) => {
                                 return (
-                                    <li className={formatClass(i, navArr.length)} key={`nav-${i}`}>
+                                    <li className={formatClass(i, navs.length)} key={`nav-${i}`}>
                                         <span>
-                                            <NavLink exact to={item.path} activeClassName="z-slt">
+                                            <NavLink to={item.path} activeClassName="z-slt">
                                                 <em>{item.title}</em>
                                                 <sub className="cor">&nbsp;</sub>
                                             </NavLink>
@@ -99,9 +104,9 @@ const Header = (props) => {
                             subNav.map((item,i) => {
                                 return (
                                     <li key={`sub-${i}`}>
-                                        <Link to="" className={i===0 ? 'z-slt' : ''}>
+                                        <Link to={'/home' + item.path} className={i===activeSub ? 'z-slt' : ''}>
                                             <em className={i===2 ? 'f-pr' :''}>
-                                                {item}
+                                                {item.name}
                                                 {
                                                     i===2 ? (
                                                         <span className="f-pa f-r-white-icon"></span>

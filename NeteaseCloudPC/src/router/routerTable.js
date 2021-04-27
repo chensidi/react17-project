@@ -83,7 +83,7 @@ const routes = [
         ]
     },
     {
-        path: '/toplist',
+        path: '/home/toplist',
         component: TopList,
         name: 'TopList',
         children: [

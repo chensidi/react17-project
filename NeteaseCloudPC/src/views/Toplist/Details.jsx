@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Skeleton } from 'antd';
 
 import BtnTools from '@/components/Common/BtnTools';
 import toplistApi from '@/api/toplist';
@@ -11,13 +12,17 @@ const TopDetails = () => {
     const location = useLocation();
     const id = location.pathname.match(/toplist\/(.+)$/)[1];
     const [details, setDetails] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const getDetails = useCallback(async () => {
+        setLoading(true);
         const res = await toplistApi.getTopDetails(id);
         setDetails(res);
+        setLoading(false);
+        document.querySelector('.m-back').click();
     }, [id])
 
-    const playAlbumFn = useCallback(() => {
+    const playAlbumFn = useCallback(() => { //播放全部歌曲
         playList(id, details?.tracks);
     }, [details?.tracks, id])
 
@@ -27,11 +32,19 @@ const TopDetails = () => {
 
     return (
         <div className="g-mn3">
+            <Skeleton 
+                loading={loading} 
+                active 
+                paragraph = {
+                    {
+                        rows: 10
+                    }
+                }
+            >
             <div className="g-wrap">
                 <div className="m-info m-info-rank f-cb">
                     <div className="cover u-cover u-cover-rank">
                         <img src={details.coverImgUrl} alt=""/>
-                        <span className="msk"></span>
                     </div>
                     <div className="cnt">
                         <div className="cntc m-info">
@@ -61,6 +74,7 @@ const TopDetails = () => {
                     </div>
                 </div>
             </div>
+            </Skeleton>
         </div>
     )
 }
