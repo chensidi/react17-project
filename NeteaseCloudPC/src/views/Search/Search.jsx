@@ -2,7 +2,6 @@ import { Component, Fragment, } from 'react';
 import { Tabs, Spin, Pagination, } from 'antd';
 import { searchApi } from '@/api/search';
 import { setSubNav } from '@/store/action';
-import store from '@/store';
 import Main from '@/components/Main';
 import { connect } from 'react-redux';
 import { SongItem, SingerItem, AlbumItem, VideoItem, LrcItem, PlayLists, DJItem, UserPanel, NotResult, } from './components';
@@ -20,7 +19,8 @@ const mapStateTopProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setTab: tab => dispatch(setSearchTab(tab)),
-        setSearchPage: page => dispatch(setSearchPage(page))
+        setSearchPage: page => dispatch(setSearchPage(page)),
+        setSubNav: show => dispatch(setSubNav(show))
     }
 }
 
@@ -53,7 +53,7 @@ class SearchPage extends Component {
         curPage: this.props.searchPage
     }
     componentDidMount() {
-        store.dispatch(setSubNav(false));
+        this.props.setSubNav(false);
         let kw = this.props.match.params.kw;
         kw = decodeURIComponent(kw);
         setTimeout(() => {this.searchInput.value = kw;}, 100)

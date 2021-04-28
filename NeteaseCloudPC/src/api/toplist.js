@@ -16,5 +16,13 @@ export default {
         } catch (err) {
             return err;
         }
+    },
+    async getCmts(id, limit=20, offset=0) {
+        try {
+            let res = await http.get(`/comment/playlist`, {id, limit, offset});
+            return res;
+        } catch (err) {
+            return err;
+        }
     }
 }

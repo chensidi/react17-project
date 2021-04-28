@@ -1,13 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, NavLink, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { navs, subNav } from './nav';
-import { connect } from 'react-redux';
-
-const mapStateToProps = (state) => {
-    return {
-        showSubNav: state.globalData.showSubNav
-    }
-}
+import { useSelector } from 'react-redux';
 
 function formatClass(i, len) {
     if (i === len - 1) {
@@ -23,6 +17,7 @@ const Header = (props) => {
     const history = useHistory();
     const searchRef = useRef(null);
     const [activeSub, setActive] = useState(0);
+    const showSubNav = useSelector(state => state.globalData.showSubNav)
     function searchHandler(e) {
         const val = e.target.value,
               keyCode = e.code;
@@ -34,8 +29,11 @@ const Header = (props) => {
         searchRef.current.value = decodeURIComponent(kw);
         if (!kw) return;
         try {
-            document.querySelector('.srch.j-flag').value = kw;
-            setTimeout(() => document.querySelector('.btn.j-flag').click(), 10)
+            document.querySelector('.srch.j-flag').value = kw
+            setTimeout(() => {
+                
+                document.querySelector('.btn.j-flag').click();
+            }, 10)
         } catch (err) {
             console.log(err);
         }
@@ -97,7 +95,7 @@ const Header = (props) => {
                     </div>
                 </div>
             </div>
-            <div className={`m-subnav j-tflag ${!props.showSubNav&&'m-subnav-up'}`}>
+            <div className={`m-subnav j-tflag ${!showSubNav&&'m-subnav-up'}`}>
                 <div className="wrap f-pr">
                     <ul className="nav">
                         {
@@ -125,4 +123,4 @@ const Header = (props) => {
     )
 }
 
-export default connect(mapStateToProps)(Header);
+export default Header;
