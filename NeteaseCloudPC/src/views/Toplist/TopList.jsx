@@ -14,7 +14,7 @@ const TopList = (props) => {
     const getTopLists = useCallback(async () => { //获取榜单
         const lists =  await toplistApi.getTopLists();
         const { specialLists, globalLists } = listConvert(lists);
-        history.replace(`/home/toplist/${specialLists.list[0].id}`);
+        location.pathname.endsWith('/toplist') && history.replace(`/home/toplist/${specialLists.list[0].id}`);
         setAside({specialLists, globalLists});
     }, [])
 

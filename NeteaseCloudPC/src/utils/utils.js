@@ -197,10 +197,8 @@ export async function playAlbum(id) { //播放整张专辑内容
 export async function playList(id, songs = []) { //播放整张歌单
     let res = songs;
     if (songs.length === 0) {
-        console.log(id)
         res = await toplistApi.getTopDetails(id);
         res = res.tracks;
-        console.log(res)
     }
     //将历史记录变为当前专辑列表
     replaceHistory(res);
