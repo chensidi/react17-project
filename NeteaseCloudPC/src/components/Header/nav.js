@@ -39,7 +39,7 @@ export const subNav = [
         name: '歌单'
     },
     {
-        path: '',
+        path: '/singer',
         name: '歌手'
     },
     {

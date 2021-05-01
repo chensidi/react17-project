@@ -289,6 +289,10 @@ img, .txt {
     background: url(https://s2.music.126.net/style/web2/img/frame/wrap1.png?e913d012721552310718f93a5c8d1a3c) repeat-y 100% 100%;
 }
 
+.g-bd2 {
+    background: url(https://s2.music.126.net/style/web2/img/frame/wrap2.png?af630111fa78b7fd8b324b0c60702377) repeat-y center 0;
+}
+
 .main-wrap, .g-bd, .g-bd1, .g-bd2, .g-bd3, .g-bd4, .g-bd5, .g-bd6, .g-bd7 {
     width: 980px;
     min-height: 700px;
@@ -924,7 +928,7 @@ a {
 .u-icn-5 {
     width: 17px;
     height: 18px;
-    background-position: 0 -740px;
+    background-position: 0 -740px !important;
 }
 
 .m-cvrlst-alb3 {
@@ -2444,4 +2448,80 @@ table {
     width: 13px;
     height: 13px;
     background-position: -18px -682px !important;
+}
+
+.g-sd2 {
+    position: relative;
+    float: left;
+    width: 180px;
+}
+
+.g-wrap4 {
+    padding: 0 10px 40px;
+}
+
+.n-sgernav {
+    margin-top: 51px;
+    .tit {
+        height: 25px;
+        padding-left: 14px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    li {
+        &, & a {
+            float: left;
+            width: 160px;
+            height: 29px;
+            line-height: 29px;
+        }
+        a {
+            box-sizing: content-box;
+            width: 133px;
+            padding-left: 27px;
+            color: #333;
+            background: url(https://s2.music.126.net/style/web2/img/singer.png?d8b7b32df793d2e6203aa180a8086f38) no-repeat 0 9999px;
+            background-position: 0 -30px;
+            &.z-slt {
+                background-position: 0 0;
+                text-decoration: none;
+                color: #c20c0c;
+            }
+        }
+        margin-bottom: 2px;
+    }
+    .blk {
+        margin: 5px 0 0;
+        padding-top: 16px;
+        border-top: 1px solid #d3d3d3;
+    }
+}
+
+.g-mn2 {
+    float: right;
+    width: 100%;
+    margin-left: -181px;
+}
+
+.g-mn2c {
+    margin-left: 181px;
+}
+
+.m-cvrlst-5 li {
+    width: 130px;
+    height: 154px;
+    .u-icn-5 {
+        position: relative;
+        float: right;
+    }
+}
+
+
+.m-sgerlist  {
+    .m-cvrlst {
+        li {
+            padding-left: 17px;
+        }
+        margin: 20px 0 0 -18px;
+    }
 }

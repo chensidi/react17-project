@@ -78,5 +78,35 @@ export default {
         } catch (err) {
             return err;
         }
-    }
+    },
+    async getCateList({
+        type = -1,
+        area = -1,
+        initial = '',
+        limit = 50,
+        offset = 0
+    }) { //歌手分类列表
+        try {
+            let res = await http.get(`/artist/list`, {
+                type,
+                area,
+                initial,
+                limit,
+                offset
+            });
+            return res.artists;
+        } catch (err) {
+            return err;
+        }
+    },
+    async topSinger(type = 1) { //歌手排行榜
+        try {
+            let res = await http.get(`/toplist/artist`, {
+                type,
+            });
+            return res.list.artists;
+        } catch (err) {
+            return err;
+        }
+    },
 }
