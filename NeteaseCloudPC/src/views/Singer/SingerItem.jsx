@@ -6,7 +6,12 @@ const SingerItem = (props) => {
     return (
         <li>
             <div className="u-cover u-cover-5">
-                <LazyLoadImage width={130} height={130} src={img1v1Url}>
+                <LazyLoadImage 
+                    width={130} 
+                    height={130} 
+                    src={img1v1Url}
+                    placeholderSrc="http://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=130y130"
+                >
                 </LazyLoadImage>
                 <Link className="msk" title={`${name}的主页`} to={`/singer/${id}`}></Link>
             </div>

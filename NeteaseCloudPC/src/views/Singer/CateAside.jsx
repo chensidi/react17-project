@@ -1,14 +1,16 @@
 import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const cateList = [
-    '推荐',
-    '华语',
-    '欧美',
-    '日本',
-    '韩国',
-    '其他'
+export const cateList = [
+    {name: '推荐', val: '-1'},
+    {name: '华语', val: 7},
+    {name: '欧美', val: 96},
+    {name: '日本', val: 8},
+    {name: '韩国', val: 16},
+    {name: '其他', val: 0}
 ];
+
+export const typeList = ['男歌手', '女歌手', '组合/其他'];
 
 const CateGroup = (props) => {
     const { title = '', list = [], idx } = props;
@@ -42,7 +44,7 @@ const CateAside = () => {
             let cateObj;
             if (i === 0) {
                 cateObj = {
-                    title: item,
+                    title: item.name,
                     list: [
                         {
                             cate: '推荐歌手',
@@ -56,12 +58,13 @@ const CateAside = () => {
                 }
             } else {
                 cateObj = {
-                    title: item,
+                    title: item.name,
                     list: []
                 };
-                ['男歌手', '女歌手', '组合/其他'].map(cate => {
+                ['男歌手', '女歌手', '组合/其他'].map((cate, i) => {
                     cateObj.list.push({
-                        cate: `${item}${cate}`
+                        cate: `${item.name}${cate}`,
+                        path: `/home/singer/cate/${item.val}/${i+1}`
                     })
                 })
             }

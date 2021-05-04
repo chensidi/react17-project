@@ -78,7 +78,12 @@ export const AlbumItem = (props) => {
         <li>
             <div className="u-cover u-cover-alb2">
                 <Link to={`/album/${id}`} title={name}>
-                    <LazyLoadImage width={130} height={130} src={picUrl}>
+                    <LazyLoadImage 
+                        width={130} 
+                        height={130} 
+                        src={picUrl}
+                        placeholderSrc="http://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=130y130"
+                    >
                     </LazyLoadImage>
                     <span className="msk"></span>
                 </Link>

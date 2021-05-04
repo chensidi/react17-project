@@ -15,6 +15,7 @@ const TopList = AsyncComponent(() => import('@/views/Toplist/TopList'));
 const TopDetails = AsyncComponent(() => import('@/views/Toplist/Details'));
 const SingerList = AsyncComponent(() => import('@/views/Singer/SingerList'));
 const SingerCates = AsyncComponent(() => import('@/views/Singer/SingerCates'));
+const SingerMoreCates = AsyncComponent(() => import('@/views/Singer/SingerMoreCates'));
 
 const routes = [
     {
@@ -105,6 +106,11 @@ const routes = [
                 path: 'cate/:path',
                 component: SingerCates,
                 name: 'SingerCates'
+            },
+            {
+                path: 'cate/:area/:type',
+                component: SingerMoreCates,
+                name: 'SingerMoreCates'
             }
         ]
     }

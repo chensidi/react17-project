@@ -42,13 +42,13 @@ const SingerCates = () => {
                         </h3>
                     </div>
                     <div className="m-sgerlist">
-                    <ul className="m-cvrlst m-cvrlst-5 f-cb">
-                        {
-                            singerList.map(item => {
-                                return <SingerItem key={item.id} {...item} />
-                            })
-                        }
-                    </ul>
+                        <ul className="m-cvrlst m-cvrlst-5 f-cb">
+                            {
+                                singerList.map(item => {
+                                    return <SingerItem key={item.id} {...item} />
+                                })
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>
