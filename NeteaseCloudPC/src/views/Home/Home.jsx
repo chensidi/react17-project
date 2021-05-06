@@ -12,6 +12,7 @@ import homeConfig from './config';
 import NewDiskSwiper from './Swiper';
 import Main from '@/components/Main';
 import { SingerBlock, DjBlock } from './AsideComponents';
+import homeAction from './store/action';
 // import './index.scss';
 
 const Banner = AsyncComponent(() => import('@/components/Banner/Banner'))
@@ -25,13 +26,25 @@ const mapStateToProps = (state) => {
         curSong: state.globalData.curSong ? 
         state.globalData.curSong : sessionStore.get('globalData').curSong,
         userInfo: state.user.userInfo,
+        banners: state.homeData.banners,
+        recommends: state.homeData.recommends,
+        newDisk: state.homeData.newDisk,
+        ranks: state.homeData.ranks,
+        hotSingers: state.homeData.hotSingers,
+        hotDjs: state.homeData.hotDjs
     }
 }
 
-const mapDispatchToProps = (dispath) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        setCurSong: (song) => dispath(setCurSong(song)),
-        setSubNav: (show) => dispath(setSubNav(show))
+        setCurSong: (song) => dispatch(setCurSong(song)),
+        setSubNav: (show) => dispatch(setSubNav(show)),
+        setBanners: (banners) => dispatch(homeAction.setBanners(banners)),
+        setRecommends: recommends => dispatch(homeAction.setRecommends(recommends)),
+        setNewDisk: newDisk => dispatch(homeAction.setNewDisk(newDisk)),
+        setRanks: ranks => dispatch(homeAction.setRanks(ranks)),
+        setHotSingers: hotSingers => dispatch(homeAction.setHotSingers(hotSingers)),
+        setHotDjs: hotDjs => dispatch(homeAction.setHotDjs(hotDjs))
     }
 }
 
@@ -52,7 +65,6 @@ class Home extends PureComponent {
         this.setState({loading: true});
         Promise.all([
             this._loadBanners(),
-            this._loadBanners(),
             this._getRecommend(),
             this._getNewDisk(),
             this._getTopList(),
@@ -69,57 +81,76 @@ class Home extends PureComponent {
     }
 
     _loadBanners = async () => { //轮播图
-        let res = await homeApis.getBanners();
+        let res = this.props.banners;
+        if (res.length === 0) {
+            res = await homeApis.getBanners();
+            this.props.setBanners(res);
+        }
         this.setState({
             banners: res
         })
     }
     _getRecommend = async () => {
-        let res = await homeApis.getRecommend({limit: 8, order: 'hot'});
-        // console.log(res);
+        let res = this.props.recommends;
+        if (res.length === 0) {
+            res = await homeApis.getRecommend({limit: 8, order: 'hot'});
+            this.props.setRecommends(res);
+        }
         this.setState({
             recommends: res
         })
     }
     _getNewDisk = async () => {
-        let res = await homeApis.getNewDisk({limit: 10});
+        let res = this.props.newDisk;
+        if (res.length === 0) {
+            res = await homeApis.getNewDisk({limit: 10});
+            this.props.setNewDisk(res);
+        }
         this.setState({
             newDisk: [[...res.slice(0,5)], [...res.slice(5,)]]
         })
     }
     _getRank = async (id) => {
         let res = await homeApis.getRank(id);
-        // this.setState({
-        //     ranks: res.tracks.slice(0, 10)
-        // })
         return res.tracks;
     }
     _getTopList = async () => {
-        let res = await homeApis.getTopList();
-        res = res.slice(0, 3); //取出前三个
-        let arr = [];
-        for(let i = 0; i < res.length; i ++) {
-            const item = res[i];
-            let res1 = await this._getRank(item.id);
-            arr.push({
-                self: item,
-                subs: res1.slice(0, 10)
-            })
+        let arr = this.props.ranks;
+        if (arr.length === 0) {
+            let res = await homeApis.getTopList();
+            res = res.slice(0, 3); //取出前三个
+            for (let i = 0; i < res.length; i ++) {
+                const item = res[i];
+                let res1 = await this._getRank(item.id);
+                arr.push({
+                    self: item,
+                    subs: res1.slice(0, 10)
+                })
+            }
+            this.props.setRanks(arr);
         }
-        // console.log(arr);
+        
         this.setState({
             ranks: arr
         })
     }
 
     _getHotSingers = async () => {
-        const singers = await singerApi.getHotSingers(5);
+        let singers = this.props.hotSingers;
+        if (singers.length === 0) {
+            singers = await singerApi.getHotSingers(5);
+            this.props.setHotSingers(singers);
+        }
         this.setState({hotSingers: singers});
     }
 
     _getHotDjs = async () => {
-        const djs = await djApi.getHotDjs(5);
-        this.setState({hotDjs: djs.list})
+        let djs = this.props.hotDjs;
+        if (djs.length === 0) {
+            djs = await djApi.getHotDjs(5);
+            this.props.setHotDjs(djs);
+        }
+        this.setState({hotDjs: djs.list});
     }
     
     render() {
