@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import AsyncComponent from '@/components/AsyncComponent';
 const Home = AsyncComponent(() => import('@/views/Home/Home'));
 const Personal = AsyncComponent(() => import('@/views/Personal/Personal'));
@@ -16,6 +17,8 @@ const TopDetails = AsyncComponent(() => import('@/views/Toplist/Details'));
 const SingerList = AsyncComponent(() => import('@/views/Singer/SingerList'));
 const SingerCates = AsyncComponent(() => import('@/views/Singer/SingerCates'));
 const SingerMoreCates = AsyncComponent(() => import('@/views/Singer/SingerMoreCates'));
+const Login = AsyncComponent(() => import('@/views/My/Login'));
+const MainPage = AsyncComponent(() => import('@/views/My/MainPage'));
 
 const routes = [
     {
@@ -27,11 +30,6 @@ const routes = [
         path: '/home',
         component: Home,
         name: 'Home',
-    },
-    {
-        path: '/personal',
-        component: Personal,
-        name: 'Personal'
     },
     {
         path: '/search/:kw',
@@ -113,6 +111,21 @@ const routes = [
                 name: 'SingerMoreCates'
             }
         ]
+    },
+    {
+        path: '/my',
+        redirect: '/my/main',
+        name: 'MyProfile'
+    },
+    {
+        path: '/my/login',
+        component: Login,
+        name: 'Login'
+    },
+    {
+        path: '/my/main',
+        component: MainPage,
+        name: 'MyProfile'
     }
 ]
 

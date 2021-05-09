@@ -5,7 +5,7 @@ export const navs = [
     },
     {
         title: '我的音乐',
-        path: '/Personal' 
+        path: '/my' 
     },
     {
         title: '朋友',
