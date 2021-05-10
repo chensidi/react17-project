@@ -2703,3 +2703,28 @@ table {
     height: 20px;
     background-position: -41px -27px;
 }
+
+.listen-time {
+    font-size: 12px;
+    cursor: pointer;
+    color: #666;
+    &.active-type {
+        color: #333;
+    }
+}
+
+.record-list {
+    .w2 {
+        width: 27% !important;
+    }
+}
+
+.m-record-title h4 {
+    float: left;
+    display: inline;
+    margin-top: 5px;
+    margin-left: 10px;
+    line-height: 26px;
+    font-weight: 400;
+    color: #666;
+}

@@ -7,8 +7,7 @@ const userReducer = (state = initialState, action) => {
         case 'setUserInfo':
             sessionStore.set('userInfo', action.userInfo);
             return {
-                ...state,
-                userInfo: action.userInfo
+                ...action.userInfo
             }
         default:
             return state;

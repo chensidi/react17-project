@@ -75,7 +75,6 @@ const Login = () => {
     const [isModalVisible, showModal] = useState(false);
 
     const onFinish = (values) => {
-        console.log('Success:', values);
         login({phone:values.phone, password:values.password})
     };
     
@@ -90,7 +89,6 @@ const Login = () => {
 
     const login = ({phone, password}) => {
         loginApi.login(phone, password).then(res => {
-            console.log(res);
             if (res.code !== 200) {
                 message.error(res.message);
                 return;
