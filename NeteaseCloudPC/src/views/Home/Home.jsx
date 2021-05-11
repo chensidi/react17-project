@@ -4,6 +4,7 @@ import { setCurSong, setSubNav, } from '@store/action';
 import { Spin } from 'antd';
 
 import sessionStore from '@utils/sessionStore';
+import loginFns from '@/utils/methods/login';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
 import singerApi from '@/api/singer';
@@ -202,7 +203,7 @@ class Home extends PureComponent {
                         <div className="n-user-profile">
                             <div className="n-myinfo n-myinfo-1 s-bg s-bg-1">
                                 <p className="note s-fc3">登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
-                                <span className="btn s-bg s-bg-2 f-tdn">用户登录</span>
+                                <span className="btn s-bg s-bg-2 f-tdn" onClick={() => loginFns.openLogin(true)}>用户登录</span>
                             </div>
                         </div>
                         <SingerBlock hotSingers={hotSingers} />

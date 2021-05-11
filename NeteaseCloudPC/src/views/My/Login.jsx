@@ -1,75 +1,12 @@
 import Main from '@/components/Main';
 import loginApi from '@/api/login';
+import LoginForm, { LoginModal } from '@/components/Login/LoginForm';
+import loginFun from '@/utils/methods/login';
 
-import { Modal, Button, Form, Input, Checkbox, message } from 'antd';
-import { useState } from 'react';
+import { Modal, message } from 'antd';
+import { useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom'
-
-const layout = {
-    labelCol: {
-      span: 6,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
-  const tailLayout = {
-    wrapperCol: {
-      offset: 6,
-      span: 16,
-    },
-};
-
-const LoginForm = ({onFinish, onFinishFailed}) => {
-    return (
-        <Form
-            {...layout}
-            name="basic"
-            initialValues={{
-                remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-        >
-            <Form.Item
-                label="Phone"
-                name="phone"
-                rules={[
-                {
-                    required: true,
-                    message: 'Please input your phone!',
-                },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                {
-                    required: true,
-                    message: 'Please input your password!',
-                },
-                ]}
-            >
-                <Input.Password />
-            </Form.Item>
-
-            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-                <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                Submit
-                </Button>
-            </Form.Item>
-        </Form>
-    )
-}
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
     const [isModalVisible, showModal] = useState(false);
@@ -100,23 +37,22 @@ const Login = () => {
         })
     }
 
+    const loginRef = useRef();
+
     return (
         <Main>
             <div className="n-pglg">
                 <div className="pic">
                     <h2>登录网易云音乐</h2>
-                    <span className="btn" onClick={() => showModal(true)}></span>
+                    <span className="btn" onClick={() => loginRef.current.showModal(true)}></span>
                 </div>
             </div>
             {/* 登录弹窗 */}
-            <Modal 
-                title="手机号登录" 
-                visible={isModalVisible}
-                onCancel={() => showModal(false)}
-                footer={null}
-            >
-               <LoginForm onFinishFailed={onFinishFailed} onFinish={onFinish} />
-            </Modal>
+            <LoginModal 
+                show={isModalVisible} 
+                loginFns={{onFinishFailed, onFinish}} 
+                ref={loginRef}
+            />
         </Main>
     )
 }
