@@ -149,6 +149,14 @@ body, textarea, select, input, button {
     &:hover .link {
         color: #999;
     }
+    .head {
+        margin-top: 1px;
+        &, & img {
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+        }
+    }
 }
 
 .f-pr {
@@ -161,6 +169,7 @@ body, textarea, select, input, button {
     width: 28px;
     margin-top: 7px;
     color: #787878;
+    cursor: pointer;
 }
 
 .s-fc3, a.s-fc3:hover {
@@ -2728,4 +2737,8 @@ table {
     line-height: 26px;
     font-weight: 400;
     color: #666;
+}
+
+.my-item {
+    cursor: pointer;
 }

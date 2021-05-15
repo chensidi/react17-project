@@ -81,14 +81,13 @@ const CateAside = () => {
     //     const res = asideConvert();
     //     setCates(res);
     // }, [])
-
     return (
         <div className="g-sd2">
             <div className="g-wrap4 n-sgernav">
                 {
                     asideCates.map((item, i) => {
                         return (
-                            <CateGroup {...item} idx={i} />
+                            <CateGroup {...item} idx={i} key={item.title} />
                         )
                     })
                 }

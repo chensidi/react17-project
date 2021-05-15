@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Link, NavLink, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { Link, NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 import { navs, subNav } from './nav';
 import { useSelector } from 'react-redux';
+import { Popover } from 'antd';
+
+import loginFun from '@/utils/methods/login';
 
 function formatClass(i, len) {
     if (i === len - 1) {
@@ -13,11 +16,30 @@ function formatClass(i, len) {
     }
 }
 
+const MyList = () => {
+    const history = useHistory();
+    const { location: {pathname} } = history;
+    const logout = () => {
+        // console.log(pathname);
+        loginFun.logout();
+        if (pathname === '/my/main') {
+            history.replace('/')
+        }
+    }
+    return (
+        <>
+            <Link to="/my/main" className="my-item">我的主页</Link>
+            <p className="my-item" onClick={logout}>退出</p>
+        </>
+    )
+}
+
 const Header = (props) => {
     const history = useHistory();
     const searchRef = useRef(null);
     const [activeSub, setActive] = useState(0);
-    const showSubNav = useSelector(state => state.globalData.showSubNav)
+    const showSubNav = useSelector(state => state.globalData.showSubNav);
+    const user = useSelector(state => state.user);
     function searchHandler(e) {
         const val = e.target.value,
               keyCode = e.code;
@@ -31,7 +53,6 @@ const Header = (props) => {
         try {
             document.querySelector('.srch.j-flag').value = kw
             setTimeout(() => {
-                
                 document.querySelector('.btn.j-flag').click();
             }, 10)
         } catch (err) {
@@ -52,6 +73,11 @@ const Header = (props) => {
     }, [])
 
     const kw = useRouteMatch('/search/:kw')?.params?.kw || '';
+
+    const goLogin = () => {
+        const needJump = history.location.pathname === '/my/login';
+        loginFun.openLogin(needJump);
+    }
     
     return (
         <div className="g-topbar">
@@ -77,7 +103,16 @@ const Header = (props) => {
                         }
                     </ul>
                     <div className="m-tophead f-pr j-tflag">
-                        <Link to="" className="link s-fc3">登录</Link>
+                        {
+                            user.token ?
+                            <Popover content={MyList}>
+                                <div className="head f-fl f-pr">
+                                    <img src={user.profile.avatarUrl} alt="" />
+                                </div> 
+                            </Popover>
+                            :
+                            <div className="link s-fc3" onClick={goLogin}>登录</div>
+                        }
                     </div>
                     <a href="https://music.163.com/login?targetUrl=%2Fcreatorcenter" target="_blank" className="m-topvd f-pr m-creator-center">创作者中心</a>
                     <div className="m-srch f-pr j-suggest">

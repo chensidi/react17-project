@@ -10,6 +10,7 @@ import routerTable from './routerTable';
 const Home = AsyncComponent(() => import('@/views/Home/Home'));
 const Personal = AsyncComponent(() => import('@/views/Personal/Personal'));
 
+
 const routes = () => (
     <Router>
         <Switch>

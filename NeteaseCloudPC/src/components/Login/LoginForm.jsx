@@ -1,5 +1,10 @@
-import { Button, Form, Input, Checkbox, Modal } from 'antd';
-import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { Button, Form, Input, Checkbox, Modal, message } from 'antd';
+import { useState, forwardRef, useImperativeHandle } from 'react';
+
+import loginApi from '@/api/login';
+import store from '@/store';
+import { routerRef } from '@/router/generateRoute'
+
 
 const layout = {
     labelCol: {
@@ -66,40 +71,6 @@ const LoginForm = ({onFinish, onFinishFailed}) => {
     )
 }
 
-
-export const LoginModal = forwardRef((props, ref) => {
-    const {
-        loginFns: {
-            onFinishFailed,
-            onFinish
-        },
-        title = '手机号登录',
-        show = false,
-    } = props;
-    const [isModalVisible, showModal] = useState(show); //是否展示modal
-    
-    useEffect(() => {
-        showModal(show);
-    }, [show])
-
-    useImperativeHandle(ref, () => {
-        return {
-            showModal
-        }
-    })
-
-    return (
-        <Modal
-            title={title} 
-            visible={isModalVisible}
-            onCancel={() => showModal(false)}
-            footer={null}
-        >
-            <LoginForm onFinishFailed={onFinishFailed} onFinish={onFinish}  />
-        </Modal>
-    )
-})
-
 export const LoginModalCom = forwardRef((props, ref) => {
     const { title = '手机号登录' } = props;
     const [isModalVisible, showModal] = useState(false);
@@ -107,13 +78,28 @@ export const LoginModalCom = forwardRef((props, ref) => {
         console.log(err);
     }
     const onFinish = (values) => {
-        console.log(values);
+        login({phone:values.phone, password:values.password})
     }
     useImperativeHandle(ref, () => {
         return {
-            show: showModal
+            show: showModal,
+            setJump
         }
     })
+    const [needJump, setJump] = useState(true)
+    const login = ({phone, password}) => {
+        loginApi.login(phone, password).then(res => {
+            if (res.code !== 200) {
+                message.error(res.message);
+                return;
+            }
+            // 登录成功后写入store里面
+            store.dispatch({type: 'setUserInfo', userInfo: res})
+            showModal(false);
+            // 根据条件判断是否进行跳转
+            needJump && routerRef.current.history.replace('/my/main');
+        })
+    }
     return (
         <Modal
             title={title} 
