@@ -7,6 +7,7 @@ import Main from '@/components/Main';
 import { setSubNav } from '@store/action';
 import { SongItem } from '@/views/Search/components';
 import userApi from '@/api/user';
+import { areaFormat } from '@/utils/pureFunctions';
 
 const MainPage = () => {
 
@@ -24,7 +25,8 @@ const MainPage = () => {
             focus: userInfo.profile.follows,
             followeds: userInfo.profile.followeds,
             signature: userInfo.profile.signature,
-            birthday: userInfo.profile.birthday
+            birthday: userInfo.profile.birthday,
+            city: userInfo.profile.city,
         }
     }
 
@@ -114,7 +116,7 @@ const MainPage = () => {
                         个人介绍：{ user?.signature }
                         </div>
                         <div className="inf s-fc3">
-                            <span>所在地区：四川省 - 成都市</span>
+                            <span>所在地区：{ areaFormat(user?.city) }</span>
                             <span className="sep"> 年龄：<span>{ages(user?.birthday)}后</span></span>
                         </div>
                     </div>

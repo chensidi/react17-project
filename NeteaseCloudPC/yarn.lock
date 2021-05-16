@@ -2000,6 +2000,11 @@
     "@typescript-eslint/types" "4.14.2"
     eslint-visitor-keys "^2.0.0"
 
+"@vant/area-data@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.nlark.com/@vant/area-data/download/@vant/area-data-1.1.1.tgz#b9acf8a804c0d60f721b6900680299422b006b1a"
+  integrity sha1-uaz4qATA1g9yG2kAaAKZQisAaxo=
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.npm.taobao.org/@webassemblyjs/ast/download/@webassemblyjs/ast-1.9.0.tgz?cache=0&sync_timestamp=1610041386122&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40webassemblyjs%2Fast%2Fdownload%2F%40webassemblyjs%2Fast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"

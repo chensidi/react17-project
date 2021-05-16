@@ -16,7 +16,7 @@ function formatClass(i, len) {
     }
 }
 
-const MyList = () => {
+const MyList = () => { //我的列表
     const history = useHistory();
     const { location: {pathname} } = history;
     const logout = () => {

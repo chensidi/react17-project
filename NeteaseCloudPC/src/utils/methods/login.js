@@ -3,6 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { LoginModalCom } from '@/components/Login/LoginForm';
 import { createRef } from 'react';
 import store from '@/store';
+import loginApi from '@/api/login';
 
 function createModal() {
     if (instance) return;
@@ -27,7 +28,10 @@ export default {
         loginRef = null;
     },
     logout(jump) {
-        store.dispatch({type: 'setUserInfo', userInfo: {}});
-        jump && jump();
+        loginApi.logout().then(res => {
+            if (!res) return;
+            store.dispatch({type: 'setUserInfo', userInfo: {}});
+            jump && jump();
+        })
     }
 }

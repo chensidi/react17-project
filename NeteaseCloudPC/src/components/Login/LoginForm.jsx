@@ -33,7 +33,7 @@ const LoginForm = ({onFinish, onFinishFailed}) => {
             onFinishFailed={onFinishFailed}
         >
             <Form.Item
-                label="Phone"
+                label="手机号码"
                 name="phone"
                 rules={[
                 {
@@ -46,7 +46,7 @@ const LoginForm = ({onFinish, onFinishFailed}) => {
             </Form.Item>
 
             <Form.Item
-                label="Password"
+                label="密码"
                 name="password"
                 rules={[
                 {
@@ -59,12 +59,12 @@ const LoginForm = ({onFinish, onFinishFailed}) => {
             </Form.Item>
 
             <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-                <Checkbox>Remember me</Checkbox>
+                <Checkbox>自动登录</Checkbox>
             </Form.Item>
 
             <Form.Item {...tailLayout}>
                 <Button type="primary" htmlType="submit">
-                Submit
+                    登录
                 </Button>
             </Form.Item>
         </Form>
@@ -89,10 +89,7 @@ export const LoginModalCom = forwardRef((props, ref) => {
     const [needJump, setJump] = useState(true)
     const login = ({phone, password}) => {
         loginApi.login(phone, password).then(res => {
-            if (res.code !== 200) {
-                message.error(res.message);
-                return;
-            }
+            if (!res) return;
             // 登录成功后写入store里面
             store.dispatch({type: 'setUserInfo', userInfo: res})
             showModal(false);
