@@ -1982,20 +1982,24 @@ table {
     zoom: 1;
 }
 
-.n-myinfo-1 {
-    height: 126px;
-    padding-top: 0;
-    .btn {
-        margin: 0 auto;
-    }
-}
-
 .n-myinfo {
+    box-sizing: content-box;
+    height: 165px;
+    padding-top: 20px;
     .note {
         width: 205px;
         margin: 0 auto;
         padding: 16px 0;
         line-height: 22px;
+    }
+    .info {
+        float: left;
+        width: 115px;
+        margin-left: 18px;
+        padding-top: 3px;
+        .btnwrap {
+            margin-top: 15px;
+        }
     }
     .btn {
         display: block;
@@ -2007,6 +2011,113 @@ table {
         cursor: pointer;
         text-shadow: 0 1px 0 #8a060b;
     }
+    .head {
+        float: left;
+        width: 80px;
+        height: 80px;
+        margin-left: 20px;
+        _margin-left: 10px;
+        padding: 2px;
+        background: #fff;
+        border: 1px solid #dadada;
+        img {
+            display: block;
+            width: 80px;
+            height: 80px;
+        }
+        .info {
+            float: left;
+            width: 115px;
+            margin-left: 18px;
+            padding-top: 3px;
+            .nm-icn {
+                width: auto;
+                max-width: 100%;
+                vertical-align: middle;
+            }
+            p {
+                width: 100%;
+                margin-top: 5px;
+            }
+        }
+    }
+    .dny {
+        margin: 22px 0 0 20px;
+        strong {
+            display: block;
+            font-size: 20px;
+            font-weight: normal;
+        }
+        li.fst {
+            padding-left: 0;
+        }
+        li {
+            float: left;
+            height: 40px;
+            padding: 0 18px;
+            border-right: 1px solid #e4e4e4;
+            a {
+                display: block;
+                color: #666;
+            }
+        }
+        li.lst {
+            padding-right: 0;
+            border-right: none;
+        }
+    }
+}
+
+.n-myinfo-1 {
+    height: 126px;
+    padding-top: 0;
+    .btn {
+        margin: 0 auto;
+    }
+}
+
+.u-lv {
+    display: inline-block;
+    height: 17px;
+    overflow: hidden;
+    padding-left: 25px;
+    line-height: 18px;
+    color: #999;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.u-lv i {
+    float: right;
+}
+
+.u-icn2-lv {
+    background-position: -130px -64px;
+}
+
+.u-icn2-lvright {
+    width: 8px;
+    height: 17px;
+    background-position: -192px -64px;
+}
+
+.vip-60 {
+    max-width: 60px !important;
+    float: left;
+}
+
+.vip-1-1 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872257/9f40/483a/0341/78d106c94bf17f8f1e98a2f6748061c4.png);
+}
+
+.vip-level {
+    width: 43px;
+    height: 16px;
+    background-size: 100% 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-left: 5px;
 }
 
 .s-bg-1 {
@@ -2741,4 +2852,8 @@ table {
 
 .my-item {
     cursor: pointer;
+}
+
+.s-bg-5 {
+    background-position: 0 -270px;
 }

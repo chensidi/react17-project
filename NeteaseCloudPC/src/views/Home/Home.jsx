@@ -4,7 +4,6 @@ import { setCurSong, setSubNav, } from '@store/action';
 import { Spin } from 'antd';
 
 import sessionStore from '@utils/sessionStore';
-import loginFns from '@/utils/methods/login';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
 import singerApi from '@/api/singer';
@@ -12,7 +11,7 @@ import djApi from '@/api/dj';
 import homeConfig from './config';
 import NewDiskSwiper from './Swiper';
 import Main from '@/components/Main';
-import { SingerBlock, DjBlock } from './AsideComponents';
+import { SingerBlock, DjBlock, UserInfo, Login } from './AsideComponents';
 import homeAction from './store/action';
 // import './index.scss';
 
@@ -32,7 +31,8 @@ const mapStateToProps = (state) => {
         newDisk: state.homeData.newDisk,
         ranks: state.homeData.ranks,
         hotSingers: state.homeData.hotSingers,
-        hotDjs: state.homeData.hotDjs
+        hotDjs: state.homeData.hotDjs,
+        token: state.user.token
     }
 }
 
@@ -201,10 +201,11 @@ class Home extends PureComponent {
                     </div>
                     <div className="g-sd1">
                         <div className="n-user-profile">
-                            <div className="n-myinfo n-myinfo-1 s-bg s-bg-1">
-                                <p className="note s-fc3">登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
-                                <span className="btn s-bg s-bg-2 f-tdn" onClick={() => loginFns.openLogin(false)}>用户登录</span>
-                            </div>
+                            {
+                                this.props.token ?
+                                <UserInfo /> :
+                                <Login />
+                            }
                         </div>
                         <SingerBlock hotSingers={hotSingers} />
                         <DjBlock hotDjs={hotDjs} />
