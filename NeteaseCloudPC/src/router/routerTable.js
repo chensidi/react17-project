@@ -19,6 +19,7 @@ const SingerCates = AsyncComponent(() => import('@/views/Singer/SingerCates'));
 const SingerMoreCates = AsyncComponent(() => import('@/views/Singer/SingerMoreCates'));
 const Login = AsyncComponent(() => import('@/views/My/Login'));
 const MainPage = AsyncComponent(() => import('@/views/My/MainPage'));
+const MyMusic = AsyncComponent(() => import(('@/views/My/Music')));
 
 const routes = [
     {
@@ -126,6 +127,11 @@ const routes = [
         path: '/my/main',
         component: MainPage,
         name: 'MyProfile'
+    },
+    {
+        path: '/my/music',
+        component: MyMusic,
+        name: 'MyMusic'
     }
 ]
 

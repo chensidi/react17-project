@@ -1,7 +1,18 @@
 import Main from '@/components/Main';
 import loginFun from '@/utils/methods/login';
 
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+
 const Login = () => {
+
+    const token = useSelector(state => state.user.token);
+    const history = useHistory();
+
+    useEffect(() => {
+        token && history.replace('/my/main');
+    }, [])
 
     return (
         <Main>
