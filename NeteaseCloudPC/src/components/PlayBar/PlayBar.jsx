@@ -430,7 +430,7 @@ const PlayBar = (props) => {
                             <em className="mv f-fl"></em>
                             <span className="by f-thide f-fl">
                                 <span className={props?.curSong?.singer}>
-                                    <Link to="">{props?.curSong?.singer}</Link>
+                                    <Link to={`/singer/${props?.curSong?.singerId}`}>{props?.curSong?.singer}</Link>
                                 </span>
                             </span>
                         </div>

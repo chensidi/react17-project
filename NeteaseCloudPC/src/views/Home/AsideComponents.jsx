@@ -102,7 +102,7 @@ export const UserInfo = () => {
                         <span className="vip-level vip-1-1"></span>
                     </h4>
                     <p>
-                        <Link className="u-lv u-icn2 u-icn2-lv">
+                        <Link className="u-lv u-icn2 u-icn2-lv" to="">
                             7 <i className="right u-icn2 u-icn2-lvright"></i>
                         </Link>
                     </p>

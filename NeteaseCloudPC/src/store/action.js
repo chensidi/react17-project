@@ -56,6 +56,7 @@ export const getSongInfo = (id) => {
                 url,
                 name: details.name,
                 singer: artistsFormat(details.ar),
+                singerId: details.ar[0].id,
                 lyc: lyc,
                 id,
                 alblum: details.al,

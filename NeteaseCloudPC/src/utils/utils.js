@@ -87,13 +87,13 @@ export function playItem(id) { //播放单曲
         }
     }
     store.dispatch(getSongInfo(id)).then((res) => {
-        // console.log(res);
         if (exist) return;
         const song = res.song;
         const nowItem = {
             url: song.url,
             name: song.name,
             singer: song.singer,
+            singerId: song.singerId,
             id: song.id,
             alblum: song.alblum,
             duration: song.duration
@@ -120,6 +120,7 @@ export function addToPlay(id) { //添加到播放列表
             url,
             name: details.name,
             singer: artistsFormat(details.ar),
+            singerId: details.ar[0].id,
             id,
             alblum: details.al,
             duration: mediaTimeFormat(details.dt / 1000)
@@ -162,6 +163,7 @@ export function replaceHistory(list) { //替换播放历史记录
             url: '',
             name: item.name,
             singer: artistsFormat(item.ar),
+            singerId: item.ar[0].id,
             id: item.id,
             alblum: item.al,
             duration: mediaTimeFormat(item.dt / 1000)

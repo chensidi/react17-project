@@ -21,14 +21,6 @@ export const menuData = [
         key: 'mCreate',
         icon: <FileFilled />,
         children: [
-            {
-                title: 'Option 5',
-                key: 'key5'
-            },
-            {
-                title: 'Option 6',
-                key: 'key6'
-            }
         ]
     },
     {

@@ -20,5 +20,31 @@ export default {
             return e;
         }
     },
+    async getPlayList(uid) {
+        try {
+            const res = await http.get('/user/playlist', {
+                uid
+            })
+            return res.playlist;
+        } catch (e) {
+            return e;
+        }
+    },
+    async getSubscribe(uid) {
+        try {
+            const res = await http.get('/user/follows', {uid})
+            return res.playlist;
+        } catch (e) {
+            return e;
+        }
+    },
+    async getCollectSinger(uid) {
+        try {
+            const res = await http.get('/mv/sublist', {uid})
+            return res.playlist;
+        } catch (e) {
+            return e;
+        }
+    }
     
 }

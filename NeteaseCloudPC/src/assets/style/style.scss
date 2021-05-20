@@ -2861,3 +2861,34 @@ table {
 .m-right {
     margin-left: 240px;
 }
+
+.list-item {
+    display: flex;
+    align-items: center;
+}
+
+.item-img {
+    width: 40px;
+    height: 40px;
+    img {
+        display: block;
+        height: 100%;
+    }
+    margin-right: 10px;
+}
+
+.txt-info {
+    flex: 1;
+    overflow: hidden;
+    h4 {
+        font-size: 13px;
+        line-height: 2;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    p {
+        font-size: 12px;
+        line-height: 1;
+    }
+}
