@@ -9,8 +9,9 @@ class Http {
         // 创建 axios 实例
         this.instance = axios.create({
             baseURL: 'http://zhoup.top:7003/',
-            timeout: 10000 // 请求超时时间
+            timeout: 10000, // 请求超时时间
         })
+        this.instance.defaults.withCredentials = false
         // 拦截器配置---------------------------------------------------------------------------------------------------------------
         this.instance.interceptors.request.use(function (config) {
             // 在发送请求之前做些什么

@@ -3,8 +3,8 @@ import { useState, forwardRef, useImperativeHandle } from 'react';
 
 import loginApi from '@/api/login';
 import store from '@/store';
-import { routerRef } from '@/router/generateRoute'
-
+import { routerRef } from '@/router/generateRoute';
+import localStore from '@/utils/localStore';
 
 const layout = {
     labelCol: {
@@ -78,7 +78,11 @@ export const LoginModalCom = forwardRef((props, ref) => {
         console.log(err);
     }
     const onFinish = (values) => {
-        login({phone:values.phone, password:values.password})
+        login({
+            phone:values.phone, 
+            password:values.password,
+            remember: values.remember
+        })
     }
     useImperativeHandle(ref, () => {
         return {
@@ -87,11 +91,18 @@ export const LoginModalCom = forwardRef((props, ref) => {
         }
     })
     const [needJump, setJump] = useState(true)
-    const login = ({phone, password}) => {
+    const login = ({phone, password, remember}) => {
         loginApi.login(phone, password).then(res => {
             if (!res) return;
             // 登录成功后写入store里面
-            store.dispatch({type: 'setUserInfo', userInfo: res})
+            store.dispatch({type: 'setUserInfo', userInfo: res});
+            if (remember) { //自动登录
+                localStore.set('user', {
+                    phone,
+                    password,
+                    remember
+                })
+            }
             showModal(false);
             // 根据条件判断是否进行跳转
             needJump && routerRef.current.history.replace('/my/main');

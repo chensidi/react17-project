@@ -133,6 +133,7 @@ const PlayBar = (props) => {
             url,
             name: details.name,
             singer: artistsFormat(details.ar),
+            singerId: details.ar[0].id,
             lyc: res,
             id,
             alblum: details.al,

@@ -4,6 +4,7 @@ import { LoginModalCom } from '@/components/Login/LoginForm';
 import { createRef } from 'react';
 import store from '@/store';
 import loginApi from '@/api/login';
+import localStore from '@/utils/localStore';
 
 function createModal() {
     if (instance) return;
@@ -31,7 +32,15 @@ export default {
         loginApi.logout().then(res => {
             if (!res) return;
             store.dispatch({type: 'setUserInfo', userInfo: {}});
+            localStore.clear();
             jump && jump();
+        })
+    },
+    login({phone, password}) {
+        return loginApi.login(phone, password).then(res => {
+            if (!res) return;
+            // 登录成功后写入store里面
+            store.dispatch({type: 'setUserInfo', userInfo: res});
         })
     }
 }
