@@ -2,7 +2,7 @@ import './index.scss';
 import { Link } from 'react-router-dom';
 import { useState, createRef, memo, useEffect, useRef, forwardRef, } from 'react';
 import { connect } from 'react-redux';
-import { mediaTimeFormat, formatLrc, artistsFormat, delFromPlay, getRandom, clearHistory } from '@/utils/utils';
+import { mediaTimeFormat, formatLrc, addToPlay, artistsFormat, delFromPlay, getRandom, clearHistory } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
  
@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         historyPlay: state.globalData?.historyPlay,
         lock: state.globalData?.lock,
         songLoading: state.globalData.loading,
+        showPlaybar: state.globalData.showPlaybar
     }
 }
 
@@ -99,7 +100,7 @@ const PlayBar = (props) => {
         curIdx: 0, //当前歌词下标
     }); // 音频信息
     const {lock, changeLock} = props;
-    const [isEnter, changeEnter] = useState(false); //是否鼠标亦如playbar
+    const [isEnter, changeEnter] = useState(false); //是否鼠标移入playbar
     const [curIdx, changeCurIdx] = useState(0);
     const [canScrollLrc, changeCanScroll] = useState(true);
     const [showPanel, changeShow] = useState(false); //是否展示歌词面板
@@ -117,7 +118,9 @@ const PlayBar = (props) => {
                         singer: artistsFormat(details.ar),
                         id,
                         alblum: details.al,
-                        duration: mediaTimeFormat(details.dt / 1000)
+                        duration: mediaTimeFormat(details.dt / 1000),
+                        mv: details.mv,
+                        singerId: details.ar[0].id,
                     }
                 ])
             }
@@ -137,7 +140,8 @@ const PlayBar = (props) => {
             lyc: res,
             id,
             alblum: details.al,
-            duration: mediaTimeFormat(details.dt)
+            duration: mediaTimeFormat(details.dt),
+            mv: details.mv,
         })
         return {id, details, url}
     }
@@ -371,7 +375,6 @@ const PlayBar = (props) => {
     }
 
     useEffect(() => {
-        console.log('listen')
         if (props.curSong?.id == null) return;
         count ++;
         if (count === 1) {
@@ -400,7 +403,7 @@ const PlayBar = (props) => {
         <div className="g-btmbar" 
         >
             <div 
-                className={['m-playbar', lock ? 'm-playbar-lock' : 'm-playbar-unlock'].join(' ')} 
+                className={[`${props.showPlaybar?'':'hide'}`, 'm-playbar', lock ? 'm-playbar-lock' : 'm-playbar-unlock'].join(' ')} 
                 style={{top: lock ? '-53px' : (isEnter || showPanel ? '-53px' : '-7px')}}
                 onMouseEnter={mouseEnterBar}
                 onMouseLeave={mouseOutBar}
@@ -428,7 +431,11 @@ const PlayBar = (props) => {
                             <Link to={`/song/${props?.curSong?.id}`} className="f-thide name fc1 f-fl" title={props?.curSong?.name}>
                             {props?.curSong?.name}
                             </Link>
-                            <em className="mv f-fl"></em>
+                            {
+                                props?.curSong?.mv ? 
+                                <Link className="mv f-fl" to={`/video/${props?.curSong?.mv}?mv=mv`}></Link> :
+                                null
+                            }
                             <span className="by f-thide f-fl">
                                 <span className={props?.curSong?.singer}>
                                     <Link to={`/singer/${props?.curSong?.singerId}`}>{props?.curSong?.singer}</Link>

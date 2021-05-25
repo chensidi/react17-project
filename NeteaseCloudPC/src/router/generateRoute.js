@@ -1,6 +1,5 @@
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { createRef } from 'react';
-
 export const routerRef = createRef();
 
 export const generateFn = (route, basePath="") => {

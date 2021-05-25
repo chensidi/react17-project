@@ -30,7 +30,6 @@ const routes = () => (
         </Switch>
     </Router>
 )
-const rt = generateFn(routerTable);
-const routes2 = rt
+const routes2 = generateFn(routerTable)
 // console.log(generateFn(routerTable))
 export default routes2;

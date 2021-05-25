@@ -1,4 +1,5 @@
-import { Component } from "react"
+import { Component } from "react";
+import Main from './Main'
 
 /* 
     异步加载组件，类似于vue里的 () => import('xxxxx')
@@ -28,7 +29,7 @@ const AsyncComponent = (importFn) => {
                     <Com {...this.props}>
                         {this.props.children}
                     </Com>
-                ) : null
+                ) : <Main />
             )
         }
     }

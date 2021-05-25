@@ -13,6 +13,7 @@ let initialData = {
     keep: ['Home'],
     historyPlay: sessionStore.get('globalData').historyPlay || [], //历史播放记录
     lock: sessionStore.get('globalData').lock || true, //是否锁定播放栏
+    showPlaybar: sessionStore.get('globalData').showPlaybar || true, //是否展示播放条
     loading: false, //歌曲加载状态
     showSubNav: true, //是否展示二级导航条
     searchTab: '1', //搜素类型默认为1
@@ -82,6 +83,16 @@ const globalReducer = (state = initialData, action) => {
             return {
                 ...state,
                 searchPage: action.page
+            }
+        case 'setShowPlaybar':
+            console.log('show')
+            sessionStore.set('globalData', {
+                ...state,
+                showPlaybar: action.show
+            })
+            return {
+                ...state,
+                showPlaybar: action.show
             }
         default:
             return state;

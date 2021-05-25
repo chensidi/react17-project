@@ -96,7 +96,8 @@ export function playItem(id) { //播放单曲
             singerId: song.singerId,
             id: song.id,
             alblum: song.alblum,
-            duration: song.duration
+            duration: song.duration,
+            mv: song.mv
         }
         historyPlay.unshift(nowItem);
         store.dispatch(setHistory([...historyPlay]));
@@ -123,7 +124,8 @@ export function addToPlay(id) { //添加到播放列表
             singerId: details.ar[0].id,
             id,
             alblum: details.al,
-            duration: mediaTimeFormat(details.dt / 1000)
+            duration: mediaTimeFormat(details.dt / 1000),
+            mv: details.mv
         }
         historyPlay.push(addItem); 
         store.dispatch(setHistory([...historyPlay]));
@@ -166,7 +168,8 @@ export function replaceHistory(list) { //替换播放历史记录
             singerId: item.ar[0].id,
             id: item.id,
             alblum: item.al,
-            duration: mediaTimeFormat(item.dt / 1000)
+            duration: mediaTimeFormat(item.dt / 1000),
+            mv: item.mv
         }
         return addItem;
     })
