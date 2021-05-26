@@ -1,13 +1,15 @@
 import { useHistory, Link } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Skeleton } from 'antd';
 
 import Main from '@/components/Main';
 import { setSubNav } from '@store/action';
 import { SongItem } from '@/views/Search/components';
 import userApi from '@/api/user';
 import { areaFormat } from '@/utils/pureFunctions';
+import CoverItem from '@/components/Covers/CoverItem';
+import { playList as playLists } from '@/utils/utils'
 
 const MainPage = () => {
 
@@ -41,12 +43,16 @@ const MainPage = () => {
     const [recordList, setRecord] = useState([]);
     const [recordType, setType] = useState(1);
     const [level, setLevel] = useState(null);
+    const [loading, setLoading] = useState(true)
     const getRecord = useCallback((type = 1) => { //播放记录
-        setRecord([]);
+        setLoading(true);
         setType(type);
         userApi.getRecord(userInfo.profile.userId, type)
         .then(res => {
             setRecord(res.slice(0, 10));
+            setTimeout(() => {
+                setLoading(false)
+            }, 500)
         })
     }, [])
 
@@ -55,6 +61,29 @@ const MainPage = () => {
             console.log(res)
             setLevel(res);
         })
+    }, [])
+
+    const [playList, setPlayList] = useState(null)
+    const getPlayList = useCallback(() => {
+        userApi.getPlayList(userInfo.profile.userId)
+        .then(res => {
+            const {ownList, collectList} = getTypeOfPlaylist(res, userInfo.profile.userId);
+            setPlayList({
+                ownList,
+                collectList
+            })
+        })
+    }, [])
+
+    const getTypeOfPlaylist = useCallback((allList, uid) => {
+        let [ownList, collectList] = [[], []];
+        ownList = allList.filter(item => {
+            return item.userId === uid;
+        })
+        collectList = allList.filter(item => {
+            return item.userId !== uid;
+        })
+        return {ownList, collectList};
     }, [])
 
     useEffect(() => {
@@ -66,6 +95,7 @@ const MainPage = () => {
         setUser(getDisplayUserInfo());
         getRecord(1);
         getLevel();
+        getPlayList();
     }, [])
 
     return (
@@ -140,14 +170,63 @@ const MainPage = () => {
                     </div>
                 </div>
                 <div className="n-srchrst">
-                    <div className="srchsongst small-tb record-list">
-                        {
-                            recordList.map(item => {
-                                return <SongItem key={item.song.id} {...item.song} />
-                            })
-                        }
-                    </div>
+                    <Skeleton active loading={loading} paragraph={{rows: 10}}>
+                        <div className="srchsongst small-tb record-list">
+                            {
+                                recordList.map(item => {
+                                    return <SongItem key={item.song.id} {...item.song} />
+                                })
+                            }
+                        </div>
+                    </Skeleton> 
                 </div>
+                <br />
+                {
+                    playList?.ownList?.length > 0 ?
+                    <>
+                        <div className="u-title u-title-1 f-cb">
+                            <h3>
+                                <span className="f-ff2 f-pr">
+                                    我创建的歌单 ({ playList?.ownList?.length })
+                                </span>
+                            </h3>
+                        </div>
+                        <ul className="m-cvrlst my-playlist f-cb">
+                            {
+                                playList?.ownList?.map((item, i) => {
+                                    return (
+                                        <CoverItem 
+                                            key={item.id + i} 
+                                            {...item} 
+                                            playFn={playLists}
+                                        />
+                                    )
+                                })
+                            }
+                        </ul>
+                    </>: null
+                }
+                {
+                    playList?.collectList?.length > 0 ?
+                    <>
+                        <div className="u-title u-title-1 f-cb">
+                            <h3>
+                                <span className="f-ff2 f-pr">
+                                    我收藏的歌单 ({ playList?.collectList?.length })
+                                </span>
+                            </h3>
+                        </div>
+                        <ul className="m-cvrlst my-playlist f-cb">
+                            {
+                                playList?.collectList?.map((item, i) => {
+                                    return (
+                                        <CoverItem key={item.id + i} {...item} />
+                                    )
+                                })
+                            }
+                        </ul>
+                    </>: null
+                }                
             </div>
         </Main>
     )

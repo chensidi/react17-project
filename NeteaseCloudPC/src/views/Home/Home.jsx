@@ -13,7 +13,7 @@ import NewDiskSwiper from './Swiper';
 import Main from '@/components/Main';
 import { SingerBlock, DjBlock, UserInfo, Login } from './AsideComponents';
 import homeAction from './store/action';
-// import './index.scss';
+import { playList } from '@/utils/utils';
 
 const Banner = AsyncComponent(() => import('@/components/Banner/Banner'))
 const BlockTitle = AsyncComponent(() => import('@/components/BlockTitle'));
@@ -179,7 +179,10 @@ class Home extends PureComponent {
                                                 {
                                                     recommends.map((item, i) => {
                                                         return (
-                                                            <CoverItem key={item.id + i} {...item} />
+                                                            <CoverItem 
+                                                            playFn={playList}
+                                                            key={item.id + i} 
+                                                            {...item} />
                                                         )
                                                     })
                                                 }

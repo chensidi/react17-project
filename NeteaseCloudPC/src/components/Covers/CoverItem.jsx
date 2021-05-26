@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom' 
+import { Link } from 'react-router-dom';
 
 const CoverItem = (props) => {
     return (
@@ -7,7 +7,7 @@ const CoverItem = (props) => {
                 <img src={props.coverImgUrl} alt=""/>
                 <Link to={`/playlist/${props.id}`} className="msk"></Link>
                 <div className="bottom">
-                    <a href="/#" className="icon-play f-fr"></a>
+                    <i onClick={() => props.playFn(props.id)} className="icon-play f-fr"></i>
                     <span className="icon-headset"></span>
                     <span className="nb">{props.playCount}</span>
                 </div>

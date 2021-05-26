@@ -6,6 +6,7 @@ import { playItem, addToPlay, playAlbum } from '@/utils/utils';
 
 export const SongItem = (props) => {
     const { i, name, mv, ar, al, dt, id } = props;
+    
     return (
         <div className={['item f-cb h-flag', i%2?'':'even'].join(' ')}>
             <div className="td">
@@ -31,12 +32,12 @@ export const SongItem = (props) => {
             </div>
             <div className="td w1">
                 <div className="text">
-                    <Link to="">{ artistsFormat(ar) }</Link>
+                    <Link to={`/singer/${ar[0].id}`}>{ artistsFormat(ar) }</Link>
                 </div>
             </div>
             <div className="td w2">
                 <div className="text">
-                    <Link to="">《{al.name}》</Link>
+                    <Link to={`/album/${al.id}`}>《{al.name}》</Link>
                 </div>
             </div>
             <div className="td">{ mediaTimeFormat(dt/1000) }</div>
