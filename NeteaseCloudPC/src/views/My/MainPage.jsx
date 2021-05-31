@@ -56,9 +56,8 @@ const MainPage = () => {
         })
     }, [])
 
-    const getLevel = useCallback(() => {
+    const getLevel = useCallback(() => { //获取个人等级
         userApi.getLevel().then(res => {
-            console.log(res)
             setLevel(res);
         })
     }, [])
@@ -115,7 +114,7 @@ const MainPage = () => {
                                 </div>
                                 <h2 className="wrap f-fl f-cb">
                                     <span className="tit f-ff2 s-fc0 f-thide">{ user?.nickname }</span>
-                                    <span className="lev u-lev u-icn2 u-icn2-lev">7
+                                    <span className="lev u-lev u-icn2 u-icn2-lev">{ level?.level }
                                         <i className="right u-icn2 u-icn2-levr"></i>
                                     </span>
                                     <i className={`icn u-icn u-icn-0${user?.sex}`}></i>

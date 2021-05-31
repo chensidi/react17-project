@@ -5,6 +5,9 @@ import { createRef } from 'react';
 import store from '@/store';
 import loginApi from '@/api/login';
 import localStore from '@/utils/localStore';
+import { aesEncrypt } from '@/utils/pureFunctions';
+
+const isDev = process.env.NODE_ENV === 'development';
 
 function createModal() {
     if (instance) return;
@@ -37,6 +40,10 @@ export default {
         })
     },
     login({phone, password}) {
+        if (!isDev) {
+            phone = aesEncrypt(phone);
+            password = aesEncrypt(password);
+        }
         return loginApi.login(phone, password).then(res => {
             if (!res) return;
             // 登录成功后写入store里面

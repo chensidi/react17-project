@@ -5,6 +5,9 @@ import loginApi from '@/api/login';
 import store from '@/store';
 import { routerRef } from '@/router/generateRoute';
 import localStore from '@/utils/localStore';
+import { aesEncrypt } from '@/utils/pureFunctions';
+
+const isDev = process.env.NODE_ENV === 'development';
 
 const layout = {
     labelCol: {
@@ -92,6 +95,10 @@ export const LoginModalCom = forwardRef((props, ref) => {
     })
     const [needJump, setJump] = useState(true)
     const login = ({phone, password, remember}) => {
+        if (!isDev) {
+            phone = aesEncrypt(phone);
+            password = aesEncrypt(password);
+        }
         loginApi.login(phone, password).then(res => {
             if (!res) return;
             // 登录成功后写入store里面

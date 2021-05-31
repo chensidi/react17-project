@@ -9,6 +9,7 @@
     "@vant/area-data": "^1.1.1",
     "antd": "^4.12.2",
     "axios": "^0.21.1",
+    "crypto": "^1.0.1",
     "customize-cra": "^1.0.0",
     "fullscreen-react": "^1.0.4",
     "http-proxy-middleware": "^1.0.6",
