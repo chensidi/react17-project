@@ -20,6 +20,7 @@ const SingerMoreCates = AsyncComponent(() => import('@/views/Singer/SingerMoreCa
 const Login = AsyncComponent(() => import('@/views/My/Login'));
 const MainPage = AsyncComponent(() => import('@/views/My/MainPage'));
 const MyMusic = AsyncComponent(() => import(('@/views/My/Music')));
+const MyArtist = AsyncComponent(() => import('@/views/My/MyArtist'));
 
 const routes = [
     {
@@ -115,7 +116,7 @@ const routes = [
     },
     {
         path: '/my',
-        redirect: '/my/main',
+        redirect: '/my/music',
         name: 'MyProfile'
     },
     {
@@ -124,14 +125,21 @@ const routes = [
         name: 'Login'
     },
     {
-        path: '/my/main',
+        path: '/user/main',
         component: MainPage,
         name: 'MyProfile'
     },
     {
         path: '/my/music',
         component: MyMusic,
-        name: 'MyMusic'
+        name: 'MyMusic',
+        children: [
+            {
+                path: 'artist',
+                component: MyArtist,
+                name: 'MyArtist',
+            }
+        ]
     }
 ]
 

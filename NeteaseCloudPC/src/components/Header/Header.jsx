@@ -16,19 +16,20 @@ function formatClass(i, len) {
     }
 }
 
+const needBackPath = ['/user/main', '/my'];
+
 const MyList = () => { //我的列表
     const history = useHistory();
     const { location: {pathname} } = history;
     const logout = () => {
-        // console.log(pathname);
         loginFun.logout();
-        if (pathname === '/my/main') {
+        if (needBackPath.some(item => pathname.includes(item))) {
             history.replace('/')
         }
     }
     return (
         <>
-            <Link to="/my/main" className="my-item">我的主页</Link>
+            <Link to="/user/main" className="my-item">我的主页</Link>
             <p className="my-item" onClick={logout}>退出</p>
         </>
     )

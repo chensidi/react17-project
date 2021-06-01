@@ -58,6 +58,7 @@ export const MyMenu = () => {
     const getPlayList = () => { //获取用户歌单
         userApi.getPlayList(user.userId).then(res => {
             // 设置到我的歌单二级菜单内
+            menuData[3].children = [];
             res.map(item => {
                 menuData[3].children.push({
                     key: item.id,
@@ -77,7 +78,6 @@ export const MyMenu = () => {
 
     useEffect(() => {
         getPlayList();
-        userApi.getCollectSinger(user.userId);
     }, [])
 
     const [curKey, setK] = useState('mSinger');

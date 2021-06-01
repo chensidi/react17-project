@@ -23,6 +23,7 @@ function App() {
 			console.log(route);
 			if (route.pathname.startsWith('/video')) {
 				dispatch({type: 'setShowPlaybar', show: false});
+				document.querySelector('.j-flag.pas')?.click();
 			} else {
 				dispatch({type: 'setShowPlaybar', show: true});
 			}

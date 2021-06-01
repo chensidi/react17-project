@@ -38,10 +38,10 @@ export default {
             return e;
         }
     },
-    async getCollectSinger(uid) {
+    async getSubscribeSinger(uid) {
         try {
-            const res = await http.get('/mv/sublist', {uid})
-            return res.playlist;
+            const res = await http.get('/artist/sublist', {uid})
+            return res.data;
         } catch (e) {
             return e;
         }
