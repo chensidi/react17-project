@@ -21,6 +21,7 @@ const Login = AsyncComponent(() => import('@/views/My/Login'));
 const MainPage = AsyncComponent(() => import('@/views/My/MainPage'));
 const MyMusic = AsyncComponent(() => import(('@/views/My/Music')));
 const MyArtist = AsyncComponent(() => import('@/views/My/MyArtist'));
+const MyMv = AsyncComponent(() => import('@/views/My/MV'));
 
 const routes = [
     {
@@ -138,7 +139,12 @@ const routes = [
                 path: 'artist',
                 component: MyArtist,
                 name: 'MyArtist',
-            }
+            },
+            {
+                path: 'mv',
+                component: MyMv,
+                name: 'MyMv',
+            },
         ]
     }
 ]

@@ -3,12 +3,12 @@ import { WechatOutlined, VideoCameraFilled, CustomerServiceFilled, FileFilled, H
 export const menuData = [
     {
         title: '我的歌手',
-        key: 'mSinger',
+        key: 'artist',
         icon: <UserOutlined />
     },
     {
         title: '我的视频',
-        key: 'mVideo',
+        key: 'mv',
         icon: <VideoCameraFilled />
     },
     {

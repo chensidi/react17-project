@@ -45,6 +45,13 @@ export default {
         } catch (e) {
             return e;
         }
-    }
-    
+    },
+    async getSubscribeMv() {
+        try {
+            const res = await http.get('/mv/sublist');
+            return res.data;
+        } catch (e) {
+            return e;
+        }
+    },
 }

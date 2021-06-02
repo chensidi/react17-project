@@ -1,7 +1,7 @@
 import { Menu, Switch } from 'antd';
-import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { menuData } from './mock';
 import userApi from '@/api/user';
@@ -23,10 +23,11 @@ const ListItem = (props) => {
 }
 
 export const MyMenu = () => {
-
+    const history = useHistory();
     const handleClick = (e) => {
         console.log(e);
-        setK(e.key)
+        setK(e.key);
+        history.push(`/my/music/${e.key}`)
     }
 
     const menuConvert = (menuItem) => {
@@ -80,7 +81,7 @@ export const MyMenu = () => {
         getPlayList();
     }, [])
 
-    const [curKey, setK] = useState('mSinger');
+    const [curKey, setK] = useState('artist');
     return (
         <Menu
             onClick={handleClick}
