@@ -1,5 +1,6 @@
 import userApi from '@/api/user';
 import { useCallback, useEffect, useState } from 'react';
+import { Skeleton } from 'antd';
 
 import { VideoItem } from '@/views/Search/components';
 
@@ -7,9 +8,12 @@ const MV = () => {
 
     //我的收藏的mv
     const [mv, setMv] = useState([]);
+    const [loading, setLoading] = useState(true);
     const getSubscribeMv = useCallback(async () => {
+        setLoading(true);
         const res = await userApi.getSubscribeMv();
         setMv(res);
+        setTimeout(() => {setLoading(false)}, 500)
     } ,[])
 
     useEffect(() => {
@@ -17,6 +21,7 @@ const MV = () => {
     }, [])
 
     return (
+        <Skeleton active={true} paragraph={{rows:10}} loading={loading}>
         <div className="g-wrap f-cb">
             <div className="u-title f-cb">
                 <h3>
@@ -31,6 +36,7 @@ const MV = () => {
                 }
             </div>
         </div>
+        </Skeleton>
     )
 }
 

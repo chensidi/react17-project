@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Skeleton } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 
 import userApi from '@/api/user';
-import { useCallback, useEffect, useState } from 'react';
 
 const SingerItem = ({
     img1v1Url = '',
@@ -31,12 +32,15 @@ const SingerItem = ({
 const MyArtist = () => {
 
     const user = useSelector(state => state.user.profile);
+    const [loading, setLoading] = useState(true);
 
     //获取订阅歌手
     const [artists, setArtists] = useState([]);
     const getSubscribeSinger = useCallback(async () => {
+        setLoading(true);
         const res = await userApi.getSubscribeSinger(user.userId);
         setArtists(res);
+        setTimeout(() => setLoading(false), 500);
     }, [])
 
     useEffect(() => {
@@ -44,6 +48,7 @@ const MyArtist = () => {
     }, [])
 
     return (
+        <Skeleton active={true} paragraph={{rows:10}} loading={loading}>
         <div className="g-wrap f-cb">
             <div className="u-title f-cb">
                 <h3>
@@ -58,6 +63,7 @@ const MyArtist = () => {
                 }
             </div>
         </div>
+        </Skeleton>
     )
 }
 

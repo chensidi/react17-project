@@ -1,5 +1,5 @@
 import { useLocation, useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Main from '@/components/Main';
@@ -17,12 +17,15 @@ const MyMusic = (props) => {
             history.replace('/my/music/artist')
         }
         dispatch(setSubNav(false));
+        const matches = location.pathname.match(/(?<=\/).+?(?=\b)/g);
+        matches && menuRef.current.setK(matches[matches.length - 1])
     })
 
+    const menuRef = useRef();
 
     return (
         <Main>
-           <MyMenu />
+           <MyMenu ref={menuRef} />
            <div className="m-right">
                { props.children }
            </div>

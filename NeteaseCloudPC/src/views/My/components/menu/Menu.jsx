@@ -1,5 +1,5 @@
 import { Menu, Switch } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const ListItem = (props) => {
     )
 }
 
-export const MyMenu = () => {
+export const MyMenu = forwardRef((props, ref) => {
     const history = useHistory();
     const handleClick = (e) => {
         console.log(e);
@@ -82,6 +82,11 @@ export const MyMenu = () => {
     }, [])
 
     const [curKey, setK] = useState('artist');
+
+    useImperativeHandle(ref, () => ({
+        setK
+    }))
+
     return (
         <Menu
             onClick={handleClick}
@@ -97,4 +102,4 @@ export const MyMenu = () => {
            }
         </Menu>
     )
-}
+})
