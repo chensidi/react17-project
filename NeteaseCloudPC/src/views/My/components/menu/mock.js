@@ -13,7 +13,7 @@ export const menuData = [
     },
     {
         title: '我的电台',
-        key: 'mRadio',
+        key: 'dj',
         icon: <CustomerServiceFilled />
     },
     {

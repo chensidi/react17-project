@@ -22,20 +22,20 @@ const MV = () => {
 
     return (
         <Skeleton active={true} paragraph={{rows:10}} loading={loading}>
-        <div className="g-wrap f-cb">
-            <div className="u-title f-cb">
-                <h3>
-                    <span className="f-ff2">我的视频</span>
-                </h3>
+            <div className="g-wrap f-cb">
+                <div className="u-title f-cb">
+                    <h3>
+                        <span className="f-ff2">我的视频</span>
+                    </h3>
+                </div>
+                <div className="m-mvlist f-cb my-mv">
+                    {
+                        mv.map(item => {
+                            return <VideoItem key={item.vid} {...item} />
+                        })
+                    }
+                </div>
             </div>
-            <div className="m-mvlist f-cb my-mv">
-                {
-                    mv.map(item => {
-                        return <VideoItem key={item.vid} {...item} />
-                    })
-                }
-            </div>
-        </div>
         </Skeleton>
     )
 }

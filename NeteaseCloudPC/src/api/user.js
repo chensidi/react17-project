@@ -54,4 +54,12 @@ export default {
             return e;
         }
     },
+    async getSubscribeDj() {
+        try {
+            const res = await http.get('/dj/sublist');
+            return res.djRadios;
+        } catch (e) {
+            return e;
+        }
+    },
 }
