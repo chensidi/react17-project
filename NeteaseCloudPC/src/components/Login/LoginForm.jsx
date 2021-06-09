@@ -99,11 +99,12 @@ export const LoginModalCom = forwardRef((props, ref) => {
     })
     const [needJump, setJump] = useState(true)
     const login = ({phone, password, remember}) => {
-        if (!isDev) {
-            phone = aesEncrypt(phone);
-            password = aesEncrypt(password);
+        let encryptPhone = phone, encrypPassword = password;
+        if (!isDev) { //生产环境
+            encryptPhone = aesEncrypt(phone);
+            encrypPassword = aesEncrypt(password);
         }
-        loginApi.login(phone, password).then(res => {
+        loginApi.login(encryptPhone, encrypPassword).then(res => {
             if (!res) return;
             // 登录成功后写入store里面
             store.dispatch({type: 'setUserInfo', userInfo: res});
