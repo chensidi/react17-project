@@ -28,14 +28,6 @@ export const menuData = [
         key: 'mCollect',
         icon: <HeartFilled />,
         children: [
-            {
-                title: 'Option 7',
-                key: 'key7'
-            },
-            {
-                title: 'Option 8',
-                key: 'key8'
-            }
         ]
     }
 ]

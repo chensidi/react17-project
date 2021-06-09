@@ -8,6 +8,8 @@ import { routerRef } from './router/generateRoute'
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+export let historyAlpha;
+
 function App() {
 	const token = useSelector(state => state.user.token);
 	const localUser = localStore.get('user');
@@ -19,6 +21,7 @@ function App() {
 				loginFn.login({phone, password});
 			}
 		}
+		historyAlpha = routerRef.current;
 		routerRef.current.history.listen((route) => {
 			console.log(route);
 			if (route.pathname.startsWith('/video')) {

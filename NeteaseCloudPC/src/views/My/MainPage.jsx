@@ -9,7 +9,18 @@ import { SongItem } from '@/views/Search/components';
 import userApi from '@/api/user';
 import { areaFormat } from '@/utils/pureFunctions';
 import CoverItem from '@/components/Covers/CoverItem';
-import { playList as playLists } from '@/utils/utils'
+import { playList as playLists } from '@/utils/utils';
+
+export const getTypeOfPlaylist = (allList, uid) => {
+    let [ownList, collectList] = [[], []];
+    ownList = allList.filter(item => {
+        return item.userId === uid;
+    })
+    collectList = allList.filter(item => {
+        return item.userId !== uid;
+    })
+    return {ownList, collectList};
+}
 
 const MainPage = () => {
 
@@ -72,17 +83,6 @@ const MainPage = () => {
                 collectList
             })
         })
-    }, [])
-
-    const getTypeOfPlaylist = useCallback((allList, uid) => {
-        let [ownList, collectList] = [[], []];
-        ownList = allList.filter(item => {
-            return item.userId === uid;
-        })
-        collectList = allList.filter(item => {
-            return item.userId !== uid;
-        })
-        return {ownList, collectList};
     }, [])
 
     useEffect(() => {

@@ -91,12 +91,12 @@ export const UserInfo = () => {
     return (
         <div className="n-myinfo s-bg s-bg-5">
             <div className="f-cb">
-                <Link to="/my/main" className="head f-pr">
+                <Link to="/my/music" className="head f-pr">
                     <img src={user.avatarUrl} alt="" />
                 </Link>
                 <div className="info">
                     <h4 style={{overflow: 'hidden'}}>
-                        <Link to="/my/main" className="nm nm-icn f-fs1 f-ib f-thide vip-60">
+                        <Link to="/my/music" className="nm nm-icn f-fs1 f-ib f-thide vip-60">
                             { user.nickname }
                         </Link>
                         <span className="vip-level vip-1-1"></span>

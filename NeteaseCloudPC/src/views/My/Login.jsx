@@ -11,7 +11,7 @@ const Login = () => {
     const history = useHistory();
 
     useEffect(() => {
-        token && history.replace('/my/main');
+        token && history.replace('/my/music');
     }, [])
 
     return (

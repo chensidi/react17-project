@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 import { menuData } from './mock';
 import userApi from '@/api/user';
+import { getTypeOfPlaylist } from '../../MainPage';
 
 const { SubMenu } = Menu;
 
@@ -27,7 +28,13 @@ export const MyMenu = forwardRef((props, ref) => {
     const handleClick = (e) => {
         console.log(e);
         setK(e.key);
-        history.push(`/my/music/${e.key}`)
+        let path;
+        if (e.key.match(/^\d+$/)) {
+            path = `/my/music/playlist/${e.key}`;
+        } else {
+            path = `/my/music/${e.key}`;
+        }
+        history.push(`/my/music/${e.key}`);
     }
 
     const menuConvert = (menuItem) => {
@@ -57,12 +64,29 @@ export const MyMenu = forwardRef((props, ref) => {
     const user = useSelector(state => state.user.profile);
     const [realMenuData, setMenuData] = useState(menuData);
     const getPlayList = () => { //获取用户歌单
+        if (!user) {
+            return;
+        }
         userApi.getPlayList(user.userId).then(res => {
             // 设置到我的歌单二级菜单内
+            const {ownList, collectList} = getTypeOfPlaylist(res, user.userId)
             menuData[3].children = [];
-            res.map(item => {
+            menuData[4].children = [];
+            ownList.map((item, i) => {
                 menuData[3].children.push({
-                    key: item.id,
+                    key: `${item.id}`,
+                    title: item.name,
+                    info: {
+                        id: item.id,
+                        img: item.coverImgUrl,
+                        total: item.trackCount,
+                        name: item.name
+                    }
+                })
+            })
+            collectList.map(item => {
+                menuData[4].children.push({
+                    key: `${item.id}`,
                     title: item.name,
                     info: {
                         id: item.id,

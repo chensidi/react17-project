@@ -6,6 +6,8 @@ import store from '@/store';
 import { routerRef } from '@/router/generateRoute';
 import localStore from '@/utils/localStore';
 import { aesEncrypt } from '@/utils/pureFunctions';
+import { historyAlpha } from '@/App'
+
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -75,6 +77,8 @@ const LoginForm = ({onFinish, onFinishFailed}) => {
 }
 
 export const LoginModalCom = forwardRef((props, ref) => {
+    console.log(historyAlpha);
+
     const { title = '手机号登录' } = props;
     const [isModalVisible, showModal] = useState(false);
     const onFinishFailed = (err) => {
@@ -112,7 +116,7 @@ export const LoginModalCom = forwardRef((props, ref) => {
             }
             showModal(false);
             // 根据条件判断是否进行跳转
-            needJump && routerRef.current.history.replace('/my/main');
+            needJump && historyAlpha.history.replace('/my/music');
         })
     }
     return (
