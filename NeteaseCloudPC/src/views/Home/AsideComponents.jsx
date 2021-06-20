@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
-import { useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
+import { useEffect, useCallback, useState } from 'react';
 
+import homeAction from './store/action';
 import loginFns from '@/utils/methods/login';
+import singerApi from '@/api/singer';
+import djApi from '@/api/dj';
 
 const SingerItem = ({img1v1Url, name, alias, id}) => {
     return (
@@ -43,6 +47,32 @@ const DjItem = ({avatarUrl, nickName}) => {
 }
 
 export const SingerBlock = ({hotSingers = []}) => {
+
+    const store = useStore();
+    const hotSingersOfStore = useSelector(state => state.homeData.hotSingers)
+    const [hotSingersData, setHotSingersData] = useState([]);
+
+    function getHotSingersData() {
+        if (hotSingersOfStore.length) {
+            setHotSingersData(hotSingersOfStore);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const _getHotSingers = useCallback(async () => {
+        let singers = [];
+        singers = await singerApi.getHotSingers(5);
+        setHotSingersData(singers);
+        store.dispatch(homeAction.setHotSingers(singers));
+    }, [])
+
+    useEffect(() => {
+        if (getHotSingersData()) return;
+        _getHotSingers();
+    }, [])
+
     return (
         <>
             <div className="n-singer">
@@ -53,7 +83,7 @@ export const SingerBlock = ({hotSingers = []}) => {
             </div>
             <ul className="n-enter f-cb">
                 {
-                    hotSingers.map(singer => {
+                    hotSingersData.map(singer => {
                         return (
                             <SingerItem key={singer.id} {...singer} />
                         )
@@ -65,6 +95,31 @@ export const SingerBlock = ({hotSingers = []}) => {
 }
 
 export const DjBlock = ({hotDjs = []}) => {
+    const store = useStore();
+    const hotDjsOfStore = useSelector(state => state.homeData.hotDjs)
+    const [hotDjsData, sethotDjsData] = useState([]);
+
+    function getHotDjsData() {
+        if (hotDjsOfStore.length) {
+            sethotDjsData(hotDjsOfStore);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const _getHotDjs = useCallback(async () => {
+        let hotDjs = [];
+        hotDjs = await djApi.getHotDjs(5);
+        sethotDjsData(hotDjs.list);
+        store.dispatch(homeAction.setHotDjs(hotDjs.list));
+    }, [])
+
+    useEffect(() => {
+        if (getHotDjsData()) return;
+        _getHotDjs();
+    }, [])
+
     return (
         <>
             <div className="n-dj n-dj-1">
@@ -75,7 +130,7 @@ export const DjBlock = ({hotDjs = []}) => {
             </div>
             <ul className="n-hotdj f-cb">
                 {
-                    hotDjs.map(dj => {
+                    hotDjsData.map(dj => {
                         return (
                             <DjItem key={dj.id} {...dj} />
                         )

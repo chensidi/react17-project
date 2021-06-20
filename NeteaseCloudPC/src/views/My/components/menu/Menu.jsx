@@ -34,7 +34,7 @@ export const MyMenu = forwardRef((props, ref) => {
         } else {
             path = `/my/music/${e.key}`;
         }
-        history.push(`/my/music/${e.key}`);
+        history.push(path);
     }
 
     const menuConvert = (menuItem) => {

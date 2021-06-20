@@ -6,8 +6,6 @@ import { Spin } from 'antd';
 import sessionStore from '@utils/sessionStore';
 import AsyncComponent from '@/components/AsyncComponent';
 import { homeApis } from '@/api/home';
-import singerApi from '@/api/singer';
-import djApi from '@/api/dj';
 import homeConfig from './config';
 import NewDiskSwiper from './Swiper';
 import Main from '@/components/Main';
@@ -65,12 +63,12 @@ class Home extends PureComponent {
         this.props.setSubNav(true);
         this.setState({loading: true});
         Promise.all([
-            this._loadBanners(),
+            // this._loadBanners(),
             this._getRecommend(),
-            this._getNewDisk(),
-            this._getTopList(),
-            this._getHotSingers(),
-            this._getHotDjs()
+            // this._getNewDisk(),
+            // this._getTopList(),
+            // this._getHotSingers(),
+            // this._getHotDjs()
         ]).then(() => {
             timer = setTimeout(() => this.setState({loading: false}), 500)
         })
@@ -81,16 +79,6 @@ class Home extends PureComponent {
         timer = null;
     }
 
-    _loadBanners = async () => { //轮播图
-        let res = this.props.banners;
-        if (res.length === 0) {
-            res = await homeApis.getBanners();
-            this.props.setBanners(res);
-        }
-        this.setState({
-            banners: res
-        })
-    }
     _getRecommend = async () => {
         let res = this.props.recommends;
         if (res.length === 0) {
@@ -101,61 +89,10 @@ class Home extends PureComponent {
             recommends: res
         })
     }
-    _getNewDisk = async () => {
-        let res = this.props.newDisk;
-        if (res.length === 0) {
-            res = await homeApis.getNewDisk({limit: 10});
-            this.props.setNewDisk(res);
-        }
-        this.setState({
-            newDisk: [[...res.slice(0,5)], [...res.slice(5,)]]
-        })
-    }
-    _getRank = async (id) => {
-        let res = await homeApis.getRank(id);
-        return res.tracks;
-    }
-    _getTopList = async () => {
-        let arr = this.props.ranks;
-        if (arr.length === 0) {
-            let res = await homeApis.getTopList();
-            res = res.slice(0, 3); //取出前三个
-            for (let i = 0; i < res.length; i ++) {
-                const item = res[i];
-                let res1 = await this._getRank(item.id);
-                arr.push({
-                    self: item,
-                    subs: res1.slice(0, 10)
-                })
-            }
-            this.props.setRanks(arr);
-        }
-        
-        this.setState({
-            ranks: arr
-        })
-    }
-
-    _getHotSingers = async () => {
-        let singers = this.props.hotSingers;
-        if (singers.length === 0) {
-            singers = await singerApi.getHotSingers(5);
-            this.props.setHotSingers(singers);
-        }
-        this.setState({hotSingers: singers});
-    }
-
-    _getHotDjs = async () => {
-        let djs = this.props.hotDjs;
-        if (djs.length === 0) {
-            djs = await djApi.getHotDjs(5);
-            this.props.setHotDjs(djs);
-        }
-        this.setState({hotDjs: djs.list});
-    }
-    
+   
     render() {
-        const { banners, 
+        const { 
+            banners, 
             recommends, 
             newDisk, ranks, 
             loading, 
@@ -165,7 +102,7 @@ class Home extends PureComponent {
         return (
             <div>
                 <Spin tip="Loading..." spinning={loading}>
-                <Banner banners={banners} />
+                <Banner />
                 <Main className="g-bd1">
                     <div className="g-mn1">
                         <div className="g-mn1c">
@@ -190,11 +127,11 @@ class Home extends PureComponent {
                                         </div>
                                         <div className="n-new">
                                             <BlockTitle title={{path: '', txt: '新碟上架'}} />
-                                            <NewDiskSwiper newDisk={newDisk} />
+                                            <NewDiskSwiper />
                                         </div>
                                         <div className="n-bill">
                                             <BlockTitle title={{path: '/home/toplist', txt: '榜单'}} />
-                                            <RankModule ranks={ranks} />
+                                            <RankModule />
                                         </div>
                                         </>
                                     ) : null
@@ -210,8 +147,8 @@ class Home extends PureComponent {
                                 <Login />
                             }
                         </div>
-                        <SingerBlock hotSingers={hotSingers} />
-                        <DjBlock hotDjs={hotDjs} />
+                        <SingerBlock />
+                        <DjBlock />
                     </div>
                 </Main>
                 {

@@ -1,7 +1,12 @@
-import { createRef, memo } from 'react';
+import { createRef, memo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useEffect, useCallback } from 'react';
+import { useStore, useSelector } from 'react-redux';
+
 import { Carousel } from 'antd';
 import './index.scss';
+import homeAction from './store/action';
+import { homeApis } from '@/api/home';
 
 const NewDiskSwiper = (props) => {
     const { newDisk } = props;
@@ -9,6 +14,32 @@ const NewDiskSwiper = (props) => {
     function changeSwiper(flag) {
         flag ? swp.current.next() : swp.current.prev()
     }
+
+    const [newDiskData, setNewDiskData] = useState([]);
+    const store = useStore();
+    const _getNewDisk = useCallback(async () => {
+        let res = await homeApis.getNewDisk({limit: 10});
+        res = [[...res.slice(0,5)], [...res.slice(5,)]];
+        setNewDiskData(res);
+        store.dispatch(homeAction.setNewDisk(res));
+    }, [])
+
+    const newDiskDataOfStore = useSelector(state => state.homeData.newDisk)
+    function getNewDiskOfStore() {
+        console.log(newDiskDataOfStore);
+        if (newDiskDataOfStore.length) {
+            setNewDiskData(newDiskDataOfStore);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    useEffect(() => {
+        if (getNewDiskOfStore()) return;
+        _getNewDisk();
+    }, [])
+
     return (
         <div className="new-swiper">
             <span
@@ -16,7 +47,7 @@ const NewDiskSwiper = (props) => {
                 className="click-flag pre s-bg s-bg-7 f-tdn"
             ></span>
             <Carousel ref={swp} dots={false}>
-                {newDisk.map((item, i) => {
+                {newDiskData.map((item, i) => {
                     return (
                         <ul className="n-disk" key={`ul${i}`}>
                             {item.map((li) => {

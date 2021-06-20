@@ -5,6 +5,7 @@ const MyMusic = AsyncComponent(() => import(('@/views/My/Music')));
 const MyArtist = AsyncComponent(() => import('@/views/My/MyArtist'));
 const MyMv = AsyncComponent(() => import('@/views/My/MV'));
 const MyDj = AsyncComponent(() => import('@/views/My/Dj'));
+const MyPlayList = AsyncComponent(() => import('@/views/My/PlayList'));
 
 export default [
     {
@@ -41,6 +42,11 @@ export default [
                 path: 'dj',
                 component: MyDj,
                 name: 'MyDj',
+            },
+            {
+                path: 'playlist/:id',
+                component: MyPlayList,
+                name: 'MyPlayList',
             },
         ]
     }

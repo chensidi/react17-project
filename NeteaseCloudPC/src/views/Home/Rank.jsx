@@ -1,8 +1,12 @@
 import './index.scss';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useEffect, useCallback } from 'react';
+import { useStore, useSelector } from 'react-redux';
 
 import { playList, addToPlay, playItem } from '@/utils/utils';
+import homeAction from './store/action';
+import { homeApis } from '@/api/home';
 
 const LiItem = (props) => {
     const { item, idx } = props;
@@ -26,12 +30,71 @@ const LiItem = (props) => {
 }
 const RankModule = (props) => {
     const {ranks} = props;
+
+    const store = useStore();
+    const ranksDataOfStore = useSelector(state => state.homeData.ranks);
+
+    const [ranksData, setRanksData] = useState([]);
+    function getRanksData() {
+        console.log(ranksDataOfStore);
+        if (ranksDataOfStore.length) {
+            setRanksData(ranksDataOfStore);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const _getTopList = useCallback(async () => {
+        /* let arr = this.props.ranks;
+        if (arr.length === 0) {
+            let res = await homeApis.getTopList();
+            res = res.slice(0, 3); //取出前三个
+            for (let i = 0; i < res.length; i ++) {
+                const item = res[i];
+                let res1 = await this._getRank(item.id);
+                arr.push({
+                    self: item,
+                    subs: res1.slice(0, 10)
+                })
+            }
+            this.props.setRanks(arr);
+        }
+        
+        this.setState({
+            ranks: arr
+        }) */
+        let arr = [];
+        let res = await homeApis.getTopList();
+        res = res.slice(0, 3); //取出前三个
+        for (let i = 0; i < res.length; i ++) {
+            const item = res[i];
+            let res1 = await _getRank(item.id);
+            arr.push({
+                self: item,
+                subs: res1.slice(0, 10)
+            })
+        }
+        setRanksData(arr);
+        store.dispatch(homeAction.setRanks(arr));
+    }, [])
+
+    const _getRank = useCallback(async (id) => {
+        let res = await homeApis.getRank(id);
+        return res.tracks;
+    }, [])
+
+    useEffect(() => {
+        if (getRanksData()) return;
+        _getTopList();
+    }, [])
+
     return (
         <div className="n-bilst">
             {
-                ranks.map((rank, x) => {
+                ranksData.map((rank, x) => {
                     return (
-                        <dl className={['blk', x===ranks.length-1?'blk-1':''].join(' ')} key={rank.self.id}>
+                        <dl className={['blk', x===ranksData.length-1?'blk-1':''].join(' ')} key={rank.self.id}>
                             <dt className="top">
                                 <div className="cver u-cover u-cover-4">
                                     <img src={rank.self.coverImgUrl} className="j-img" alt=""/>
