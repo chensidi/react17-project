@@ -97,7 +97,7 @@ const RankModule = (props) => {
                         <dl className={['blk', x===ranksData.length-1?'blk-1':''].join(' ')} key={rank.self.id}>
                             <dt className="top">
                                 <div className="cver u-cover u-cover-4">
-                                    <img src={rank.self.coverImgUrl} className="j-img" alt=""/>
+                                    <img src={rank.self.coverImgUrl + 'param=100y100'} className="j-img" alt=""/>
                                     <Link to={`/home/toplist/${rank.self.id}`} className="msk">
                                     </Link>
                                 </div>

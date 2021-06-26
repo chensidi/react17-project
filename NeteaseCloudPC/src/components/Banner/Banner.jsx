@@ -50,7 +50,7 @@ const Banner = (props) => {
                     {
                         bannersData.map(item => (
                             <div key={item.encodeId}>
-                                <img className="banner-item" src={item.imageUrl} alt="" />
+                                <img className="banner-item" src={item.imageUrl + '?imageView&quality=89'} alt="" />
                             </div>
                         ))
                     }

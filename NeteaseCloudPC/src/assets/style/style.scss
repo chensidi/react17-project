@@ -1678,9 +1678,17 @@ table {
     h3 {
         font-size: 20px;
         line-height: 28px;
+        float: left;
     }
     .sub {
         margin: 9px 0 0 20px;
+    }
+    .more {
+        margin-top: 5px;
+        float: right;
+        strong {
+            color: #c20c0c;
+        }
     }
 }
 
@@ -3008,4 +3016,10 @@ table {
     width: 54px;
     height: 24px;
     background-position: 0 -243px !important;
+}
+
+.singer-bg {
+    height: 100%;
+    background-size: contain;
+    background-position: center;
 }

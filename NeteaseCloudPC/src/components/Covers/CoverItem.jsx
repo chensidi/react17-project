@@ -4,7 +4,7 @@ const CoverItem = (props) => {
     return (
         <li>
             <div className="u-cover u-cover-1">
-                <img src={props.coverImgUrl} alt=""/>
+                <img src={props.coverImgUrl + '?param=140y140'} alt=""/>
                 <Link to={`/playlist/${props.id}`} className="msk"></Link>
                 <div className="bottom">
                     <i onClick={() => props.playFn(props.id)} className="icon-play f-fr"></i>

@@ -285,6 +285,9 @@ const PlayBar = (props) => {
                 if (idx != null) {
                     return props.historyPlay[idx]; 
                 } else { //有可能历史记录被清除了
+                    if (props.historyPlay.length) {
+                        return props.historyPlay[0];
+                    }
                     return props.curSong;
                 }
 

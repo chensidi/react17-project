@@ -54,7 +54,7 @@ const NewDiskSwiper = (props) => {
                                 return (
                                     <li key={li.id}>
                                         <div className="u-cover u-cover-alb1">
-                                            <img src={li.picUrl} alt="" />
+                                            <img src={li.picUrl + '?param=100y100'} alt="" />
                                             <Link to={`/album/${li.id}`} className="msk"></Link>
                                             <a href="/#" title="播放" className="icon-play f-alpha f-fr"></a>
                                         </div>

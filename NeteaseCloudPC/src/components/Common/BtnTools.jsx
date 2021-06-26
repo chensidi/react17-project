@@ -4,13 +4,14 @@ const BtnTools = (props) => {
         shareCount = '', 
         commentCount = 0, 
         playHandler = () => {}, 
-        addHandler = () => {} } = props;
-
+        addHandler = () => {} 
+    } = props;
+    
     return (
         <div className="m-info">
             <div className="btns f-cb">
-                <div className="u-btn2 u-btn2-2 u-btni-addply f-fl">
-                    <i onClick={playHandler}>
+                <div onClick={playHandler} className="u-btn2 u-btn2-2 u-btni-addply f-fl">
+                    <i>
                         <em className="ply"></em>
                         播放
                     </i>

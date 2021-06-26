@@ -13,7 +13,7 @@ const SingerItem = ({img1v1Url, name, alias, id}) => {
         <li>
             <Link to={`/singer/${id}`} className="itm f-tdn">
                 <div className="head">
-                    <img src={img1v1Url} alt=""/>
+                    <img src={img1v1Url + '?param=62y62'} alt=""/>
                 </div>
                 <div className="ifo">
                     <h4>
@@ -32,7 +32,7 @@ const DjItem = ({avatarUrl, nickName}) => {
     return (
         <li>
             <Link to="" className="cver">
-                <img src={avatarUrl} alt="" className=""/>
+                <img src={avatarUrl + '?param=40y40'} alt="" className=""/>
             </Link>
             <div className="info">
                 <p>
@@ -147,7 +147,7 @@ export const UserInfo = () => {
         <div className="n-myinfo s-bg s-bg-5">
             <div className="f-cb">
                 <Link to="/my/music" className="head f-pr">
-                    <img src={user.avatarUrl} alt="" />
+                    <img src={user.avatarUrl + '?param=80y80'} alt="" />
                 </Link>
                 <div className="info">
                     <h4 style={{overflow: 'hidden'}}>
