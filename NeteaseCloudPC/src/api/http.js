@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+import store from '@/store';
+import { historyAlpha } from '@/App';
+import localStore from '@/utils/localStore';
+import loginFn from '@/utils/methods/login';
+
 const isDev = process.env.NODE_ENV === 'development';
 
 class Http {
@@ -22,10 +27,23 @@ class Http {
             return Promise.reject(error)
         })
         this.instance.interceptors.response.use(function (res) {
+            const { data: {code} } = res;
             // do something
-            return res.data;
+            if (code === 200) {
+                return res.data;
+            } else {
+                return Promise.reject(res.data);
+            }
         }, function (error) {
-            return Promise.reject(error)
+            console.log(error.response);
+            const { data: {code, msg} } = error.response
+            switch (code) {
+                case 301: //未登录或登录token失效
+                    notLoginHandler();
+                    return Promise.reject(msg);
+                default:
+                    return '系统异常'
+            }
         })
     }
     get(url, params = {}) {
@@ -37,6 +55,23 @@ class Http {
         return this.instance.post(url, {
             data
         })
+    }
+}
+
+function notLoginHandler() { //未登录或登录失效
+    const userInfo = store.getState().user;
+    const localUser = localStore.get('user');
+    const {phone, password, remember} = localUser;
+    console.log(userInfo)
+    //未登录
+    if (userInfo?.token == undefined) { //没有token记录，则退回首页
+        historyAlpha.history.replace('/')
+    } else { //token存在，但已过期
+        loginFn.logout(historyAlpha.history.replace('/'));
+        //记住密码情况
+        if (remember) {
+            loginFn.login({phone, password})
+        }
     }
 }
 
