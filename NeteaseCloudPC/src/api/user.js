@@ -62,4 +62,20 @@ export default {
             return e;
         }
     },
+    async signIn(type = 1) {
+        try {
+            const res = await http.get('/yunbei/sign', {type});
+            return res;
+        } catch (e) {
+            return e;
+        }
+    },
+    async signInInfo() {
+        try {
+            const res = await http.get('/yunbei/today');
+            return res;
+        } catch (e) {
+            return e;
+        }
+    },
 }

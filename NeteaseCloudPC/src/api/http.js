@@ -41,6 +41,8 @@ class Http {
                 case 301: //未登录或登录token失效
                     notLoginHandler();
                     return Promise.reject(msg);
+                case 400:
+                    return { msg: '未签到', sign: false }
                 default:
                     return '系统异常'
             }
@@ -62,7 +64,6 @@ function notLoginHandler() { //未登录或登录失效
     const userInfo = store.getState().user;
     const localUser = localStore.get('user');
     const {phone, password, remember} = localUser;
-    console.log(userInfo)
     //未登录
     if (userInfo?.token == undefined) { //没有token记录，则退回首页
         historyAlpha.history.replace('/')

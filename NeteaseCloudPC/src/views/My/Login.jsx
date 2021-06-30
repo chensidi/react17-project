@@ -4,7 +4,6 @@ import loginFun from '@/utils/methods/login';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import userApi from '@api/user';
 
 const Login = () => {
 
@@ -12,9 +11,6 @@ const Login = () => {
     const history = useHistory();
 
     useEffect(() => {
-        userApi.getSubscribeMv().then(err => {
-            console.log(err)
-        })
         token && history.replace('/my/music');
     }, [])
 

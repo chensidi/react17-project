@@ -7,6 +7,7 @@ import homeAction from './store/action';
 import loginFns from '@/utils/methods/login';
 import singerApi from '@/api/singer';
 import djApi from '@/api/dj';
+import userApi from '@/api/user';
 
 const SingerItem = ({img1v1Url, name, alias, id}) => {
     return (
@@ -143,6 +144,31 @@ export const DjBlock = ({hotDjs = []}) => {
 
 export const UserInfo = () => {
     const user = useSelector(state => state.user.profile);
+
+    const [signStatus, changeSing] = useState(false); 
+    const getSignStatus = useCallback(() => {
+        userApi.signInInfo().then(res => {
+            //sign存在说明未签到，不存在说明已签到
+            res.sign ?? changeSing(true);
+        })
+    })
+
+    const signIn = useCallback(() => {
+        userApi.signIn().then(() => getSignStatus())
+    })
+
+    const [level, setLevel] = useState({});
+    const getLevel = useCallback(() => { //获取个人等级
+        userApi.getLevel().then(res => {
+            setLevel(res);
+        })
+    }, [])
+
+    useEffect(() => {
+        getSignStatus();
+        getLevel();
+    }, [])
+
     return (
         <div className="n-myinfo s-bg s-bg-5">
             <div className="f-cb">
@@ -158,11 +184,13 @@ export const UserInfo = () => {
                     </h4>
                     <p>
                         <Link className="u-lv u-icn2 u-icn2-lv" to="">
-                            7 <i className="right u-icn2 u-icn2-lvright"></i>
+                            {level?.level} <i className="right u-icn2 u-icn2-lvright"></i>
                         </Link>
                     </p>
                     <div className="btnwrap f-pr">
-                        <Button>签到</Button>
+                        <Button disabled={signStatus} onClick={signIn}>
+                            { signStatus ? '已签到' : '签到' }
+                        </Button>
                     </div>
                 </div>
             </div>
