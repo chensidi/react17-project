@@ -1,5 +1,7 @@
 import { areaList } from '@vant/area-data';
 import * as crypto from 'crypto';
+import { message } from 'antd';
+
 var key = '@(5h)-$3_if(*%#';  
 
 export const areaFormat = (cityCode, type = 1) => { //根据城市编号获取地区
@@ -33,4 +35,34 @@ export function aesEncrypt(data, key='g6@d5*&f8fe$s4ff8e') { //加密
     var crypted = cipher.update(data, 'utf8', 'hex');
     crypted += cipher.final('hex');
     return crypted;
+}
+
+export function downLoadImg(url, name) { //下载图片
+    const aTag = document.createElement('a');
+    aTag.setAttribute('href', url);
+    aTag.setAttribute('download', name);
+    document.body.append(aTag);
+    aTag.click();
+    document.body.removeChild(aTag);
+}
+
+// 下载服务器的MP3文件
+export const downloadMp3 = (filePath, name, showTips = true) => {
+    const key = filePath;
+    showTips && message.loading({ content: `《${name}》正在下载中...`, key })
+    fetch(filePath).then(res => res.blob()).then(blob => {
+        const a = document.createElement('a');
+        document.body.appendChild(a)
+        a.style.display = 'none';
+        // 使用获取到的blob对象创建的url
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        // 指定下载的文件名
+        a.download = name;
+        a.click();
+        document.body.removeChild(a)
+        // 移除blob对象的url
+        window.URL.revokeObjectURL(url);
+        showTips && message.success({ content: `《${name}》下载完成`, key })
+    });
 }

@@ -1,12 +1,18 @@
 import { Link } from 'react-router-dom';
-import { mediaTimeFormat, artistsFormat, playTimesFormat } from '@/utils/utils';
+import { mediaTimeFormat, artistsFormat, playTimesFormat, playItem, addToPlay, playAlbum, getSongById } from '@/utils/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { useState } from 'react';
-import { playItem, addToPlay, playAlbum } from '@/utils/utils';
+import { useCallback, useState } from 'react';
+import { downloadMp3 } from '@/utils/pureFunctions';
+import commonApi from '@/api/common'
 
 export const SongItem = (props) => {
     const { i, name, mv, ar, al, dt, id } = props;
     
+    const downLoad = useCallback(async () => {
+        const url = await commonApi.getSongUrl(id);
+        downloadMp3(url, name);
+    }, [])
+
     return (
         <div className={['item f-cb h-flag', i%2?'':'even'].join(' ')}>
             <div className="td">
@@ -27,7 +33,7 @@ export const SongItem = (props) => {
                     <i className="u-icn u-icn-81 icn-add" onClick={() => addToPlay(id)}></i>
                     <i className="icn icn-fav"></i>
                     <i className="icn icn-share"></i>
-                    <i className="icn icn-dl"></i>
+                    <i className="icn icn-dl" title="下载" onClick={downLoad}></i>
                 </div>
             </div>
             <div className="td w1">

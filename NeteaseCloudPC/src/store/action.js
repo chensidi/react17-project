@@ -47,23 +47,23 @@ export const setLoadingPlaybar = (loading) => {
 }
 
 export const getSongInfo = (id) => {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         dispatch(setLoadingPlaybar(true));
-        return getSongById(id).then(res => {
-            const { lyc, url, details } = res;
-            dispatch(setLoadingPlaybar(false));
-            return dispatch(setCurSong({
-                url,
-                name: details.name,
-                singer: artistsFormat(details.ar),
-                singerId: details.ar[0].id,
-                lyc: lyc,
-                id,
-                alblum: details.al,
-                duration: mediaTimeFormat(details.dt / 1000),
-                mv: details.mv
-            }))
-        })
+        const res = await getSongById(id);
+        const { lyc, url, details } = res;
+        dispatch(setLoadingPlaybar(false));
+        const dispatchRes = dispatch(setCurSong({
+            url,
+            name: details.name,
+            singer: artistsFormat(details.ar),
+            singerId: details.ar[0].id,
+            lyc: lyc,
+            id,
+            alblum: details.al,
+            duration: mediaTimeFormat(details.dt / 1000),
+            mv: details.mv
+        }))
+        return dispatchRes;
     }
 }
 

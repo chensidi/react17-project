@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { mediaTimeFormat, formatLrc, addToPlay, artistsFormat, delFromPlay, getRandom, clearHistory } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
+import { downloadMp3 } from '@/utils/pureFunctions';
  
 const mapStateToProps = (state) => {
     return {
@@ -37,6 +38,13 @@ const HistoryItem = forwardRef((props, ref) => {
             props.initMp3();
         })
     }
+
+    async function downLoad(e) {
+        e.stopPropagation();
+        const url = await commonRequest.getSongUrl(props.id);
+        downloadMp3(url, props.name);
+    }
+
     return (
         <li onClick={playItem} className={props.id === props.curSong.id ? 'z-sel' : ''}>
             <div className="col col-1">
@@ -48,7 +56,7 @@ const HistoryItem = forwardRef((props, ref) => {
             <div className="col col-3">
                 <div className="icns">
                     <i className="ico icn-del" title="删除" onClick={(e) => delFromPlay(props.id, e)}></i>
-                    <i className="ico ico-dl" title="下载"></i>
+                    <i className="ico ico-dl" title="下载" onClick={downLoad}></i>
                     <i className="ico ico-share" title="分享"></i>
                     <i className="j-t ico ico-add" title="收藏"></i>
                 </div>
