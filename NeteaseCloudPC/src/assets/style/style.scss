@@ -3023,3 +3023,121 @@ table {
     background-size: contain;
     background-position: center;
 }
+
+.m-dlist  {
+    .itm {
+        box-sizing: content-box;
+        position: relative;
+        padding: 20px 0;
+        border-bottom: 1px solid;
+    }
+    .gface {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 54px;
+    }
+    .ficon {
+        float: left;
+        position: relative;
+        zoom: 1;
+        width: 45px;
+        height: 45px;
+        img {
+            display: block;
+            width: 100%;
+        }
+    }
+    .gcnt {
+        position: relative;
+        zoom: 1;
+        margin-left: 55px;
+        padding-top: 4px;
+    }
+    .time {
+        margin-top: 7px;
+    }
+    .text {
+        margin-top: 10px;
+        line-height: 24px;
+        font-size: 14px;
+        word-break: break-word;
+    }
+    .src {
+        background: #f5f5f5;
+        display: block;
+        position: relative;
+        padding: 10px;
+        margin: 4px 0 5px;
+        .cover {
+            position: relative;
+            zoom: 1;
+            width: 40px;
+            height: 40px;
+            float: left;
+            img {
+                width: 40px;
+                height: 40px;
+            }
+            .ply {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 40px;
+                height: 40px;
+                margin: 0;
+                background-position: -100px -70px;
+                _background-position: 0 0;
+                opacity: 0.8;
+                filter: Alpha(opacity=80);
+                cursor: pointer;
+                display: block;
+                z-index: 200;
+            }
+        }
+        .scnt {
+            display: block;
+            position: absolute;
+            top: 10px;
+            left: 60px;
+            right: 30px;
+            height: 40px;
+            line-height: 22px;
+        }
+    }
+
+    .u-dicn, .u-dtag, .u-dtag .rt {
+        background: url(https://s2.music.126.net/style/web2/img/timeline/frd_dyn_sprite.png?a264922fe3d8b6e27033a22e2d983807) 0 9999px no-repeat;
+    }
+
+    .pics {
+        .clear {
+            clear: left;
+        }
+        .pic {
+            float: left;
+            position: relative;
+            zoom: 1;
+            width: 224px;
+            height: 224px;
+            margin-left: 4px;
+            margin-top: 4px;
+            background-color: #e5e5e5;
+        }
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .channel {
+        color: #e03f40;
+        margin-right: 4px;
+        border: {
+            color: #e03f40;
+            width: 1px;
+            style: solid;
+            radius: 2px;
+        }
+    }
+}

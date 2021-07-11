@@ -9,7 +9,7 @@ export const navs = [
     },
     {
         title: '朋友',
-        path: '/Friend' 
+        path: '/friend' 
     },
     {
         title: '商城',

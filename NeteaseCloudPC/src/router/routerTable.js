@@ -4,6 +4,7 @@ import homeRouter from './modules/home';
 import searchRouter from './modules/search';
 import singerRouter from './modules/singer';
 import myRouter from './modules/my';
+import friendRouter from './modules/friend';
 
 const Personal = AsyncComponent(() => import('@/views/Personal/Personal'));
 const Song = AsyncComponent(() => import('@/views/Song/Song'));
@@ -22,6 +23,7 @@ const routes = [
     ...searchRouter,
     ...singerRouter,
     ...myRouter,
+    ...friendRouter,
     {
         path: '/song/:id',
         component: Song,

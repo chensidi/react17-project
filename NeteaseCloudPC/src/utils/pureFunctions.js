@@ -66,3 +66,15 @@ export const downloadMp3 = (filePath, name, showTips = true) => {
         showTips && message.success({ content: `《${name}》下载完成`, key })
     });
 }
+
+export function parseJson(jsonObj, path) {
+    let target = JSON.parse(jsonObj),
+        pathArr = path.split('.');
+    
+    while (pathArr.length) {
+        let prop = pathArr.shift();
+        target = target?.[prop];
+    }
+
+    return target;
+}
