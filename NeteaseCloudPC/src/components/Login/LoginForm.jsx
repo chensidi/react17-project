@@ -105,7 +105,9 @@ export const LoginModalCom = forwardRef((props, ref) => {
             encrypPassword = aesEncrypt(password);
         }
         loginApi.login(encryptPhone, encrypPassword).then(res => {
-            if (!res) return;
+            if (res.error) {
+                return;
+            }
             // 登录成功后写入store里面
             store.dispatch({type: 'setUserInfo', userInfo: res});
             if (remember) { //自动登录

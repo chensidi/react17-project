@@ -149,7 +149,7 @@ export const UserInfo = () => {
     const getSignStatus = useCallback(() => {
         userApi.signInInfo().then(res => {
             //sign存在说明未签到，不存在说明已签到
-            res.sign ?? changeSing(true);
+            res && changeSing(true);
         })
     })
 

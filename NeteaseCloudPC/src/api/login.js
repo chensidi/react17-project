@@ -14,9 +14,12 @@ export default {
             }
             message.success(`登录成功！欢迎${res.profile.nickname}来到Jacky网易music`);
             return res;
-        } catch (e) {
+        } catch (err) {
+            console.log(err)
+            const { msg = '账号错误或不存在' } = err;
+            message.error(msg);
             return {
-                message: '账号不存在'
+                error: true
             };
         }
     },

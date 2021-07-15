@@ -45,7 +45,7 @@ export default {
             password = aesEncrypt(password);
         }
         return loginApi.login(phone, password).then(res => {
-            if (!res) return;
+            if (res.error) return;
             // 登录成功后写入store里面
             store.dispatch({type: 'setUserInfo', userInfo: res});
         })

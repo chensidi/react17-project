@@ -42,7 +42,7 @@ class Http {
                     notLoginHandler();
                     return Promise.reject(msg);
                 case 400:
-                    return { msg: '未签到', sign: false }
+                    return Promise.reject(false)
                 default:
                     return '系统异常'
             }
