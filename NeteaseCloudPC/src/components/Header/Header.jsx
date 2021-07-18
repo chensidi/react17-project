@@ -70,7 +70,7 @@ const Header = (props) => {
         if (pathname === '/home') {
             return 0;
         }
-    return subNav.findIndex(item => item.path !== '' && pathname.includes(item.path))
+        return subNav.findIndex(item => item.path !== '' && pathname.includes(item.path))
     }, [])
 
     const kw = useRouteMatch('/search/:kw')?.params?.kw || '';

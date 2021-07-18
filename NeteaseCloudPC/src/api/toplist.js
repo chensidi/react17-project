@@ -24,5 +24,27 @@ export default {
         } catch (err) {
             return err;
         }
-    }
+    },
+    async getCatlist() {
+        try {
+            let res = await http.get(`/playlist/catlist`);
+            return res;
+        } catch (err) {
+            return err;
+        }
+    },
+    async getCateLists(params = {}) {
+        const {limit=35, order="hot", offset=0, cat="全部"} = params
+        try {
+            const res = await http.get(`/top/playlist`, {
+                limit,
+                order,
+                offset,
+                cat
+            })
+            return res;
+        } catch (err) {
+            return err;
+        }
+    },
 }

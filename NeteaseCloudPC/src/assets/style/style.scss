@@ -3141,3 +3141,117 @@ table {
         }
     }
 }
+
+.u-title  {
+    h3 {
+        float: left;
+        font-size: 24px;
+        font-weight: normal;
+    }
+}
+
+.choose-kind {
+    transform: translate3d(10px, -3px, 0px);
+}
+
+.u-btn-hot {
+    height: 29px;
+    background-position: 0 0;
+    border-radius: 3px;
+    span {
+        float: left;
+        width: 46px;
+        height: 29px;
+        line-height: 29px;
+        text-align: center;
+        color: #fff;
+    }
+}
+
+.n-sltlyr {
+    position: absolute;
+    top: 75px;
+    z-index: 5;
+    width: 720px;
+    .hd {
+        height: 32px;
+    }
+    .icn {
+        position: absolute;
+        top: 2px;
+        left: 132px;
+        display: inline-block;
+        width: 24px;
+        height: 11px;
+        background-position: -48px 0;
+        vertical-align: middle;
+    }
+    .bd {
+        width: 700px;
+        padding: 0 10px;
+        background-position: -720px 0;
+        background-repeat: repeat-y;
+    }
+    h3 {
+        height: 37px;
+        padding-left: 26px;
+        border-bottom: 1px solid #e6e6e6;
+        font-weight: normal;
+    }
+}
+
+.n-sltlyr .hd, .n-sltlyr .bd, .n-sltlyr .ft {
+    background: url(https://s2.music.126.net/style/web2/img/sltlyr.png?d0d7af098096ebf99d23eaf84068a563) no-repeat;
+}
+
+.cateListBox {
+    width: 700px;
+    padding: 0 10px;
+}
+
+.cate-con {
+
+}
+
+.cate-ico {
+    font-size: 20px;
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+.cate-list {
+    display: flex;
+    margin: 15px 0;
+    .cate-tt {
+        width: 70px;
+        margin-right: 10px;
+        font-size: 14px;
+    }
+    .cate-group {
+        flex: 1;
+    }
+}
+
+.cate-item {
+    display: inline-block;
+    font-size: 12px;
+    color: #333;
+    position: relative;
+    margin-right: 20px;
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+    &::after {
+        display: inline-block;
+        height: 1em;
+        position: absolute;
+        right: -10px;
+        content: "|";
+        color: #d8d8d8;
+    }
+}
+
+.cate-lists {
+    margin: 30px 0 0 -52px;
+}

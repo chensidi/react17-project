@@ -11,11 +11,7 @@ const Song = AsyncComponent(() => import('@/views/Song/Song'));
 const Video = AsyncComponent(() => import('@/views/Video/Video'));
 const Album = AsyncComponent(() => import('@/views/Album/Album'));
 const PlayList = AsyncComponent(() => import('@/views/Album/PlayList'));
-const TopList = AsyncComponent(() => import('@/views/Toplist/TopList'));
-const TopDetails = AsyncComponent(() => import('@/views/Toplist/Details'));
-const SingerList = AsyncComponent(() => import('@/views/Singer/SingerList'));
-const SingerCates = AsyncComponent(() => import('@/views/Singer/SingerCates'));
-const SingerMoreCates = AsyncComponent(() => import('@/views/Singer/SingerMoreCates'));
+
 
 
 const routes = [
@@ -44,35 +40,7 @@ const routes = [
         component: PlayList,
         name: 'PlayList'
     },
-    {
-        path: '/home/toplist',
-        component: TopList,
-        name: 'TopList',
-        children: [
-            {
-                path: ':id',
-                component: TopDetails,
-                name: 'TopDetails',
-            }
-        ]
-    },
-    {
-        path: '/home/singer',
-        component: SingerList,
-        name: 'SingerList',
-        children: [
-            {
-                path: 'cate/:path',
-                component: SingerCates,
-                name: 'SingerCates'
-            },
-            {
-                path: 'cate/:area/:type',
-                component: SingerMoreCates,
-                name: 'SingerMoreCates'
-            }
-        ]
-    },
+    
 ]
 
 export default routes;

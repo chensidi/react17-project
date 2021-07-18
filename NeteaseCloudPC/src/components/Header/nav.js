@@ -35,7 +35,7 @@ export const subNav = [
         name: '排行榜'
     },
     {
-        path: '',
+        path: '/playlist',
         name: '歌单'
     },
     {
