@@ -1,4 +1,6 @@
 import  { Pagination, message } from 'antd';
+import { useHistory } from 'react-router-dom';
+
 import Main from '@/components/Main';
 import topListApi from '@/api/toplist';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -8,13 +10,30 @@ import { playList } from '@/utils/utils';
 
 const CoverItem = AsyncComponent(() => import('@/components/Covers/CoverItem'));
 
+function matchParams(str, queryNameArr) {
+    str = decodeURIComponent(str)
+    let queryArr = [], reg;
+    queryNameArr.map(name => {
+        reg = new RegExp(`${name}\=(.+)(?=\&)`);
+        let matchRes = str.match(reg);
+        matchRes && queryArr.push(matchRes[1]);
+    })
+
+    reg = /(?<=\=)(.+?)\S/g;
+    let matchRes = str.match(reg);
+    matchRes && queryArr.push(matchRes[1]);
+
+    return queryArr;
+}
+
 export default () => {
+
+    const history = useHistory();
 
     const [playLists, setLists] = useState([]);
     const [listsInfo, setListsInfo] = useState({});
     const getCatelists = useCallback(async (params = {}) => {
         const res = await topListApi.getCateLists(params);
-        console.log(res);
         setLists(res.playlists);
         setListsInfo({
             cat: res.cat,
@@ -22,6 +41,7 @@ export default () => {
         })
     }, [])
 
+    // 页码变化
     const [curPage, setCurPage] = useState(1);
     function pageChange(page, pageSize) {
         setCurPage(page);
@@ -29,15 +49,21 @@ export default () => {
             cat: listsInfo.cat,
             offset: (page - 1) * pageSize,
         })
+        history.replace(`/home/playlist?page=${page}&cat=${listsInfo.cat}`)
     }
 
-    useEffect(() => {
-        getCatelists();
+
+    useEffect(async () => {
+        const [page = 1, cat = '全部'] = matchParams(history.location.search, ['page', 'cat'])
+        await getCatelists({cat, offset: (page - 1) * 35});
+        setTimeout(() => setCurPage(Number(page)))
     }, [])
 
+    //分类变化自动初始化为第一页
     const cat = useMemo(() => listsInfo.cat)
     useEffect(() => {
-        setCurPage(1)
+        setCurPage(1);
+        history.replace(`/home/playlist?page=1&cat=${cat}`)
     }, [cat])
 
     return (
