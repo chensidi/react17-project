@@ -63,7 +63,7 @@ body, textarea, select, input, button {
         float: left;
         width: 176px;
         height: 69px;
-        background-position: 0 0;
+        // background-position: 0 0;
         a {
             float: left;
             width: 157px;
@@ -72,7 +72,10 @@ body, textarea, select, input, button {
             text-indent: -9999px;
             outline: none;
         }
-        
+        >img {
+            width: 100%;
+            transform: translate(-17px, 14px);
+        }
     }
 }
 

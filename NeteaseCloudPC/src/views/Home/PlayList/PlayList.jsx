@@ -1,4 +1,4 @@
-import  { Pagination, message } from 'antd';
+import  { Pagination, Skeleton } from 'antd';
 import { useHistory } from 'react-router-dom';
 
 import Main from '@/components/Main';
@@ -32,13 +32,16 @@ export default () => {
 
     const [playLists, setLists] = useState([]);
     const [listsInfo, setListsInfo] = useState({});
+    const [loading, setLoading] = useState(true);
     const getCatelists = useCallback(async (params = {}) => {
+        setLoading(true);
         const res = await topListApi.getCateLists(params);
         setLists(res.playlists);
         setListsInfo({
             cat: res.cat,
             total: res.total
         })
+        setLoading(false);
     }, [])
 
     // 页码变化
@@ -51,7 +54,6 @@ export default () => {
         })
         history.replace(`/home/playlist?page=${page}&cat=${listsInfo.cat}`)
     }
-
 
     useEffect(async () => {
         const [page = 1, cat = '全部'] = matchParams(history.location.search, ['page', 'cat'])
@@ -79,28 +81,36 @@ export default () => {
                     <span>热门</span>
                 </div>
             </div>
-            <ul className="m-cvrlst f-cb cate-lists">
-                {
-                    playLists.map((item, i) => {
-                        return (
-                            <CoverItem 
-                                key={item.id + i} 
-                                {...item} 
-                                playFn={playList}
-                            />
-                        )
-                    })
+            <Skeleton 
+                active 
+                loading={loading}
+                paragraph={
+                    {rows: 10}
                 }
-            </ul>
-            <div className="search-pagination">
-                <Pagination 
-                    current={curPage}
-                    total={listsInfo.total} 
-                    showSizeChanger={false}
-                    pageSize={35}
-                    onChange={pageChange}
-                />
-            </div>
+            >
+                <ul className="m-cvrlst f-cb cate-lists">
+                    {
+                        playLists.map((item, i) => {
+                            return (
+                                <CoverItem 
+                                    key={item.id + i} 
+                                    {...item} 
+                                    playFn={playList}
+                                />
+                            )
+                        })
+                    }
+                </ul>
+                <div className="search-pagination">
+                    <Pagination 
+                        current={curPage}
+                        total={listsInfo.total} 
+                        showSizeChanger={false}
+                        pageSize={35}
+                        onChange={pageChange}
+                    />
+                </div>
+            </Skeleton>
         </Main>
     )
 }

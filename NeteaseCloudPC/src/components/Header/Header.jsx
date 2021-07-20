@@ -85,7 +85,8 @@ const Header = (props) => {
             <div className="m-top">
                 <div className="wrap f-cb">
                     <h1 className="logo">
-                        <Link to="/">网易云音乐</Link>
+                        {/* <Link to="/">网易云音乐</Link> */}
+                        <img src="/logo.png" alt="" />
                     </h1>
                     <ul className="m-nav j-tflag">
                         {
