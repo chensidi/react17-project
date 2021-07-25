@@ -1,23 +1,25 @@
 import { SET_CURSONG, 
     SET_HISTORY, 
-    GET_SONGINFO, 
+    SET_SHOWLRC, 
     SET_LOCK, 
     SET_LOADING, 
     SET_SUB_NAV,
     SET_SEARCH_TAB,
-    SET_SEARCH_PAGE } from "./action-type";
+    SET_SEARCH_PAGE,
+    SET_SHOW_PLAYBAR } from "./action-type";
 import sessionStore from '@/utils/sessionStore';
 
 let initialData = {
     curSong: sessionStore.get('globalData').curSong || null, //当前歌曲
     keep: ['Home'],
     historyPlay: sessionStore.get('globalData').historyPlay || [], //历史播放记录
-    lock: sessionStore.get('globalData').lock || true, //是否锁定播放栏
-    showPlaybar: sessionStore.get('globalData').showPlaybar || true, //是否展示播放条
+    lock: sessionStore.get('globalData').lock ?? true, //是否锁定播放栏
+    showPlaybar: sessionStore.get('globalData').showPlaybar ?? true, //是否展示播放条
     loading: false, //歌曲加载状态
     showSubNav: true, //是否展示二级导航条
     searchTab: '1', //搜素类型默认为1
     searchPage: 1, //搜素页数默认为1
+    showLrc: sessionStore.get('globalData').showLrc ?? false, //展示歌词面板
 } 
 
 const globalReducer = (state = initialData, action) => {
@@ -84,8 +86,7 @@ const globalReducer = (state = initialData, action) => {
                 ...state,
                 searchPage: action.page
             }
-        case 'setShowPlaybar':
-            console.log('show')
+        case SET_SHOW_PLAYBAR:
             sessionStore.set('globalData', {
                 ...state,
                 showPlaybar: action.show
@@ -93,6 +94,15 @@ const globalReducer = (state = initialData, action) => {
             return {
                 ...state,
                 showPlaybar: action.show
+            }
+        case SET_SHOWLRC:
+            sessionStore.set('globalData', {
+                ...state,
+                showLrc: action.show
+            })
+            return {
+                ...state,
+                showLrc: action.show
             }
         default:
             return state;

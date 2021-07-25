@@ -3,9 +3,10 @@ import Layout from '@components/Layout';
 import BackTop from '@/components/BackTop';
 import localStore from '@/utils/localStore';
 import loginFn from '@/utils/methods/login';
-import { routerRef } from './router/generateRoute'
+import { routerRef } from './router/generateRoute';
+import LrcPanel from '@/components/PlayBar/LrcPanel';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 export let historyAlpha;
@@ -14,6 +15,7 @@ function App() {
 	const token = useSelector(state => state.user.token);
 	const localUser = localStore.get('user');
 	const dispatch = useDispatch();
+
 	useEffect(() => {
 		if (token == null) { //未登录
 			if (localUser?.remember) { //自动登录
@@ -36,6 +38,7 @@ function App() {
 		<Layout>
 			{Router}
 			<BackTop />
+			<LrcPanel />
 		</Layout>
 	)
 }

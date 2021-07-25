@@ -1,7 +1,7 @@
 import './index.scss';
 import { Link } from 'react-router-dom';
-import { useState, createRef, memo, useEffect, useRef, forwardRef, } from 'react';
-import { connect } from 'react-redux';
+import { useState, useContext, createRef, memo, useEffect, useRef, forwardRef, } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { mediaTimeFormat, formatLrc, addToPlay, artistsFormat, delFromPlay, getRandom, clearHistory } from '@/utils/utils';
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
@@ -91,10 +91,11 @@ const playMode = [
     }
 ]
 
+export let mp3;
 const PlayBar = (props) => {
     const [downUpKey, changeDownUp] = useState(false); //控制能否拖动的开关
     const barRef = useRef(null); //进度条ref
-    const mp3 = useRef(null); //音频ref
+    mp3 = useRef(null); //音频ref
     const playBtn = useRef(null); //播放按钮
     const prevBtn = useRef(null);
     const nextBtn = useRef(null);
@@ -113,6 +114,8 @@ const PlayBar = (props) => {
     const [canScrollLrc, changeCanScroll] = useState(true);
     const [showPanel, changeShow] = useState(false); //是否展示歌词面板
     const [songMode, changeMode] = useState(0); //播放模式，循环/随机/单曲
+    const dispatch = useDispatch();
+    const showLrc = useSelector(state => state.globalData.showLrc);
 
     // 没有歌曲的话，默认设置为张学友 - 咖啡
     if (props.curSong == null) {
@@ -477,10 +480,13 @@ const PlayBar = (props) => {
                         </div>
                     </div>
                     <div className="ctrl f-fl f-pr j-flag">
+                        <span className="icn icn-pip active" title="画中画歌词"
+                            onClick={() => dispatch({type: 'setShowLrc', show: !showLrc})}
+                        ></span>
                         <span 
-                        className={`icn ${playMode[songMode].class}`} 
-                        title={playMode[songMode].txt }
-                        onClick={changePlayMode}>
+                            className={`icn ${playMode[songMode].class}`} 
+                            title={playMode[songMode].txt }
+                            onClick={changePlayMode}>
                         </span>
                         <span className="add f-pr" onClick={() => changeShow(!showPanel)}>
                             <em className="icn icn-list s-fc3" title="播放列表">{ props.historyPlay.length }</em>
