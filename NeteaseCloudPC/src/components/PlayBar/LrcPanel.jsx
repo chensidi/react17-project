@@ -34,6 +34,7 @@ function getOffsetXandY() {
 let lrcRef;
 let [distanceX, distanceY] = [0, 0];
 let key = false;
+let lrcArr1 = []
 
 const LrcPanel = () => {
     lrcRef = useRef();
@@ -44,6 +45,7 @@ const LrcPanel = () => {
 
     const curSong = useSelector(state => state.globalData.curSong);
     const [lrcArr, setLrcArr] = useState(formatLrc(curSong?.lyc||''));
+    lrcArr1 = formatLrc(curSong?.lyc||'')
     const [curIdx, changeCurIdx] = useState(0);
 
     function bindPlayListener() {
@@ -55,19 +57,19 @@ const LrcPanel = () => {
     }
     
     function lrcWithPlay() { //歌词同步
-        if (!lrcArr.length) return;
+        if (!lrcArr1.length) return;
         if (document.querySelector('.lrc-panel') == null) return;
-        for(let i = 0; i < lrcArr.length - 1; i ++) {
+        for(let i = 0; i < lrcArr1.length - 1; i ++) {
             const curTime = mp3.current.currentTime,
-                  item = lrcArr[i],
-                  nextItem = lrcArr[i + 1];
+                  item = lrcArr1[i],
+                  nextItem = lrcArr1[i + 1];
             if (curTime >= item.time) {
                 if (curTime < nextItem.time) {
                     changeCurIdx(i);
                     const curP = document.querySelectorAll('.lrc-wrap>p')[i];
                     curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
                     break;
-                } else if (curTime >= nextItem.time && i === lrcArr.length - 2) {
+                } else if (curTime >= nextItem.time && i === lrcArr1.length - 2) {
                     changeCurIdx(i + 1);
                     const curP = document.querySelectorAll('.lrc-wrap>p')[i + 1];
                     curP.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
@@ -83,6 +85,7 @@ const LrcPanel = () => {
 
     useEffect(() => {
         setLrcArr(formatLrc(curSong?.lyc||''))
+        lrcArr1 = formatLrc(curSong?.lyc||'');
         changeCurIdx(0)
     }, [curSong?.id])
 
