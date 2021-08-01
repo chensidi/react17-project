@@ -6,6 +6,7 @@ import { mediaTimeFormat, formatLrc, addToPlay, artistsFormat, delFromPlay, getR
 import commonRequest from '@/api/common';
 import { setCurSong, setHistory, setLock, } from '@/store/action';
 import { downloadMp3 } from '@/utils/pureFunctions';
+import eventBus from '@/utils/eventBus';
  
 const mapStateToProps = (state) => {
     return {
@@ -206,6 +207,7 @@ const PlayBar = (props) => {
             ...mp3Info,
             isPlay: !mp3Info.isPlay
         })
+        eventBus.emit('playPause', [!mp3Info.isPlay, 0]);
     }
     function onPlaying() { //播放中
         onLoadSrc();

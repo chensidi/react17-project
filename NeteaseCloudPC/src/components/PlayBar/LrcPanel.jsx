@@ -1,10 +1,11 @@
 import { useEffect, useRef, useContext, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, StepBackwardOutlined, CaretRightOutlined, StepForwardOutlined, PauseOutlined } from '@ant-design/icons';
 import { CSSTransition } from 'react-transition-group';
 
 import { formatLrc } from '@/utils/utils';
 import { mp3 } from './PlayBar';
+import eventBus from '@/utils/eventBus';
 
 let top, left;
 function mouseDown(e) {
@@ -12,10 +13,10 @@ function mouseDown(e) {
     const { x, y } = getOffsetXandY();
     const { pageX, pageY } = e;
     [distanceX, distanceY] = [pageX - x, pageY - y];
-    console.log(distanceX, distanceY)
 }
 
 function onMove(e) {
+    e.preventDefault();
     if (!key) return;
     const { pageX, pageY } = e;
     lrcRef.current.style.top = top = (pageY - distanceY) + 'px';
@@ -79,8 +80,20 @@ const LrcPanel = () => {
         }
     }
 
+    let [playBtn, leftBtn, rightBtn] = [useRef(), useRef(), useRef()];
+    const [playing, setPlay] = useState(false);
+    function findPlayBtns() {
+        playBtn.current = document.querySelector('.j-flag.ply');
+        leftBtn.current = document.querySelector('.prv');
+        rightBtn.current = document.querySelector('.nxt');
+    }
+    
     useEffect(() => {
         bindPlayListener();
+        findPlayBtns();
+        eventBus.on('playPause', (param) => {
+            setPlay(param[0])
+        })
     }, [])
 
     useEffect(() => {
@@ -129,6 +142,15 @@ const LrcPanel = () => {
                         })
                     }
                 </div>
+            </div>
+            <div className="tools-area">
+                <StepBackwardOutlined style={{fontSize: 20}} onClick={() => leftBtn.current.click()} />
+                {
+                    playing ?
+                    <PauseOutlined style={{fontSize: 25}} onClick={() => playBtn.current.click()} /> :
+                    <CaretRightOutlined style={{fontSize: 25}} onClick={() => playBtn.current.click()} />
+                }
+                <StepForwardOutlined style={{fontSize: 20}} onClick={() => rightBtn.current.click()} />
             </div>
         </div>
         </CSSTransition>

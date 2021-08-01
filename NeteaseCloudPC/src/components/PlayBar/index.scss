@@ -711,13 +711,27 @@
         p {
             text-align: center;
             color: rgba(255,255,255, .5);
-            font-size: 14px;
+            font-size: 13px;
             line-height: 2.5;
-            transition: color 1.7s linear;
+            transition: all .3s linear;
             &.z-sel {
                 color: #fff;
-                transition: color 1.7s linear;
+                font-size: 15px;
+                transition: all .3 linear;
             }
+        }
+    }
+    .tools-area {
+        position: absolute;
+        bottom: 0;
+        height: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 1;
+        >span {
+            cursor: pointer;
         }
     }
 }
