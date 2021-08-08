@@ -7,6 +7,7 @@ const SingerList = AsyncComponent(() => import('@/views/Singer/SingerList'));
 const SingerCates = AsyncComponent(() => import('@/views/Singer/SingerCates'));
 const SingerMoreCates = AsyncComponent(() => import('@/views/Singer/SingerMoreCates'));
 const PlayList = AsyncComponent(() => import('@/views/Home/PlayList/PlayList'));
+const Disk = AsyncComponent(() => import('@/views/Disk/Disk'));
 
 export default [
     {
@@ -52,5 +53,10 @@ export default [
         path: '/home/playlist',
         component: PlayList,
         name: 'PlayList'
+    },
+    {
+        path: '/home/disk',
+        component: Disk,
+        name: 'Disk'
     }
 ]

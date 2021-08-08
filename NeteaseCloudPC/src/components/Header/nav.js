@@ -43,7 +43,7 @@ export const subNav = [
         name: '歌手'
     },
     {
-        path: '',
+        path: '/disk',
         name: '新碟上架'
     },
 ]

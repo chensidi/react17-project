@@ -126,7 +126,7 @@ class Home extends PureComponent {
                                             </ul>
                                         </div>
                                         <div className="n-new">
-                                            <BlockTitle title={{path: '', txt: '新碟上架'}} />
+                                            <BlockTitle title={{path: '/home/disk', txt: '新碟上架'}} />
                                             <NewDiskSwiper />
                                         </div>
                                         <div className="n-bill">

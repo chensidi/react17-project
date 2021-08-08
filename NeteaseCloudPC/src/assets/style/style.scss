@@ -961,7 +961,7 @@ a {
     .msk {
         width: 153px;
         height: 130px;
-        background-position: 0 -845px;
+        background-position: 0 -845px !important;
     }
 }
 
@@ -3257,4 +3257,18 @@ table {
 
 .cate-lists {
     margin: 30px 0 0 -52px;
+}
+
+.n-alblist {
+    .m-cvrlst {
+        margin: 20px 0 0 -33px;
+    }
+    .m-cvrlst-alb2 {
+        li {
+            padding-left: 33px;
+            p.f-thide {
+                margin: 0;
+            }
+        }
+    }
 }

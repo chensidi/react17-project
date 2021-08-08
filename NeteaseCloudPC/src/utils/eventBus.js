@@ -19,7 +19,7 @@ class EventBus {
 
     off(eventName, callback) {
         if (this.listenObj[eventName]) {
-            let idx = this.listenObj[eventName].findIndex(item === callback);
+            let idx = this.listenObj[eventName].findIndex(item => item === callback);
             this.listenObj[eventName].splice(idx, 1);
         }
     }
