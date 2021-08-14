@@ -39,6 +39,10 @@ export const subNav = [
         name: '歌单'
     },
     {
+        path: '/djradio',
+        name: '主播电台'
+    },
+    {
         path: '/singer',
         name: '歌手'
     },

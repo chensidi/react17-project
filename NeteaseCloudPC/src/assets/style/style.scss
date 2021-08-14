@@ -1,3 +1,10 @@
+@mixin flex($jc: space-between, $ai: center, $wrap: wrap) {
+    display: flex;
+    align-items: $ai;
+    justify-content: $jc;
+    flex-wrap: $wrap;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -3268,6 +3275,99 @@ table {
             padding-left: 33px;
             p.f-thide {
                 margin: 0;
+            }
+        }
+    }
+}
+
+
+.category-box {
+    @include flex;
+    margin-left: -33.5px;
+    .category-item {
+        width: 70px;
+        height: 70px;
+        text-align: center;
+        color: #888;
+        margin: 0 0 25px 33.5px;
+        img {
+            width: 48px;
+            height: 48px;
+            margin: 2px auto 0;
+            display: block;
+        }
+    }
+}
+
+.recommend-radio {
+    @include flex(space-between, center, nowrap);
+    .blk {
+        width: 426px;
+        .toplist {
+            height: 600px;
+            border: 1px solid #e2e2e2;
+            border-top: none;
+            .itm {
+                width: 424px;
+                height: 60px;
+                padding: 10px 0;
+                line-height: 40px;
+                &.bg {
+                    background: #f7f7f7;
+                }
+                img {
+                    width: 40px;
+                    height: 40px;
+                    margin-left: 20px;
+                }
+                .cnt, .cnts {
+                    width: 254px;
+                    margin: 1px 0 0 10px;
+                    line-height: 20px;
+                    p {
+                        color: #888;
+                        font-size: 12px;
+                    }
+                }
+                .cnts {
+                    width: 208px;
+                }
+                .tag {
+                    margin: 1px 0 0 10px;
+                    display: inline-block;
+                    position: relative;
+                    top: -1px;
+                    height: 16px;
+                    overflow: hidden;
+                    padding: 0 6px;
+                    border: 1px solid #999;
+                    line-height: 16px;
+                    *line-height: 18px;
+                    color: #999;
+                    vertical-align: middle;
+                    font-size: 12px;
+                }
+                .rank {
+                    width: 47px;
+                    margin: 6px 0 0 -10px;
+                    transform: translateX(10px);
+                    text-align: center;
+                    line-height: normal;
+                    em {
+                        display: block;
+                        width: 100%;
+                        text-align: center;
+                        color: #da4545;
+                        font-size: 14px;
+                    }
+                    i {
+                        font-size: 12px;
+                        color: #008000;
+                    }
+                }
+                .hot {
+                    width: 100px;
+                }
             }
         }
     }
