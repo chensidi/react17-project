@@ -28,4 +28,22 @@ export default {
             return [];
         }
     },
+    async getRecommendByType(type) { //电台分类推荐
+        try {
+            const res = await http.get('/dj/recommend/type', {type})
+            return res.djRadios ?? [];
+        } catch (err) {
+            console.log(err);
+            return [];
+        }
+    },
+    async getHotByType({limit = 30, offset = 0, cateId} = {}) { //电台-类别热门电台
+        try {
+            const res = await http.get('/dj/radio/hot', {limit, offset, cateId})
+            return res;
+        } catch (err) {
+            console.log(err);
+            return {};
+        }
+    },
 }

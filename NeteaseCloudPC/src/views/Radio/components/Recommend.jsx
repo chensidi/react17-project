@@ -2,7 +2,8 @@ import NavTitle from '@/components/Common/NavTitle';
 import radioApi from '@api/radio';
 
 import { useEffect, useState } from 'react'; 
-import { Progress } from 'antd';
+import { Progress, Icon } from 'antd';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
 
 const RecommendItem = ({
     picUrl,
@@ -28,6 +29,22 @@ function getPercent(val, total) {
     return val / total * 100;
 }
 
+const TopTag = ({rank, lastRank}) => {
+    if (lastRank === -1) { //new
+        return <i>NEW</i>
+    } else if (rank >= lastRank) { //down
+        return <>
+                <ArrowDownOutlined style={{color: '#4abbeb', fontSize: 12}} />
+                <span className="rnk-down">{ rank - lastRank }</span>
+               </>
+    } else { //up
+        return <>
+                <ArrowUpOutlined style={{color: '#ba2226', fontSize: 12}} />
+                <span className="rnk-up">{ lastRank - rank }</span>
+               </>
+    }
+}
+
 const TopItem = ({
     program: {
         coverUrl,
@@ -37,6 +54,7 @@ const TopItem = ({
         }
     },
     rank,
+    lastRank,
     totalScore,
     score,
     idx
@@ -44,8 +62,8 @@ const TopItem = ({
     return (
         <li className={`itm ${idx % 2 && 'bg'}`}>
             <div className="rank s-fc4 f-fl">
-                <em>{rank}</em>
-                <i>NEW</i>
+                <em className={`${idx < 3 && 'top3'}`}>{rank.toString().padStart(2, 0)}</em>
+                <TopTag {...{rank, lastRank}} />
             </div>
             <img className="f-fl" src={`${coverUrl}?param=40x40`} alt="" />
             <div className="cnts f-fl">
@@ -58,6 +76,7 @@ const TopItem = ({
                     size="small" 
                     showInfo={false}
                     strokeColor="#ccc"
+                    strokeWidth={8}
                 />
             </div>
         </li>
@@ -66,12 +85,14 @@ const TopItem = ({
 
 export default () => {
 
+    //推荐节目
     const [recommend, setRecommend] = useState([])
     const getRecommend = async () => {
         const res = await radioApi.getRecommend();
         setRecommend(res);
     }
 
+    //节目榜
     const [topList, setToplist] = useState([]);
     const [totalScore, setTotal] = useState(0);
     const getToplists = async () => {
@@ -102,7 +123,7 @@ export default () => {
                 <ul className="toplist">
                     {
                         topList.map((item, i) => {
-                            return <TopItem key={item.id} {...{...item, totalScore, idx: i}}  />
+                            return <TopItem key={`${item.id}-${i}`} {...{...item, totalScore, idx: i}}  />
                         })
                     }
                 </ul>
