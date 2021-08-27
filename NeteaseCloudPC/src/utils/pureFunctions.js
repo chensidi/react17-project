@@ -1,6 +1,7 @@
 import { areaList } from '@vant/area-data';
 import * as crypto from 'crypto';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
+import sessionStore from './sessionStore';
 
 var key = '@(5h)-$3_if(*%#';  
 
@@ -77,4 +78,32 @@ export function parseJson(jsonObj, path) {
     }
 
     return target;
+}
+
+export function enterTips() {
+	const tag = sessionStore.get('enter');
+	if (JSON.stringify(tag) === '{}') {
+		Modal.info({
+			width: 700,
+			title: 'FBI Warning 郑重提示',
+			content: (
+				<div>
+					<p>
+						本项目是使用react17版本，结合相关技术栈
+						借鉴网易云官方网站的交互和布局，并参考部分样式
+						完成的一次独立开发过程，后台接口是nodeJS的neteasecloudmusicapi
+						如果您觉得该项目还行，还望多多star，欢迎issue.
+					</p>
+					<h3>
+						在此声明，本项目仅用于学习，不用做其他用途，听歌请上网易官网，本人学友哥骨灰级粉丝
+					</h3>
+					<p>github地址: <a target="_blank" href="https://github.com/chensidi/react17-project">https://github.com/chensidi/react17-project</a></p>
+					<p>gitee地址: <a target="_blank" href="https://gitee.com/chensidi/react17-project">https://gitee.com/chensidi/react17-project</a></p>
+				</div>
+			),
+			onOk() {
+				sessionStore.set('enter', true);
+			},
+		});
+	}
 }

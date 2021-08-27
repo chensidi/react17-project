@@ -1,5 +1,5 @@
-import AlbumHOC from '@/components/Album/AlbumHOC';
 import AlbumTemp from '@/components/Album/AlbumTemp';
+import withAlbumWrap from '@/components/Album/AlbumContent';
 import albumApi from '@/api/album';
 
 const getInfo = async (id) => {
@@ -17,11 +17,6 @@ const fns = {
     getCmts
 }
 
-const page = AlbumHOC(AlbumTemp, 'playlist', fns);
+const Page = withAlbumWrap(AlbumTemp, fns, 'playlist');
 
-const PlayList = () => {
-    return page;
-}
-
-
-export default PlayList;
+export default Page;

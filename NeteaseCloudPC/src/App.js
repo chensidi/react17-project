@@ -2,9 +2,11 @@ import Router from './router';
 import Layout from '@components/Layout';
 import BackTop from '@/components/BackTop';
 import localStore from '@/utils/localStore';
+import sessionStore from './utils/sessionStore';
 import loginFn from '@/utils/methods/login';
 import { routerRef } from './router/generateRoute';
 import LrcPanel from '@/components/PlayBar/LrcPanel';
+import { enterTips } from '@/utils/pureFunctions';
 
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,6 +19,7 @@ function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		enterTips();
 		if (token == null) { //未登录
 			if (localUser?.remember) { //自动登录
 				const {phone, password} = localUser;
