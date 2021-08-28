@@ -1,7 +1,8 @@
 import Main from '@components/Main';
 import Category from './components/Category';
 import Recommend from './components/Recommend';
-import TypeRecommend from './components/TypeRecommend';
+import { withDjRecommend, RecommendTemp } from './components/TypeRecommend';
+import radioApi from "@api/radio";
 
 const types = [
     {
@@ -26,6 +27,11 @@ const types = [
     }
 ]
 
+
+const WrapTypeRecommend = withDjRecommend(RecommendTemp, radioApi.getRecommendByType, {
+    limit: 4,
+})
+
 export default () => {
     return (
         <Main className="g-wrap">
@@ -33,7 +39,7 @@ export default () => {
             <Recommend />
             {
                 types.map((item) => {
-                    return <TypeRecommend key={item.id} {...item} />
+                    return <WrapTypeRecommend key={item.id} {...item} params={item.id} />
                 })
             }
         </Main>

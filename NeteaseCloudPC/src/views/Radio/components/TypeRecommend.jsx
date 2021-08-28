@@ -1,8 +1,7 @@
 import NavTitle from "@/components/Common/NavTitle";
-import radioApi from "@api/radio";
 
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 
 
 const RdoItem = ({
@@ -25,19 +24,7 @@ const RdoItem = ({
     )
 }
 
-export default ({title, id}) => {
-
-
-    const [list, setList] = useState([]);
-    const getRecommend = async () => {
-        const res = await radioApi.getRecommendByType(id);
-        setList(res.slice(0, 4));
-    }
-
-    useEffect(() => {
-        getRecommend();
-    }, [])
-
+export const RecommendTemp = ({title, list}) => {
     return (
         <section className="type-recommend">
             <NavTitle title={title} />
@@ -48,4 +35,26 @@ export default ({title, id}) => {
             </div>
         </section>
     )
+}
+
+export function withDjRecommend(Wrap, fn, options) {
+    return forwardRef(({title, params}, ref) => {
+
+        const [list, setList] = useState([]);
+        const getRecommend = async () => {
+            const res = await fn(params);
+            if (res.djRadios) {
+                setList(res.djRadios.slice(0, options.limit));
+                ref.current(res.count);
+            } else {
+                setList(res.slice(0, options.limit));
+            }
+        }
+
+        useEffect(() => {
+            getRecommend();
+        }, [params.id])
+
+        return <Wrap list={list} title={title} />
+    })
 }
