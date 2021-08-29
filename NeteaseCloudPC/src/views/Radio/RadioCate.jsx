@@ -6,6 +6,7 @@ import { withDjRecommend, RecommendTemp } from './components/TypeRecommend';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pagination } from 'antd';
+import { usePage } from '@/utils/hooks';
 
 
 function getSearchParam(str, k) {
@@ -22,9 +23,10 @@ const RadioCate = () => {
 
     const { search } = useLocation();
     const id = getSearchParam(search, 'id');
+    const page = getSearchParam(search, 'page');
     const [sid, setId] = useState(id);
-    const [total, setTotal] = useState(0);
-    const [curPage, setCurPage] = useState(1);
+    
+    const { total, setTotal, curPage, setCurPage } = usePage();
     const totalRef = useRef(setTotal);
 
     const history = useHistory();
@@ -40,6 +42,10 @@ const RadioCate = () => {
         setId(id);
         setCurPage(1);
     }, [id])
+
+    useEffect(() => {
+        page && setCurPage(+page);
+    }, [page])
 
 
     return (
