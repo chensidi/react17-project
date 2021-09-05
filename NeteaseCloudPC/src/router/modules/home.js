@@ -10,6 +10,7 @@ const PlayList = AsyncComponent(() => import('@/views/Home/PlayList/PlayList'));
 const Disk = AsyncComponent(() => import('@/views/Disk/Disk'));
 const Radio = AsyncComponent(() => import('@/views/Radio/Radio'));
 const RadioCate = AsyncComponent(() => import('@/views/Radio/RadioCate'));
+const RadioDetails = AsyncComponent(() => import('@/views/Radio/RadioDetails'));
 
 export default [
     {
@@ -70,5 +71,10 @@ export default [
         path: '/home/djradio/cate',
         component: RadioCate,
         name: 'RadioCate'
+    },
+    {
+        path: '/home/djradio/details/:id',
+        component: RadioDetails,
+        name: 'RadioDetails'
     }
 ]

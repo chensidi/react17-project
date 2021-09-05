@@ -9,11 +9,12 @@ import { Skeleton } from 'antd';
 const RdoItem = ({
     picUrl,
     name,
-    rcmdtext
+    rcmdtext,
+    id
 }) => {
     return (
         <div className="rdo-itm">
-            <Link to="" className="rdo-link f-fl">
+            <Link to={`/home/djradio/details/${id}`} className="rdo-link f-fl">
                 <LazyLoadImage 
                     width={120} 
                     height={120} 

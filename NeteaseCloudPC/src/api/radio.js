@@ -46,4 +46,28 @@ export default {
             return {};
         }
     },
+    async getDetails(rid) { //电台详情
+        try {
+            const res = await http.get('/dj/detail', {rid})
+            return res.data;
+        } catch (err) {
+            console.log(err);
+            return {};
+        }
+    },
+    async getProgram(rid, {limit=30, offset=0, asc=false} = {}) { //电台节目详情
+        try {
+            const res = await http.get('/dj/program', {
+                rid,
+                limit,
+                offset,
+                asc
+            })
+            return res;
+        } catch (err) {
+            console.log(err);
+            return {};
+        }
+    },
+    
 }

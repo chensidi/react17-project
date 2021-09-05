@@ -3427,3 +3427,122 @@ table {
         }
     }
 }
+
+.u-cover-dj {
+    width: 200px;
+    height: 200px;
+    float: left;
+    position: relative;
+    display: inline;
+    margin: 0 -220px 0 0;
+    .msk {
+        width: 208px;
+        height: 208px;
+        background-position: 0 -1285px;
+        top: -4px;
+        left: -4px;
+    }
+}
+
+.rdo-hd {
+    .cnt {
+        float: right;
+        width: 100%;
+    }
+    .cntc {
+        margin-left: 230px;
+    }
+    .tit {
+        margin-left: 64px;
+        position: relative;
+    }
+    .user {
+        line-height: 35px;
+        margin: 0 0 20px;
+    }
+    .hd {
+        position: relative;
+        margin: 0 0 12px;
+        line-height: 24px;
+    }
+}
+
+.u-icn-93 {
+    width: 55px;
+    height: 24px;
+    background-position: 0 -1014px !important;
+}
+
+.u-type {
+    display: inline-block;
+    position: relative;
+    top: -1px;
+    height: 16px;
+    overflow: hidden;
+    padding: 0 6px;
+    border: 1px solid #999;
+    line-height: 16px;
+    *line-height: 18px;
+    color: #999;
+    vertical-align: middle;
+    font-size: 12px;
+    &.cat {
+        margin-right: 7px;
+    }
+}
+
+.u-type-red {
+    color: #cc0000;
+    border-color: #cc0000;
+}
+
+.m-table-program {
+    tr {
+        height: 55px;
+        &:hover {
+            background-color: #e6e6e6;
+            .hshow {
+                display: block;
+            }
+            .tt {
+                width: 170px;
+            }
+        }
+        &.even {
+            background-color: #f7f7f7;
+        }
+    }
+    td {
+        padding: 0 10px;
+        box-sizing: content-box;
+    }
+    .col1 {
+        width: 62px;
+    }
+    .col2 {
+        width: 230px;
+        padding-left: 0;
+    }
+    .col3 {
+        width: 60px;
+    }
+    .col4 {
+        width: 70px;
+    }
+    .col5 {
+        width: 66px;
+    }
+    .num {
+        margin-left: 10px;
+    }
+    .tt {
+        margin-right: -100px;
+    }
+    .hshow {
+        display: none;
+        float: right;
+        .icn-dl {
+            background-position: -81px -174px;
+        }
+    }
+}
